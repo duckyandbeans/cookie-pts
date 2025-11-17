@@ -43,48 +43,46 @@
         /* --- 2. Character & Dialogue Styles --- */
         .character-area {
             position: relative;
-            width: 250px; 
-            height: 250px; 
+            width: 250px; /* The size of your character container */
+            height: 250px;
             margin: 30px auto 0;
         }
+
         #character-img {
             width: 100%;
             height: 100%;
-            background-color: #eee; /* Placeholder color */
-            border-radius: 5px;
+        }
+        
+        /* This is the new style for the text container */
+        #dialogue-bubble {
+            visibility: hidden; /* Stays hidden until search */
+            
+            /* This positions the text over the image */
+            position: absolute;
+            top: 45%;    /* Adjust this value to move text up or down */
+            left: 60%;   /* Adjust this value to move text left or right */
+            transform: translate(-50%, -50%); /* Centers the text block */
+            
+            /* Text alignment */
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #888;
+            
+            /* Size of the text area */
+            width: 120px; /* Adjust this to fit the bubble */
         }
-        
-        #dialogue-bubble {
-            visibility: hidden; /* Hidden by default */
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #f0f0f0;
-            border: 2px solid #888;
-            border-radius: 10px;
-            padding: 15px;
-            width: 200px;
-            z-index: 10;
-        }
+
+        /* This hides the old CSS bubble-tail */
         #dialogue-bubble::after {
-            content: "";
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 15px 15px 0;
-            border-style: solid;
-            border-color: #f0f0f0 transparent transparent transparent;
+            display: none;
         }
+
+        /* This is the new style for the text itself */
         #points-display {
-            font-size: 24px;
+            font-size: 28px; /* Bigger, bolder font */
             font-weight: bold;
-            color: #333;
+            color: #333; /* Dark gray text */
+            text-align: center;
         }
 
         /* --- 3. Disclaimer Style --- */
@@ -115,10 +113,9 @@
         <button onclick="searchPoints()">Search</button>
 
         <div class="character-area">
-            <img id="character-img" src="character.png" alt="Class Mascot">
+            <img id="character-img" src="character.PNG" alt="Class Mascot">
             
             <div id="dialogue-bubble">
-                You have...
                 <div id="points-display">0 Points</div>
             </div>
         </div>
@@ -128,7 +125,6 @@
 
     <script>
         // --- 1. YOUR DATA ---
-        // All data is now back inside this file.
         const studentData = {
             "XI D": [
                 { id: "1", points: 4.5 }, { id: "2", points: 3.5 }, { id: "3", points: 3.5 }, { id: "4", points: 2.5 },
@@ -190,7 +186,7 @@
                 { id: "9", points: 4 }, { id: "10", points: 6 }, { id: "11", points: 4 }, { id: "12", points: 7.5 },
                 { id: "13", points: 6 }, { id: "14", points: 8 }, { id: "15", points: 4 }, { id: "16", points: 4 },
                 { id: "17", points: 5 }, { id: "18", points: 5 }, { id: "19", points: 5 }, { id: "20", points: 6 },
-                { id: "21", points: 4 }, { id: "22", points: 5 }, { id: "23", points: 4 }, { id: "24", points: 9 },
+                { id: "21", points: 4 }, { id: "22", "points": 5 }, { id: "23", points: 4 }, { id: "24", points: 9 },
                 { id: "25", points: 3 }, { id: "26", points: 6 }, { id: "27", points: 8 }, { id: "28", points: 5 },
                 { id: "29", points: 6 }, { id: "30", points: 5 }, { id: "31", points: 7 }, { id: "32", points: 5 },
                 { id: "33", points: 4 }, { id: "34", points: 4 }, { id: "35", points: 7 }, { id: "36", points: 5.5 },
@@ -214,21 +210,17 @@
 
         // --- 2. THE SEARCH FUNCTION ---
         function searchPoints() {
-            // Get values from the search boxes
             const selectedClass = document.getElementById("classFilter").value;
             const studentId = document.getElementById("idSearch").value.trim();
-            
             const bubble = document.getElementById("dialogue-bubble");
             const pointsDisplay = document.getElementById("points-display");
 
-            // Check if a class and ID were entered
             if (!selectedClass || !studentId) {
                 pointsDisplay.innerHTML = "Select class & ID!";
                 bubble.style.visibility = "visible";
                 return;
             }
 
-            // Find the correct class list
             const classList = studentData[selectedClass];
             if (!classList) {
                 pointsDisplay.innerHTML = "Class not found!";
@@ -236,28 +228,20 @@
                 return;
             }
 
-            // Find the student in that class list
-            // The 's.id' is a string and 'studentId' is also a string
             const student = classList.find(s => s.id === studentId);
 
-            // Display the result
             if (student) {
-                // Found! Display points.
                 pointsDisplay.innerHTML = `${student.points} Points!`;
                 bubble.style.visibility = "visible";
             } else {
-                // Not found!
                 pointsDisplay.innerHTML = "ID not found.";
                 bubble.style.visibility = "visible";
             }
         }
 
         // --- 3. THE DISCLAIMER FUNCTION ---
-        // This function runs when the page loads
         (function setDisclaimer() {
-            // SET YOUR "LAST UPDATED" DATE HERE
             const lastUpdatedDate = "November 17, 2025"; 
-            
             const disclaimerEl = document.getElementById("disclaimer");
             disclaimerEl.innerText = `Last updated on ${lastUpdatedDate}`;
         })();
