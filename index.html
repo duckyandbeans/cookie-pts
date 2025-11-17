@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class Cookie Points</title>
     <style>
-        /* All your CSS styles are unchanged */
+        /* --- 1. General Styles --- */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -39,6 +39,8 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        /* --- 2. Character & Dialogue Styles --- */
         .character-area {
             position: relative;
             width: 250px; 
@@ -48,15 +50,16 @@
         #character-img {
             width: 100%;
             height: 100%;
-            background-color: #eee;
+            background-color: #eee; /* Placeholder color */
             border-radius: 5px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #888;
         }
+        
         #dialogue-bubble {
-            visibility: hidden; 
+            visibility: hidden; /* Hidden by default */
             position: absolute;
             top: -20px;
             left: 50%;
@@ -83,6 +86,8 @@
             font-weight: bold;
             color: #333;
         }
+
+        /* --- 3. Disclaimer Style --- */
         #disclaimer {
             margin-top: 30px;
             font-size: 12px;
@@ -107,10 +112,11 @@
 
         <input type="text" id="idSearch" placeholder="Enter attendance number...">
 
-        <button onclick="handleSearch()">Search</button>
+        <button onclick="searchPoints()">Search</button>
 
         <div class="character-area">
             <img id="character-img" src="character.png" alt="Class Mascot">
+            
             <div id="dialogue-bubble">
                 You have...
                 <div id="points-display">0 Points</div>
@@ -121,39 +127,93 @@
     <p id="disclaimer"></p>
 
     <script>
-        // --- 1. NEW SCRIPT ---
+        // --- 1. YOUR DATA ---
+        // All data is now back inside this file.
+        const studentData = {
+            "XI D": [
+                { id: "1", points: 4.5 }, { id: "2", points: 3.5 }, { id: "3", points: 3.5 }, { id: "4", points: 2.5 },
+                { id: "5", points: 5.5 }, { id: "6", points: 4.5 }, { id: "7", points: 4.5 }, { id: "8", points: 2.5 },
+                { id: "9", points: 5.5 }, { id: "10", points: 3.5 }, { id: "11", points: 9.5 }, { id: "12", points: 2.5 },
+                { id: "13", points: 2.5 }, { id: "14", points: 3.5 }, { id: "15", points: 3.5 }, { id: "16", points: 5 },
+                { id: "17", points: 3.5 }, { id: "18", points: 6.5 }, { id: "19", points: 6 }, { id: "20", points: 4.5 },
+                { id: "21", points: 3.5 }, { id: "22", points: 3.5 }, { id: "23", points: 3.5 }, { id: "24", points: 5 },
+                { id: "25", points: 2.5 }, { id: "26", points: 3.5 }, { id: "27", points: 3.5 }, { id: "28", points: 4.5 },
+                { id: "29", points: 6 }, { id: "30", points: 4.5 }, { id: "31", points: 3.5 }, { id: "32", points: 2.5 },
+                { id: "33", points: 3.5 }, { id: "34", points: 4.5 }, { id: "35", points: 3.5 }, { id: "36", points: 6 },
+                { id: "37", points: 3.5 }, { id: "38", points: 2.5 }, { id: "39", points: 4.5 }, { id: "40", points: 4.5 },
+                { id: "41", points: 3.5 }, { id: "42", points: 3.5 }, { id: "43", points: 3.5 }, { id: "44", points: 4.5 },
+                { id: "45", points: 5.5 }, { id: "46", points: 2.5 }, { id: "47", points: 2.5 }
+            ],
+            "XI E": [
+                { id: "1", points: 2 }, { id: "2", points: 0 }, { id: "3", points: 0 }, { id: "4", points: 1 },
+                { id: "5", points: 2 }, { id: "6", points: 4 }, { id: "7", points: 0 }, { id: "8", points: 1 },
+                { id: "9", points: 0 }, { id: "10", points: 0 }, { id: "11", points: 0 }, { id: "12", points: 0 },
+                { id: "13", points: 0 }, { id: "14", points: 4 }, { id: "15", points: 4 }, { id: "16", points: 1 },
+                { id: "17", points: 1 }, { id: "18", points: 0 }, { id: "19", points: 1 }, { id: "20", points: 4 },
+                { id: "21", points: 1 }, { id: "22", points: 0 }, { id: "23", points: 2 }, { id: "24", points: 0 },
+                { id: "25", points: 1 }, { id: "26", points: 1 }, { id: "27", points: 0 }, { id: "28", points: 0 },
+                { id: "29", points: 1 }, { id: "30", points: 2 }, { id: "31", points: 3 }, { id: "32", points: 1 },
+                { id: "33", points: 0 }, { id: "34", points: 1 }, { id: "35", points: 0 }, { id: "36", points: 0 },
+                { id: "37", points: 0 }, { id: "38", points: 1 }, { id: "39", points: 0 }, { id: "40", points: 0 },
+                { id: "41", points: 0 }, { id: "42", points: 2 }, { id: "43", points: 1 }, { id: "44", points: 1 },
+                { id: "45", points: 2 }, { id: "46", points: 2 }, { id: "47", points: 2 }, { id: "48", points: 1 }
+            ],
+            "XI H": [
+                { id: "1", points: 0 }, { id: "2", points: 0 }, { id: "3", points: 2.25 }, { id: "4", points: 2 },
+                { id: "5", points: 1 }, { id: "6", points: 0 }, { id: "7", points: 5 }, { id: "8", points: 3 },
+                { id: "9", points: 1 }, { id: "10", points: 0 }, { id: "11", points: 1 }, { id: "12", points: 2 },
+                { id: "13", points: 1 }, { id: "14", points: 0 }, { id: "15", points: 4 }, { id: "16", points: 1 },
+                { id: "17", points: 1 }, { id: "18", points: 0 }, { id: "19", points: 2 }, { id: "20", points: 0 },
+                { id: "21", points: 2.5 }, { id: "22", points: 1 }, { id: "23", points: 3 }, { id: "24", points: 0 },
+                { id: "25", points: 0 }, { id: "26", points: 1.75 }, { id: "27", points: 0 }, { id: "28", points: 5 },
+                { id: "29", points: 0 }, { id: "30", points: 0 }, { id: "31", points: 0 }, { id: "32", points: 1 },
+                { id: "33", points: 2 }, { id: "34", points: 0 }, { id: "35", points: 0 }, { id: "36", points: 1 },
+                { id: "37", points: 0 }, { id: "38", points: 3 }, { id: "39", points: 0 }, { id: "40", points: 1 },
+                { id: "41", points: 2 }, { id: "42", points: 2 }, { id: "43", points: 0 }, { id: "44", points: 2 }
+            ],
+            "XI I": [
+                { id: "1", points: 4 }, { id: "2", points: 1 }, { id: "3", points: 2 }, { id: "4", points: 2 },
+                { id: "5", points: 6 }, { id: "6", points: 1 }, { id: "7", points: 1 }, { id: "8", points: 1 },
+                { id: "9", points: 2 }, { id: "10", points: 2 }, { id: "11", points: 2 }, { id: "12", points: 2 },
+                { id: "13", points: 4 }, { id: "14", points: 1 }, { id: "15", points: 1 }, { id: "16", points: 4 },
+                { id: "17", points: 2 }, { id: "18", points: 4 }, { id: "19", points: 6 }, { id: "20", points: 1 },
+                { id: "21", points: 2 }, { id: "22", points: 3 }, { id: "23", points: 3 }, { id: "24", points: 1 },
+                { id: "25", points: 2 }, { id: "26", points: 5 }, { id: "27", points: 2 }, { id: "28", points: 3 },
+                { id: "29", points: 1 }, { id: "30", points: 1 }, { id: "31", points: 2 }, { id: "32", points: 3 },
+                { id: "33", points: 1 }, { "id": "34", points: 1 }, { id: "35", points: 1 }, { id: "36", points: 2 },
+                { id: "37", points: 4 }, { id: "38", points: 1 }, { id: "39", points: 4 }, { id: "40", points: 5 },
+                { id: "41", points: 2 }
+            ],
+            "XII H": [
+                { id: "1", points: 4 }, { id: "2", points: 4 }, { id: "3", points: 4 }, { id: "4", points: 5 },
+                { id: "5", points: 4 }, { id: "6", points: 4 }, { id: "7", points: 4 }, { id: "8", points: 8 },
+                { id: "9", points: 4 }, { id: "10", points: 6 }, { id: "11", points: 4 }, { id: "12", points: 7.5 },
+                { id: "13", points: 6 }, { id: "14", points: 8 }, { id: "15", points: 4 }, { id: "16", points: 4 },
+                { id: "17", points: 5 }, { id: "18", points: 5 }, { id: "19", points: 5 }, { id: "20", points: 6 },
+                { id: "21", points: 4 }, { id: "22", points: 5 }, { id: "23", points: 4 }, { id: "24", points: 9 },
+                { id: "25", points: 3 }, { id: "26", points: 6 }, { id: "27", points: 8 }, { id: "28", points: 5 },
+                { id: "29", points: 6 }, { id: "30", points: 5 }, { id: "31", points: 7 }, { id: "32", points: 5 },
+                { id: "33", points: 4 }, { id: "34", points: 4 }, { id: "35", points: 7 }, { id: "36", points: 5.5 },
+                { id: "37", points: 4 }, { id: "38", points: 5 }, { id: "39", points: 5 }, { id: "40", points: 4 },
+                { id: "41", points: 4 }, { id: "42", points: 5 }, { id: "43", points: 4 }, { id: "44", points: 4 }
+            ],
+            "XII I": [
+                { id: "1", points: 2 }, { id: "2", points: 1 }, { id: "3", points: 2 }, { id: "4", points: 1 },
+                { id: "5", points: 2 }, { id: "6", points: 1 }, { id: "7", points: 1 }, { id: "8", points: 1 },
+                { id: "9", points: 1 }, { id: "10", points: 2 }, { id: "11", points: 4 }, { id: "12", points: 4 },
+                { id: "13", points: 3 }, { id: "14", points: 1 }, { id: "15", points: 1 }, { id: "16", points: 1 },
+                { id: "17", points: 3.5 }, { id: "18", points: 1 }, { id: "19", points: 2 }, { id: "20", points: 2 },
+                { id: "21", points: 1 }, { id: "22", points: 1 }, { id: "23", points: 1 }, { id: "24", points: 3 },
+                { id: "25", points: 1 }, { id: "26", points: 4 }, { id: "27", points: 2.5 }, { id: "28", points: 1 },
+                { id: "29", points: 1 }, { id: "30", points: 2 }, { id: "31", points: 2 }, { id: "32", points: 1 },
+                { id: "33", points: 2 }, { id: "34", points: 1 }, { id: "35", points: 1 }, { id: "36", points: 3.5 },
+                { id: "37", points: 1 }, { id: "38", points: 1 }, { id: "39", points: 1 }, { id: "40", points: 1 },
+                { id: "41", points: 1.5 }, { id: "42", points: 2 }, { id: "43", points: 2 }, { id: "44", points: 1 }
+            ]
+        };
 
-        // This variable will hold your data once it's loaded
-        let studentData = null;
-
-        // This function fetches the data from your JSON file
-        async function loadData() {
-            if (studentData) return studentData; // Don't load if already loaded
-
-            try {
-                const response = await fetch('data.json');
-                const data = await response.json();
-                studentData = data; // Store the data globally
-                
-                // Set the disclaimer date from the JSON file
-                document.getElementById("disclaimer").innerText = `Last updated on ${data.lastUpdated}`;
-                
-                return data;
-            } catch (error) {
-                console.error('Error loading data:', error);
-                document.getElementById("disclaimer").innerText = "Error loading data.";
-            }
-        }
-
-        // This is the new function your button calls
-        async function handleSearch() {
-            // Ensure data is loaded first
-            const data = await loadData();
-            if (!data) {
-                alert("Data is still loading or failed to load. Please try again.");
-                return;
-            }
-
+        // --- 2. THE SEARCH FUNCTION ---
+        function searchPoints() {
             // Get values from the search boxes
             const selectedClass = document.getElementById("classFilter").value;
             const studentId = document.getElementById("idSearch").value.trim();
@@ -168,8 +228,8 @@
                 return;
             }
 
-            // Find the correct class list from the loaded data
-            const classList = data.classes[selectedClass];
+            // Find the correct class list
+            const classList = studentData[selectedClass];
             if (!classList) {
                 pointsDisplay.innerHTML = "Class not found!";
                 bubble.style.visibility = "visible";
@@ -177,21 +237,30 @@
             }
 
             // Find the student in that class list
+            // The 's.id' is a string and 'studentId' is also a string
             const student = classList.find(s => s.id === studentId);
 
             // Display the result
             if (student) {
+                // Found! Display points.
                 pointsDisplay.innerHTML = `${student.points} Points!`;
                 bubble.style.visibility = "visible";
             } else {
+                // Not found!
                 pointsDisplay.innerHTML = "ID not found.";
                 bubble.style.visibility = "visible";
             }
         }
 
-        // --- 2. INITIAL DATA LOAD ---
-        // Load the data (and set the disclaimer) as soon as the page opens.
-        loadData();
+        // --- 3. THE DISCLAIMER FUNCTION ---
+        // This function runs when the page loads
+        (function setDisclaimer() {
+            // SET YOUR "LAST UPDATED" DATE HERE
+            const lastUpdatedDate = "November 17, 2025"; 
+            
+            const disclaimerEl = document.getElementById("disclaimer");
+            disclaimerEl.innerText = `Last updated on ${lastUpdatedDate}`;
+        })();
 
     </script>
 </body>
