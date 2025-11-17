@@ -1,93 +1,149 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Cookie Points</title>
+    <title>Portal Nilai Siswa</title>
     <style>
-        /* --- 1. General Styles --- */
+        /* --- 1. Style Dasar --- */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             padding: 20px;
+            min-height: 100vh;
+            box-sizing: border-box;
+            margin: 0;
         }
         .container {
             width: 90%;
             max-width: 500px;
             background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
             text-align: center;
+            box-sizing: border-box;
         }
-        select, input[type="text"], button {
+        
+        /* --- 2. Kontrol Form (Input, Select, Button) --- */
+        select, input[type="text"] {
             font-size: 16px;
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
             border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
         }
         button {
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
             background-color: #007bff;
             color: white;
-            cursor: pointer;
+            transition: background-color 0.2s;
         }
         button:hover {
             background-color: #0056b3;
         }
-
-        /* --- 2. Character & Dialogue Styles --- */
-        .character-area {
-            position: relative;
-            width: 250px; /* The size of your character container */
-            height: 250px;
-            margin: 30px auto 0;
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+        /* Style untuk tombol nonaktif */
+        button:disabled {
+            background-color: #c0c0c0;
+            cursor: not-allowed;
         }
 
+        /* --- 3. Style Tampilan (Views) --- */
+        .view {
+            width: 100%;
+        }
+        #menuView, #cookieView, #tpView {
+            display: none;
+        }
+        #welcomeMessage {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* --- 4. Style Poin Cookie --- */
+        .character-area {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 20px auto 10px;
+        }
         #character-img {
             width: 100%;
             height: 100%;
         }
-        
-        /* This is the new style for the text container */
         #dialogue-bubble {
-            visibility: hidden; /* Stays hidden until search */
-            
-            /* This positions the text over the image */
+            visibility: hidden;
             position: absolute;
-            top: 45%;    /* Adjust this value to move text up or down */
-            left: 60%;   /* Adjust this value to move text left or right */
-            transform: translate(-50%, -50%); /* Centers the text block */
-            
-            /* Text alignment */
+            top: 45%;
+            left: 60%;
+            transform: translate(-50%, -50%);
             display: flex;
             justify-content: center;
             align-items: center;
-            
-            /* Size of the text area */
-            width: 120px; /* Adjust this to fit the bubble */
+            width: 120px;
         }
-
-        /* This hides the old CSS bubble-tail */
-        #dialogue-bubble::after {
-            display: none;
-        }
-
-        /* This is the new style for the text itself */
         #points-display {
-            font-size: 28px; /* Bigger, bolder font */
+            font-size: 28px;
             font-weight: bold;
-            color: #333; /* Dark gray text */
+            color: #333;
             text-align: center;
         }
 
-        /* --- 3. Disclaimer Style --- */
-        #disclaimer {
-            margin-top: 30px;
+        /* --- 5. Style Tabel TP --- */
+        #tpView h2 {
+            margin-bottom: 15px;
+        }
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+        #tpTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        #tpTable th, #tpTable td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        #tpTable th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+        #tpTable tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        #tpTable td:last-child {
+            font-weight: bold;
+        }
+
+        /* --- 6. Disclaimer --- */
+        .disclaimer {
+            margin-top: 25px;
             font-size: 12px;
             color: #777;
         }
@@ -96,155 +152,247 @@
 <body>
 
     <div class="container">
-        <h2>Check Your Cookie Points! 🍪</h2>
         
-        <select id="classFilter">
-            <option value="">-- Select Your Class --</option>
-            <option value="XI D">Class XI D</option>
-            <option value="XI E">Class XI E</option>
-            <option value="XI H">Class XI H</option>
-            <option value="XI I">Class XI I</option>
-            <option value="XII H">Class XII H</option>
-            <option value="XII I">Class XII I</option>
-        </select>
-
-        <input type="text" id="idSearch" placeholder="Enter attendance number...">
-
-        <button onclick="searchPoints()">Search</button>
-
-        <div class="character-area">
-            <img id="character-img" src="character.PNG" alt="Class Mascot">
+        <div id="loginView" class="view">
+            <h2>Portal Nilai Siswa</h2>
+            <p>Silakan pilih kelas dan masukkan nomor absensi Anda.</p>
             
-            <div id="dialogue-bubble">
-                <div id="points-display">0 Points</div>
-            </div>
+            <select id="classSelect">
+                <option value="">-- Memuat Kelas... --</option>
+            </select>
+            
+            <input type="text" id="idSearch" placeholder="Masukkan nomor absensi...">
+            <button id="searchBtn">Cari</button>
         </div>
+
+        <div id="menuView" class="view">
+            <h2 id="welcomeMessage">Selamat Datang!</h2>
+            <p>Silakan pilih nilai yang ingin Anda lihat.</p>
+            <button id="showCookieBtn">🍪 Cek Poin Cookie</button>
+            <button id="showTpBtn">📊 Cek Nilai TP</button>
+            <button id="logoutBtn" class="secondary">Keluar</button>
+        </div>
+
+        <div id="cookieView" class="view">
+            <h2>Poin Cookie Anda 🍪</h2>
+            <div class="character-area">
+                <img id="character-img" src="character.PNG" alt="Class Mascot">
+                <div id="dialogue-bubble">
+                    <div id="points-display">0 Points</div>
+                </div>
+            </div>
+            <p id="cookieDisclaimer" class="disclaimer">Last updated on...</p>
+            <button class="backBtn secondary">Kembali ke Menu</button>
+        </div>
+
+        <div id="tpView" class="view">
+            <h2>Rincian Nilai TP</h2>
+            <div class="table-container">
+                <table id="tpTable">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <p id="tpDisclaimer" class="disclaimer">Last updated on...</p>
+            <button class="backBtn secondary">Kembali ke Menu</button>
+        </div>
+
     </div>
 
-    <p id="disclaimer"></p>
-
     <script>
-        // --- 1. YOUR DATA ---
-        const studentData = {
-            "XI D": [
-                { id: "1", points: 4.5 }, { id: "2", points: 3.5 }, { id: "3", points: 3.5 }, { id: "4", points: 2.5 },
-                { id: "5", points: 5.5 }, { id: "6", points: 4.5 }, { id: "7", points: 4.5 }, { id: "8", points: 2.5 },
-                { id: "9", points: 5.5 }, { id: "10", points: 3.5 }, { id: "11", points: 9.5 }, { id: "12", points: 2.5 },
-                { id: "13", points: 2.5 }, { id: "14", points: 3.5 }, { id: "15", points: 3.5 }, { id: "16", points: 5 },
-                { id: "17", points: 3.5 }, { id: "18", points: 6.5 }, { id: "19", points: 6 }, { id: "20", points: 4.5 },
-                { id: "21", points: 3.5 }, { id: "22", points: 3.5 }, { id: "23", points: 3.5 }, { id: "24", points: 5 },
-                { id: "25", points: 2.5 }, { id: "26", points: 3.5 }, { id: "27", points: 3.5 }, { id: "28", points: 4.5 },
-                { id: "29", points: 6 }, { id: "30", points: 4.5 }, { id: "31", points: 3.5 }, { id: "32", points: 2.5 },
-                { id: "33", points: 3.5 }, { id: "34", points: 4.5 }, { id: "35", points: 3.5 }, { id: "36", points: 6 },
-                { id: "37", points: 3.5 }, { id: "38", points: 2.5 }, { id: "39", points: 4.5 }, { id: "40", points: 4.5 },
-                { id: "41", points: 3.5 }, { id: "42", points: 3.5 }, { id: "43", points: 3.5 }, { id: "44", points: 4.5 },
-                { id: "45", points: 5.5 }, { id: "46", points: 2.5 }, { id: "47", points: 2.5 }
-            ],
-            "XI E": [
-                { id: "1", points: 2 }, { id: "2", points: 0 }, { id: "3", points: 0 }, { id: "4", points: 1 },
-                { id: "5", points: 2 }, { id: "6", points: 4 }, { id: "7", points: 0 }, { id: "8", points: 1 },
-                { id: "9", points: 0 }, { id: "10", points: 0 }, { id: "11", points: 0 }, { id: "12", points: 0 },
-                { id: "13", points: 0 }, { id: "14", points: 4 }, { id: "15", points: 4 }, { id: "16", points: 1 },
-                { id: "17", points: 1 }, { id: "18", points: 0 }, { id: "19", points: 1 }, { id: "20", points: 4 },
-                { id: "21", points: 1 }, { id: "22", points: 0 }, { id: "23", points: 2 }, { id: "24", points: 0 },
-                { id: "25", points: 1 }, { id: "26", points: 1 }, { id: "27", points: 0 }, { id: "28", points: 0 },
-                { id: "29", points: 1 }, { id: "30", points: 2 }, { id: "31", points: 3 }, { id: "32", points: 1 },
-                { id: "33", points: 0 }, { id: "34", points: 1 }, { id: "35", points: 0 }, { id: "36", points: 0 },
-                { id: "37", points: 0 }, { id: "38", points: 1 }, { id: "39", points: 0 }, { id: "40", points: 0 },
-                { id: "41", points: 0 }, { id: "42", points: 2 }, { id: "43", points: 1 }, { id: "44", points: 1 },
-                { id: "45", points: 2 }, { id: "46", points: 2 }, { id: "47", points: 2 }, { id: "48", points: 1 }
-            ],
-            "XI H": [
-                { id: "1", points: 0 }, { id: "2", points: 0 }, { id: "3", points: 2.25 }, { id: "4", points: 2 },
-                { id: "5", points: 1 }, { id: "6", points: 0 }, { id: "7", points: 5 }, { id: "8", points: 3 },
-                { id: "9", points: 1 }, { id: "10", points: 0 }, { id: "11", points: 1 }, { id: "12", points: 2 },
-                { id: "13", points: 1 }, { id: "14", points: 0 }, { id: "15", points: 4 }, { id: "16", points: 1 },
-                { id: "17", points: 1 }, { id: "18", points: 0 }, { id: "19", points: 2 }, { id: "20", points: 0 },
-                { id: "21", points: 2.5 }, { id: "22", points: 1 }, { id: "23", points: 3 }, { id: "24", points: 0 },
-                { id: "25", points: 0 }, { id: "26", points: 1.75 }, { id: "27", points: 0 }, { id: "28", points: 5 },
-                { id: "29", points: 0 }, { id: "30", points: 0 }, { id: "31", points: 0 }, { id: "32", points: 1 },
-                { id: "33", points: 2 }, { id: "34", points: 0 }, { id: "35", points: 0 }, { id: "36", points: 1 },
-                { id: "37", points: 0 }, { id: "38", points: 3 }, { id: "39", points: 0 }, { id: "40", points: 1 },
-                { id: "41", points: 2 }, { id: "42", points: 2 }, { id: "43", points: 0 }, { id: "44", points: 2 }
-            ],
-            "XI I": [
-                { id: "1", points: 4 }, { id: "2", points: 1 }, { id: "3", points: 2 }, { id: "4", points: 2 },
-                { id: "5", points: 6 }, { id: "6", points: 1 }, { id: "7", points: 1 }, { id: "8", points: 1 },
-                { id: "9", points: 2 }, { id: "10", points: 2 }, { id: "11", points: 2 }, { id: "12", points: 2 },
-                { id: "13", points: 4 }, { id: "14", points: 1 }, { id: "15", points: 1 }, { id: "16", points: 4 },
-                { id: "17", points: 2 }, { id: "18", points: 4 }, { id: "19", points: 6 }, { id: "20", points: 1 },
-                { id: "21", points: 2 }, { id: "22", points: 3 }, { id: "23", points: 3 }, { id: "24", points: 1 },
-                { id: "25", points: 2 }, { id: "26", points: 5 }, { id: "27", points: 2 }, { id: "28", points: 3 },
-                { id: "29", points: 1 }, { id: "30", points: 1 }, { id: "31", points: 2 }, { id: "32", points: 3 },
-                { id: "33", points: 1 }, { "id": "34", points: 1 }, { id: "35", points: 1 }, { id: "36", points: 2 },
-                { id: "37", points: 4 }, { id: "38", points: 1 }, { id: "39", points: 4 }, { id: "40", points: 5 },
-                { id: "41", points: 2 }
-            ],
-            "XII H": [
-                { id: "1", points: 4 }, { id: "2", points: 4 }, { id: "3", points: 4 }, { id: "4", points: 5 },
-                { id: "5", points: 4 }, { id: "6", points: 4 }, { id: "7", points: 4 }, { id: "8", points: 8 },
-                { id: "9", points: 4 }, { id: "10", points: 6 }, { id: "11", points: 4 }, { id: "12", points: 7.5 },
-                { id: "13", points: 6 }, { id: "14", points: 8 }, { id: "15", points: 4 }, { id: "16", points: 4 },
-                { id: "17", points: 5 }, { id: "18", points: 5 }, { id: "19", points: 5 }, { id: "20", points: 6 },
-                { id: "21", points: 4 }, { id: "22", "points": 5 }, { id: "23", points: 4 }, { id: "24", points: 9 },
-                { id: "25", points: 3 }, { id: "26", points: 6 }, { id: "27", points: 8 }, { id: "28", points: 5 },
-                { id: "29", points: 6 }, { id: "30", points: 5 }, { id: "31", points: 7 }, { id: "32", points: 5 },
-                { id: "33", points: 4 }, { id: "34", points: 4 }, { id: "35", points: 7 }, { id: "36", points: 5.5 },
-                { id: "37", points: 4 }, { id: "38", points: 5 }, { id: "39", points: 5 }, { id: "40", points: 4 },
-                { id: "41", points: 4 }, { id: "42", points: 5 }, { id: "43", points: 4 }, { id: "44", points: 4 }
-            ],
-            "XII I": [
-                { id: "1", points: 2 }, { id: "2", points: 1 }, { id: "3", points: 2 }, { id: "4", points: 1 },
-                { id: "5", points: 2 }, { id: "6", points: 1 }, { id: "7", points: 1 }, { id: "8", points: 1 },
-                { id: "9", points: 1 }, { id: "10", points: 2 }, { id: "11", points: 4 }, { id: "12", points: 4 },
-                { id: "13", points: 3 }, { id: "14", points: 1 }, { id: "15", points: 1 }, { id: "16", points: 1 },
-                { id: "17", points: 3.5 }, { id: "18", points: 1 }, { id: "19", points: 2 }, { id: "20", points: 2 },
-                { id: "21", points: 1 }, { id: "22", points: 1 }, { id: "23", points: 1 }, { id: "24", points: 3 },
-                { id: "25", points: 1 }, { id: "26", points: 4 }, { id: "27", points: 2.5 }, { id: "28", points: 1 },
-                { id: "29", points: 1 }, { id: "30", points: 2 }, { id: "31", points: 2 }, { id: "32", points: 1 },
-                { id: "33", points: 2 }, { id: "34", points: 1 }, { id: "35", points: 1 }, { id: "36", points: 3.5 },
-                { id: "37", points: 1 }, { id: "38", points: 1 }, { id: "39", points: 1 }, { id: "40", points: 1 },
-                { id: "41", points: 1.5 }, { id: "42", points: 2 }, { id: "43", points: 2 }, { id: "44", points: 1 }
-            ]
-        };
+        // --- 1. Variabel Global ---
+        let allCookieData = null; // Akan menyimpan cookie_pts.json
+        let allTpData = null;     // Akan menyimpan tp_scores.json
+        let currentUserCookie = null; // Data cookie siswa yang "login"
+        let currentUserTp = null;     // Data TP siswa yang "login"
+        let currentUserClass = null; // Nama kelas siswa
 
-        // --- 2. THE SEARCH FUNCTION ---
-        function searchPoints() {
-            const selectedClass = document.getElementById("classFilter").value;
-            const studentId = document.getElementById("idSearch").value.trim();
-            const bubble = document.getElementById("dialogue-bubble");
-            const pointsDisplay = document.getElementById("points-display");
+        // --- 2. Fungsi Utama ---
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAllData(); // Ambil kedua file JSON saat halaman dimuat
+            
+            document.getElementById('searchBtn').addEventListener('click', handleLogin);
+            document.getElementById('showCookieBtn').addEventListener('click', showCookieView);
+            document.getElementById('showTpBtn').addEventListener('click', showTpView);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            
+            document.querySelectorAll('.backBtn').forEach(btn => {
+                btn.addEventListener('click', () => showView('menuView'));
+            });
+        });
 
-            if (!selectedClass || !studentId) {
-                pointsDisplay.innerHTML = "Select class & ID!";
-                bubble.style.visibility = "visible";
-                return;
-            }
+        // Mengambil dan memuat KEDUA database
+        async function fetchAllData() {
+            try {
+                // Ambil kedua file secara paralel
+                const [cookieRes, tpRes] = await Promise.all([
+                    fetch('cookie_pts.json'),
+                    fetch('tp_scores.json')
+                ]);
 
-            const classList = studentData[selectedClass];
-            if (!classList) {
-                pointsDisplay.innerHTML = "Class not found!";
-                bubble.style.visibility = "visible";
-                return;
-            }
+                if (!cookieRes.ok || !tpRes.ok) {
+                    throw new Error('Gagal memuat file database. Pastikan cookie_pts.json dan tp_scores.json ada.');
+                }
 
-            const student = classList.find(s => s.id === studentId);
+                allCookieData = await cookieRes.json();
+                allTpData = await tpRes.json();
+                
+                console.log("Database poin cookie dan nilai TP berhasil dimuat.");
+                populateClassDropdown();
 
-            if (student) {
-                pointsDisplay.innerHTML = `${student.points} Points!`;
-                bubble.style.visibility = "visible";
-            } else {
-                pointsDisplay.innerHTML = "ID not found.";
-                bubble.style.visibility = "visible";
+            } catch (error) {
+                console.error(error);
+                alert(error.message);
             }
         }
 
-        // --- 3. THE DISCLAIMER FUNCTION ---
-        (function setDisclaimer() {
-            const lastUpdatedDate = "November 17, 2025"; 
-            const disclaimerEl = document.getElementById("disclaimer");
-            disclaimerEl.innerText = `Last updated on ${lastUpdatedDate}`;
-        })();
+        // Mengisi dropdown kelas dari KEDUA file
+        function populateClassDropdown() {
+            const classSelect = document.getElementById('classSelect');
+            classSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>'; // Hapus "Memuat"
+
+            if (allCookieData && allTpData) {
+                // Gabungkan daftar kelas dari kedua file untuk memastikan semua kelas ada
+                const cookieClasses = Object.keys(allCookieData.classes || {});
+                const tpClasses = Object.keys(allTpData.classes || {});
+                
+                // Gunakan Set untuk mendapatkan daftar unik
+                const allClassNames = [...new Set([...cookieClasses, ...tpClasses])];
+                allClassNames.sort(); // Urutkan nama kelas
+                
+                allClassNames.forEach(className => {
+                    const option = document.createElement('option');
+                    option.value = className;
+                    option.textContent = `Class ${className}`;
+                    classSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Menangani "Login" Siswa
+        function handleLogin() {
+            const className = document.getElementById('classSelect').value;
+            const studentId = document.getElementById('idSearch').value.trim();
+
+            if (!className || !studentId) {
+                alert("Silakan pilih kelas dan masukkan nomor absensi.");
+                return;
+            }
+
+            // Cari siswa di KEDUA database
+            const classListCookie = allCookieData.classes[className];
+            const classListTp = allTpData.classes[className];
+
+            // Temukan data siswa. Akan menjadi `null` atau `undefined` jika tidak ditemukan
+            currentUserCookie = classListCookie ? classListCookie.find(s => s.id === studentId) : null;
+            currentUserTp = classListTp ? classListTp.find(s => s.id === studentId) : null;
+
+            if (currentUserCookie || currentUserTp) {
+                // Siswa ditemukan di setidaknya SATU database
+                currentUserClass = className;
+                
+                document.getElementById('welcomeMessage').textContent = `Selamat Datang, Siswa #${studentId} (Kelas ${currentUserClass})`;
+                
+                // Aktifkan/nonaktifkan tombol menu berdasarkan data yang ditemukan
+                document.getElementById('showCookieBtn').disabled = !currentUserCookie;
+                document.getElementById('showTpBtn').disabled = !currentUserTp;
+                
+                showView('menuView'); // Pindah ke tampilan menu
+            } else {
+                alert("Siswa tidak ditemukan. Periksa kembali nomor absensi Anda.");
+            }
+        }
+
+        // Menangani "Logout"
+        function handleLogout() {
+            currentUserCookie = null;
+            currentUserTp = null;
+            currentUserClass = null;
+            document.getElementById('idSearch').value = ""; // Bersihkan input
+            document.getElementById('classSelect').value = "";
+            showView('loginView'); // Kembali ke tampilan login
+        }
+
+        // Menampilkan tampilan Poin Cookie
+        function showCookieView() {
+            if (!currentUserCookie) return; // Seharusnya tidak terjadi jika tombol aktif
+
+            const points = currentUserCookie.cookie_pts;
+            const bubble = document.getElementById('dialogue-bubble');
+            const pointsDisplay = document.getElementById('points-display');
+            
+            pointsDisplay.innerHTML = `${points} Points!`;
+            bubble.style.visibility = "visible";
+            
+            document.getElementById('cookieDisclaimer').textContent = `Last updated on ${allCookieData.lastUpdated}`;
+            
+            showView('cookieView');
+        }
+
+        // Menampilkan tampilan Nilai TP
+        function showTpView() {
+            if (!currentUserTp) return; // Seharusnya tidak terjadi jika tombol aktif
+
+            buildTpTable(); // Buat tabel
+            
+            document.getElementById('tpDisclaimer').textContent = `Last updated on ${allTpData.lastUpdated}`;
+            
+            showView('tpView');
+        }
+
+        // Membuat tabel TP secara dinamis
+        function buildTpTable() {
+            const table = document.getElementById('tpTable');
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+
+            thead.innerHTML = "";
+            tbody.innerHTML = "";
+
+            let headers = [];
+            let scores = [currentUserTp.tp1, currentUserTp.tp2, currentUserTp.tp3];
+
+            if (currentUserClass.startsWith('XII')) {
+                headers = [
+                    "TP 1 (Written Test 40 Qs)", 
+                    "TP 2 (Reading Comprehension Quiz)", 
+                    "TP 3 (Writing Statistic Summary)"
+                ];
+            } else if (currentUserClass.startsWith('XI')) {
+                headers = [
+                    "TP 1 (Written Test 35-40 Qs)", 
+                    "TP 2 (Speaking)", 
+                    "TP 3 (Writing Opinion Essay)"
+                ];
+            } else {
+                headers = ["TP 1", "TP 2", "TP 3"];
+            }
+
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `<th>Deskripsi Tugas</th><th>Nilai</th>`;
+            thead.appendChild(headerRow);
+            
+            for (let i = 0; i < headers.length; i++) {
+                const dataRow = document.createElement('tr');
+                const headerCell = document.createElement('td');
+                headerCell.textContent = headers[i];
+                const scoreCell = document.createElement('td');
+                scoreCell.textContent = scores[i];
+                
+                dataRow.appendChild(headerCell);
+                dataRow.appendChild(scoreCell);
+                tbody.appendChild(dataRow);
+            }
+        }
+
+        // Fungsi helper untuk mengganti tampilan
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(view => {
+                view.style.display = 'none';
+            });
+            document.getElementById(viewId).style.display = 'block';
+        }
 
     </script>
 </body>
