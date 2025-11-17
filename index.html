@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Cookie Points</title>
+    <style>
+        /* All your CSS styles are unchanged */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        select, input[type="text"], button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .character-area {
+            position: relative;
+            width: 250px; 
+            height: 250px; 
+            margin: 30px auto 0;
+        }
+        #character-img {
+            width: 100%;
+            height: 100%;
+            background-color: #eee;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #888;
+        }
+        #dialogue-bubble {
+            visibility: hidden; 
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f0f0f0;
+            border: 2px solid #888;
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            z-index: 10;
+        }
+        #dialogue-bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 15px 15px 0;
+            border-style: solid;
+            border-color: #f0f0f0 transparent transparent transparent;
+        }
+        #points-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        #disclaimer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Check Your Cookie Points! 🍪</h2>
+        
+        <select id="classFilter">
+            <option value="">-- Select Your Class --</option>
+            <option value="XI D">Class XI D</option>
+            <option value="XI E">Class XI E</option>
+            <option value="XI H">Class XI H</option>
+            <option value="XI I">Class XI I</option>
+            <option value="XII H">Class XII H</option>
+            <option value="XII I">Class XII I</option>
+        </select>
+
+        <input type="text" id="idSearch" placeholder="Enter attendance number...">
+
+        <button onclick="handleSearch()">Search</button>
+
+        <div class="character-area">
+            <img id="character-img" src="character.png" alt="Class Mascot">
+            <div id="dialogue-bubble">
+                You have...
+                <div id="points-display">0 Points</div>
+            </div>
+        </div>
+    </div>
+
+    <p id="disclaimer"></p>
+
+    <script>
+        // --- 1. NEW SCRIPT ---
+
+        // This variable will hold your data once it's loaded
+        let studentData = null;
+
+        // This function fetches the data from your JSON file
+        async function loadData() {
+            if (studentData) return studentData; // Don't load if already loaded
+
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                studentData = data; // Store the data globally
+                
+                // Set the disclaimer date from the JSON file
+                document.getElementById("disclaimer").innerText = `Last updated on ${data.lastUpdated}`;
+                
+                return data;
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById("disclaimer").innerText = "Error loading data.";
+            }
+        }
+
+        // This is the new function your button calls
+        async function handleSearch() {
+            // Ensure data is loaded first
+            const data = await loadData();
+            if (!data) {
+                alert("Data is still loading or failed to load. Please try again.");
+                return;
+            }
+
+            // Get values from the search boxes
+            const selectedClass = document.getElementById("classFilter").value;
+            const studentId = document.getElementById("idSearch").value.trim();
+            
+            const bubble = document.getElementById("dialogue-bubble");
+            const pointsDisplay = document.getElementById("points-display");
+
+            // Check if a class and ID were entered
+            if (!selectedClass || !studentId) {
+                pointsDisplay.innerHTML = "Select class & ID!";
+                bubble.style.visibility = "visible";
+                return;
+            }
+
+            // Find the correct class list from the loaded data
+            const classList = data.classes[selectedClass];
+            if (!classList) {
+                pointsDisplay.innerHTML = "Class not found!";
+                bubble.style.visibility = "visible";
+                return;
+            }
+
+            // Find the student in that class list
+            const student = classList.find(s => s.id === studentId);
+
+            // Display the result
+            if (student) {
+                pointsDisplay.innerHTML = `${student.points} Points!`;
+                bubble.style.visibility = "visible";
+            } else {
+                pointsDisplay.innerHTML = "ID not found.";
+                bubble.style.visibility = "visible";
+            }
+        }
+
+        // --- 2. INITIAL DATA LOAD ---
+        // Load the data (and set the disclaimer) as soon as the page opens.
+        loadData();
+
+    </script>
+</body>
+</html>
