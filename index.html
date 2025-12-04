@@ -60,8 +60,8 @@
             <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto justify-center">
                 
                 <a href="quiz-x.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-amber-100 text-amber-700 font-bold rounded-xl hover:bg-amber-200 transition duration-200 shadow-sm border border-amber-200">
-    🌱 X Mock Exam
-</a>
+                    🌱 X Mock Exam
+                </a>
 
                 <a href="quiz-xi.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-emerald-100 text-emerald-700 font-bold rounded-xl hover:bg-emerald-200 transition duration-200 shadow-sm border border-emerald-200">
                     📝 XI Mock Exam
@@ -199,6 +199,7 @@
             `;
 
             if(isXII) {
+                // If XII, use the ph3/ph4 data, default to 0 if missing
                 rowHTML += `
                     <td>${s.ph3 || 0}</td>
                     <td>${s.ph4 || 0}</td>
