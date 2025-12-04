@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESL Learning Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .mascot-img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-indigo-600 p-8 text-center">
+            <div class="flex justify-center">
+                <img src="character.PNG" alt="Mascot" class="mascot-img bg-white rounded-full p-2 shadow-lg">
+            </div>
+            <h1 class="text-3xl font-extrabold text-white mt-4">Welcome Students!</h1>
+            <p class="text-indigo-200 mt-2">Select an activity below</p>
+        </div>
+
+        <div class="p-8 space-y-4">
+            
+            <a href="scores.html" class="block group">
+                <div class="border-2 border-indigo-100 rounded-xl p-4 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 flex items-center">
+                    <div class="bg-indigo-100 text-indigo-600 p-3 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        📊
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="font-bold text-gray-800">Check Scores</h3>
+                        <p class="text-sm text-gray-500">View PH 3 & Cookie Points</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="quiz-xi.html" class="block group">
+                <div class="border-2 border-indigo-100 rounded-xl p-4 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 flex items-center">
+                    <div class="bg-emerald-100 text-emerald-600 p-3 rounded-lg group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        📝
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="font-bold text-gray-800">XI Mock Exam</h3>
+                        <p class="text-sm text-gray-500">Error Analysis & Reading</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="quiz-xii.html" class="block group">
+                <div class="border-2 border-indigo-100 rounded-xl p-4 hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 flex items-center">
+                    <div class="bg-rose-100 text-rose-600 p-3 rounded-lg group-hover:bg-rose-600 group-hover:text-white transition-colors">
+                        🎓
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="font-bold text-gray-800">XII Mock Exam</h3>
+                        <p class="text-sm text-gray-500">Advanced Practice</p>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+        <div class="bg-gray-50 p-4 text-center text-xs text-gray-400">
+            &copy; 2025 ESL Department
+        </div>
+    </div>
+
+</body>
+</html>
