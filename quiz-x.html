@@ -1,218 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X Grade Mock Exam Practice</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { font-family: sans-serif; background-color: #f7f9fb; }
-        .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
-        .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
-        .selected { border-color: #4f46e5; background-color: #e0e7ff; }
-        .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
-        .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
-        .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1rem; background-color: #ffffff; margin-bottom: 2rem; }
-        .hidden { display: none; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X Grade Mock Exam Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: sans-serif; background-color: #f7f9fb; }
+        .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
+        .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
+        .selected { border-color: #4f46e5; background-color: #e0e7ff; }
+        .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1rem; background-color: #ffffff; margin-bottom: 2rem; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body class="p-4 sm:p-8">
 
-    <div class="max-w-4xl mx-auto">
-        <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold mb-6">
-            &larr; Back to Home Menu
-        </a>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold mb-6">
+            &larr; Back to Home Menu
+        </a>
 
-        <header class="text-center mb-10 p-6 bg-indigo-600 text-white rounded-xl shadow-lg">
-            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">X Grade Mock Exam Practice (Revised)</h1>
-            <p class="text-lg font-light mt-1 opacity-90">Minimalism, Conditionals, and Specialized Vocabulary</p>
-        </header>
+        <header class="text-center mb-10 p-6 bg-indigo-600 text-white rounded-xl shadow-lg">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">X Grade Mock Exam Practice (Revised)</h1>
+            <p class="text-lg font-light mt-1 opacity-90">Minimalism, Conditionals, and Specialized Vocabulary</p>
+        </header>
 
-        <div id="loading-error" class="text-center text-gray-500">
-            Loading quiz... (If this takes too long, please refresh)
-        </div>
+        <main id="quiz-container" class="space-y-8"></main>
 
-        <main id="quiz-container" class="space-y-8"></main>
+        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
+            <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
+            <p class="text-sm text-gray-500 mt-2">Review your answers using the color-coded feedback above.</p>
+        </div>
+    </div>
 
-        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden">
-            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
-            <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
-            <p class="text-sm text-gray-500 mt-2">Review your answers using the color-coded feedback above.</p>
-        </div>
-    </div>
+    <script>
+        const CORRECT_ANSWERS = {
+            1: 'B', 2: 'C', 3: 'B', 4: 'A', 5: 'C', 6: 'B', 7: 'D', 8: 'D', 9: 'C', 10: 'D',
+            11: 'C', 12: 'D', 13: 'D', 14: 'B', 15: 'C',
+            16: 'B', 17: 'A', 18: 'B', 19: 'B', 20: 'D',
+            21: 'A', 22: 'C', 23: 'B', 24: 'A', 25: 'C', 26: 'C', 27: 'C', 28: 'B', 29: 'D', 30: 'D'
+        };
 
-    <script>
-        const CORRECT_ANSWERS = {
-            1: 'B', 2: 'C', 3: 'B', 4: 'A', 5: 'C', 6: 'B', 7: 'D', 8: 'D', 9: 'C', 10: 'D',
-            11: 'C', 12: 'D', 13: 'D', 14: 'B', 15: 'C',
-            16: 'B', 17: 'A', 18: 'B', 19: 'B', 20: 'D',
-            21: 'A', 22: 'C', 23: 'B', 24: 'A', 25: 'C', 26: 'C', 27: 'C', 28: 'B', 29: 'D', 30: 'D'
-        };
+        const QUIZ_DATA = [
+            { 
+                id: 'passage', 
+                type: 'reading_passage', 
+                title: 'Reading Passage: The Philosophy of Minimalism and Digital Detox', 
+                content: `Minimalism, often perceived simply as a preference for sparse design, is fundamentally a philosophy about conscious consumption and purposeful living. Central to this movement is the understanding that excess possessions and relentless digital engagement can become liabilities rather than assets, hindering one's focus and well-being. This realization has prompted individuals across various cultures to vigorously reduce clutter, both physical and virtual.<br><br>The practice of effective minimalism hinges on several key elements. First, it requires minimizing the emotional toll of constant social media updates and notifications, such as turning off non-essential alerts and limiting screen time. Second, it must generate time and mental bandwidth for activities that are genuinely meaningful, such as deep work, creative pursuits, and spending quality time with loved ones. This is often achieved through direct, intentional deletion of apps and a focus on essential tools. In contrast, the consumerist culture often results in **amassing** material goods, where a significant portion of an individual's energy is directed toward managing and paying for unnecessary items.<br><br>However, challenges persist. **Surface-level** engagement, where people claim to be minimalists by simply hiding their excess belongings, confuses others and dilutes the ethical principles of true intentionality. Furthermore, achieving an equitable balance between necessary technology (which may include a work device) and the desire for total disconnection (which requires economic flexibility) often presents personal conflicts. Education and conscious community support are essential tools for ensuring transparency and maintaining the integrity of the movement. Ultimately, the long-term **viability** of minimalism depends on the collaborative efforts of individuals, families, and organizations that recognize its value.`
+            },
+            { id: 1, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `What can be inferred about the primary goal of the philosophy of minimalism?`, options: ['A. It is limited to maximizing profits for storage unit companies.', 'B. It aims to reduce physical and digital clutter to ensure purposeful living.', 'C. It exclusively funds research by anti-technology advocacy groups.', 'D. It prohibits all forms of modern digital communication and tools.', 'E. It relies mainly on government grants and psychological therapy.'] },
+            { id: 2, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `The author’s main purpose in describing 'surface-level engagement' is to _______.`, options: ['A. show that all people who own many items are inherently deceptive.', 'B. encourage consumers to purchase less expensive alternatives.', 'C. highlight an ongoing challenge to the authentic implementation of minimalism.', 'D. argue that personal integrity is unnecessary for digital detox.', 'E. compare the principles of aesthetic design and intentional living.'] },
+            { id: 3, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `Which statement best reflects the author’s attitude toward the concept of minimalism?`, options: ['A. It is a temporary fad that will be replaced by a new trend.', 'B. It is a practical and necessary model, despite facing personal difficulties.', 'C. It is overly idealistic and conflicts with modern economic needs.', 'D. It is a niche idea irrelevant to the majority of global consumers.', 'E. It is chaotic and inconsistent among different social groups.'] },
+            { id: 4, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `Why might a clean workspace be considered the most practical strategy for achieving deep focus?`, options: ['A. It allows the mind to concentrate on tasks without visual distraction.', 'B. It helps people identify essential colors and shapes on a desk.', 'C. It prevents them from needing to purchase more organizing bins.', 'D. It can be achieved only through expensive professional cleaning services.', 'E. It is used to release creative energy effectively.'] },
+            { id: 5, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `The passage suggests that intentional deletion of apps serves a dual purpose because it _____.`, options: ['A. is used only for entertainment', 'B. varies depending on the number of apps', 'C. can both reduce noise and generate mental capacity', 'D. is similar in all operating systems', 'E. occurs only after midnight'] },
+            { id: 6, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `What conclusion can be drawn from the description of 'amassing material goods' in the passage?`, options: ['A. Minimalism is designed to maximize consumption for global corporations.', 'B. Consumerist culture often fails to support individual well-being effectively.', 'C. Amassing items is a key element of sustainable intentionality.', 'D. Individuals rarely benefit from any form of digital technology.', 'E. Conscious communities strictly prohibit the purchase of all new items.'] },
+            { id: 7, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `The word "viability" in the final sentence most closely means the ability to...`, options: ['A. increase purchases exponentially', 'B. remain controversial and exclusive', 'C. adapt quickly to political changes', 'D. sustain success over a long period', 'E. rely solely on digital platforms'] },
+            { id: 8, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `If an individual reduces their possessions, the phrasal verb that best replaces "reduces" in this context is...`, options: ['A. turn up', 'B. carry out', 'C. put off', 'D. cut down', 'E. call off'] },
+            { id: 9, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `The successful implementation of minimalism requires a compromise between _____.`, options: ['A. maximizing profits and attracting more followers', 'B. personal conflicts and social media platforms', 'C. maintaining necessary technology and desiring total disconnection', 'D. reducing clutter and limiting all digital infrastructure', 'E. international corporations and conscious communities'] },
+            { id: 10, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `What overall recommendation does the writer give regarding the success of minimalism?`, options: ['A. Focus exclusively on international social media engagement.', 'B. Prioritize reducing all forms of work above all else.', 'C. Avoid involving families or organizations to maintain personal integrity.', 'D. Encourage collaborative effort among all stakeholders.', 'E. Rely strictly on traditional consumerist models.'] },
+            { id: 11, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `If the team ___ the Q4 targets next month, they ___ a substantial bonus in January.`, options: ['A. were to meet / would receive', 'B. was meeting / would have received', 'C. meets / will receive', 'D. had met / would receive', 'E. would meet / received'] },
+            { id: 12, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `If you ___ the computer running slow, ___ it and call the IT department.`, options: ['A. have / restart', 'B. have had / restarting', 'C. had / restart', 'D. notice / restart', 'E. had noticed / restarted'] },
+            { id: 13, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `If I ___ that internship last year, I ___ to the London office by now.`, options: ['A. were taking / would move', 'B. am taking / will move', 'C. was taking / would move', 'D. had taken / would have moved', 'E. had taken / would move'] },
+            { id: 14, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `If the company ___ the initial funding, they ___ the software platform today.`, options: ['A. had secured / may develop', 'B. had secured / might be developing', 'C. secured / would develop', 'D. secured / might develop', 'E. have secured / might have developed'] },
+            { id: 15, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `___, I would be teaching literature.`, options: ['A. If I had not chosen', 'B. Unless I had chosen engineering', 'C. Had I not chosen to study engineering', 'D. If the choice has been made for me', 'E. Should I choose to study literature'] },
+            { id: 16, type: 'multiple_choice', section: 'C. Word Formation', question: `Creative expression has always been a powerful form of human connection. Every (16) ___ (SCIENCE) hopes to push the boundaries of knowledge about the universe.`, options: ['A. scientific', 'B. scientist', 'C. scientifically', 'D. science', 'E. unscientific'] },
+            { id: 17, type: 'multiple_choice', section: 'C. Word Formation', question: `...and each launch carries the deep hope of an important (17) ___ (OBSERVE) that could change our understanding of physics.`, options: ['A. observation', 'B. observable', 'C. observe', 'D. observably', 'E. unobserved'] },
+            { id: 18, type: 'multiple_choice', section: 'C. Word Formation', question: `When engineers design missions, they strive for ultimate (18) ___ (ACCURATE) in every calculation.`, options: ['A. accurately', 'B. accuracy', 'C. accurate', 'D. inaccuracies', 'E. inaccurate'] },
+            { id: 19, type: 'multiple_choice', section: 'C. Word Formation', question: `Their ability to manage complex systems requires both skill and endless (19) ___ (PATIENT).`, options: ['A. patient', 'B. patience', 'C. patiently', 'D. impatient', 'E. impatience'] },
+            { id: 20, type: 'multiple_choice', section: 'C. Word Formation', question: `Along the way, they overcome challenges that demand they work (20) ___ (SUCCESS) and without error.`, options: ['A. successful', 'B. succeed', 'C. succeeding', 'D. successfully', 'E. successfulness'] },
+            { id: 21, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `The study of substances, their composition, and reactions—known as ___ (21)—has led to the creation of medicines and countless materials we use daily.`, options: ['A. Chemistry', 'B. dermatology', 'C. meteorology', 'D. ecology', 'E. physics'] },
+            { id: 22, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Understanding how the human heart, lungs, and brain interact belongs to the field of ___ (22), a discipline essential to both medicine and sports science.`, options: ['A. Ornithology', 'B. zoology', 'C. physiology', 'D. dermatology', 'E. Microbiology'] },
+            { id: 23, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `As the planet faces unpredictable weather patterns, experts in ___ (23) work tirelessly to forecast hurricanes and rising global temperatures.`, options: ['A. Ornithology', 'B. meteorology', 'C. microbiology', 'D. ecology', 'E. physiology'] },
+            { id: 24, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Meanwhile, conservation programs depend heavily on ___ (24), which provides knowledge about animal species, their behavior, and their role in maintaining ecosystem balance.`, options: ['A. zoology', 'B. microbiology', 'C. ecology', 'D. dermatology', 'E. physiology'] },
+            { id: 25, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `In healthcare, ___ (25) investigates microscopic organisms that influence everything from food production to infectious diseases.`, options: ['A. zoology', 'B. Ornithology', 'C. microbiology', 'D. physiology', 'E. dermatology'] },
+            { id: 26, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Which statement is the most assertive deduction based on the possibility of a past action?`, options: ['A. He might try to finish his work quickly so that he can go home tonight.', 'B. They might have been delayed by the severe weather that hit the region yesterday.', 'C. The flight must have been diverted to a different airport; it has been delayed for hours.', 'D. We could complete the report on time if everyone collaborates efficiently.', 'E. I will certainly attend the conference even if the cost is high.'] },
+            { id: 27, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Identify the sentence that contains a grammatical error in modal verb usage.`, options: ['A. The experimental data can often have an unexpected result.', 'B. Slow economic growth is very likely to cause financial instability.', 'C. It might be improve the company\'s annual profit projections.', 'D. Re-engineering the product could reduce manufacturing costs significantly.', 'E. They will probably secure the necessary funding next quarter.'] },
+            { id: 28, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Which statement expresses a high degree of probability about a future event?`, options: ['A. They might win the game if they practice hard every day.', 'B. She will most certainly complete the assignment before the deadline.', 'C. The team must perform perfectly to win the championship.', 'D. He could improve his score easily if he studies for a few hours.', 'E. The new policy can reduce operational waste effectively.'] },
+            { id: 29, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Identify the sentence with a grammatical error:`, options: ['A. The system might become obsolete within the year.', 'B. It could disrupt the network\'s processing speed.', 'C. Low interest rates can often have the opposite effect on savings.', 'D. Fast tempos in music is very likely to improve your physical performance.', 'E. It\'ll most certainly help you complete the task faster.'] },
+            { id: 30, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `The sudden lack of response from the headquarters ___ due to a widespread power outage; the storm was quite severe in that area.`, options: ['A. should be', 'B. might be', 'C. can be', 'D. must have been', 'E. will be'] }
+        ];
 
-        // I have used backticks (`) for all questions to prevent line-break errors
-        const QUIZ_DATA = [
-            { 
-                id: 'passage', 
-                type: 'reading_passage', 
-                title: 'Reading Passage: The Philosophy of Minimalism and Digital Detox', 
-                content: `Minimalism, often perceived simply as a preference for sparse design, is fundamentally a philosophy about conscious consumption and purposeful living. Central to this movement is the understanding that excess possessions and relentless digital engagement can become liabilities rather than assets, hindering one's focus and well-being. This realization has prompted individuals across various cultures to vigorously reduce clutter, both physical and virtual.<br><br>The practice of effective minimalism hinges on several key elements. First, it requires minimizing the emotional toll of constant social media updates and notifications, such as turning off non-essential alerts and limiting screen time. Second, it must generate time and mental bandwidth for activities that are genuinely meaningful, such as deep work, creative pursuits, and spending quality time with loved ones. This is often achieved through direct, intentional deletion of apps and a focus on essential tools. In contrast, the consumerist culture often results in **amassing** material goods, where a significant portion of an individual's energy is directed toward managing and paying for unnecessary items.<br><br>However, challenges persist. **Surface-level** engagement, where people claim to be minimalists by simply hiding their excess belongings, confuses others and dilutes the ethical principles of true intentionality. Furthermore, achieving an equitable balance between necessary technology (which may include a work device) and the desire for total disconnection (which requires economic flexibility) often presents personal conflicts. Education and conscious community support are essential tools for ensuring transparency and maintaining the integrity of the movement. Ultimately, the long-term **viability** of minimalism depends on the collaborative efforts of individuals, families, and organizations that recognize its value.`
-            },
-            { id: 1, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `What can be inferred about the primary goal of the philosophy of minimalism?`, options: ['A. It is limited to maximizing profits for storage unit companies.', 'B. It aims to reduce physical and digital clutter to ensure purposeful living.', 'C. It exclusively funds research by anti-technology advocacy groups.', 'D. It prohibits all forms of modern digital communication and tools.', 'E. It relies mainly on government grants and psychological therapy.'] },
-            { id: 2, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `The author’s main purpose in describing 'surface-level engagement' is to _______.`, options: ['A. show that all people who own many items are inherently deceptive.', 'B. encourage consumers to purchase less expensive alternatives.', 'C. highlight an ongoing challenge to the authentic implementation of minimalism.', 'D. argue that personal integrity is unnecessary for digital detox.', 'E. compare the principles of aesthetic design and intentional living.'] },
-            { id: 3, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `Which statement best reflects the author’s attitude toward the concept of minimalism?`, options: ['A. It is a temporary fad that will be replaced by a new trend.', 'B. It is a practical and necessary model, despite facing personal difficulties.', 'C. It is overly idealistic and conflicts with modern economic needs.', 'D. It is a niche idea irrelevant to the majority of global consumers.', 'E. It is chaotic and inconsistent among different social groups.'] },
-            { id: 4, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `Why might a clean workspace be considered the most practical strategy for achieving deep focus?`, options: ['A. It allows the mind to concentrate on tasks without visual distraction.', 'B. It helps people identify essential colors and shapes on a desk.', 'C. It prevents them from needing to purchase more organizing bins.', 'D. It can be achieved only through expensive professional cleaning services.', 'E. It is used to release creative energy effectively.'] },
-            { id: 5, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `The passage suggests that intentional deletion of apps serves a dual purpose because it _____.`, options: ['A. is used only for entertainment', 'B. varies depending on the number of apps', 'C. can both reduce noise and generate mental capacity', 'D. is similar in all operating systems', 'E. occurs only after midnight'] },
-            { id: 6, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `What conclusion can be drawn from the description of 'amassing material goods' in the passage?`, options: ['A. Minimalism is designed to maximize consumption for global corporations.', 'B. Consumerist culture often fails to support individual well-being effectively.', 'C. Amassing items is a key element of sustainable intentionality.', 'D. Individuals rarely benefit from any form of digital technology.', 'E. Conscious communities strictly prohibit the purchase of all new items.'] },
-            { id: 7, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `The word "viability" in the final sentence most closely means the ability to... 
+        let userAnswers = {};
+        const quizContainer = document.getElementById('quiz-container');
+        let currentSectionTitle = null;
 
+        function renderQuiz() {
+            quizContainer.innerHTML = '';
+            QUIZ_DATA.forEach(item => {
+                if (item.section && item.section !== currentSectionTitle) {
+                    currentSectionTitle = item.section;
+                    quizContainer.innerHTML += `<h2 class="text-xl sm:text-2xl font-bold text-indigo-700 mt-10 mb-4 border-b-2 border-indigo-200 pb-2">${currentSectionTitle}</h2>`;
+                }
+                if (item.type === 'reading_passage') {
+                    quizContainer.innerHTML += `
+                        <div class="mb-8 p-6 bg-gray-50 rounded-xl shadow-inner">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">${item.title}</h3>
+                            <div class="passage-container text-gray-700 text-sm sm:text-base leading-relaxed">
+                                <p>${item.content}</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                const questionNumber = item.id;
+                const questionHtml = `<p class="font-medium text-gray-800">${questionNumber}. ${item.question}</p>`;
+                let optionsHtml = '';
+                item.options.forEach(optionText => {
+                    const letter = optionText.charAt(0);
+                    const text = optionText.substring(3).trim();
+                    optionsHtml += createOptionHtml(questionNumber, letter, `${letter}. ${text}`);
+                });
+                quizContainer.innerHTML += `
+                    <div id="q-${questionNumber}" class="bg-white p-5 rounded-xl shadow-md border border-gray-200 fade-in" data-type="${item.type}">
+                        <div class="text-base text-gray-600 mb-6 leading-relaxed">${questionHtml}</div>
+                        <div class="space-y-3 mt-4" data-question-id="${questionNumber}">${optionsHtml}</div>
+                    </div>
+                `;
+            });
+            quizContainer.innerHTML += `
+                <button onclick="checkAllAnswers()" class="w-full py-3 mt-12 mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition duration-150 ease-in-out">
+                    Check All Answers & Get Score
+                </button>
+            `;
+            attachEventListeners();
+        }
 
-`, options: ['A. increase purchases exponentially', 'B. remain controversial and exclusive', 'C. adapt quickly to political changes', 'D. sustain success over a long period', 'E. rely solely on digital platforms'] },
-            { id: 8, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `If an individual reduces their possessions, the phrasal verb that best replaces "reduces" in this context is...`, options: ['A. turn up', 'B. carry out', 'C. put off', 'D. cut down', 'E. call off'] },
-            { id: 9, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `The successful implementation of minimalism requires a compromise between _____.`, options: ['A. maximizing profits and attracting more followers', 'B. personal conflicts and social media platforms', 'C. maintaining necessary technology and desiring total disconnection', 'D. reducing clutter and limiting all digital infrastructure', 'E. international corporations and conscious communities'] },
-            { id: 10, type: 'multiple_choice', section: 'A. Reading Comprehension', question: `What overall recommendation does the writer give regarding the success of minimalism?`, options: ['A. Focus exclusively on international social media engagement.', 'B. Prioritize reducing all forms of work above all else.', 'C. Avoid involving families or organizations to maintain personal integrity.', 'D. Encourage collaborative effort among all stakeholders.', 'E. Rely strictly on traditional consumerist models.'] },
+        function createOptionHtml(qId, letter, text) {
+            return `
+                <div class="quiz-option p-3 rounded-lg border-2 border-gray-300 flex items-center" data-question="${qId}" data-answer="${letter}">
+                    <span class="text-sm font-semibold text-gray-800">${text}</span>
+                </div>
+            `;
+        }
 
-            // --- B. Conditionals and Tense (Questions 11–15) ---
-            { id: 11, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `If the team ___ the Q4 targets next month, they ___ a substantial bonus in January.`, options: ['A. were to meet / would receive', 'B. was meeting / would have received', 'C. meets / will receive', 'D. had met / would receive', 'E. would meet / received'] },
-            { id: 12, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `If you ___ the computer running slow, ___ it and call the IT department.`, options: ['A. have / restart', 'B. have had / restarting', 'C. had / restart', 'D. notice / restart', 'E. had noticed / restarted'] },
-            { id: 13, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `If I ___ that internship last year, I ___ to the London office by now.`, options: ['A. were taking / would move', 'B. am taking / will move', 'C. was taking / would move', 'D. had taken / would have moved', 'E. had taken / would move'] },
-            { id: 14, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `If the company ___ the initial funding, they ___ the software platform today.`, options: ['A. had secured / may develop', 'B. had secured / might be developing', 'C. secured / would develop', 'D. secured / might develop', 'E. have secured / might have developed'] },
-            { id: 15, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: `___, I would be teaching literature.`, options: ['A. If I had not chosen', 'B. Unless I had chosen engineering', 'C. Had I not chosen to study engineering', 'D. If the choice has been made for me', 'E. Should I choose to study literature'] },
+        function attachEventListeners() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+            document.getElementById('results-section').classList.add('hidden');
+        }
 
-            // --- C. Word Formation (Questions 16–20) ---
-            { id: 16, type: 'multiple_choice', section: 'C. Word Formation', question: `The quest for space exploration has always fascinated humankind. Every (16) ___ (SCIENCE) hopes to push the boundaries of knowledge about the universe.`, options: ['A. scientific', 'B. scientist', 'C. scientifically', 'D. science', 'E. unscientific'] },
-            { id: 17, type: 'multiple_choice', section: 'C. Word Formation', question: `...and each launch carries the deep hope of an important (17) ___ (OBSERVE) that could change our understanding of physics.`, options: ['A. observation', 'B. observable', 'C. observe', 'D. observably', 'E. unobserved'] },
-            { id: 18, type: 'multiple_choice', section: 'C. Word Formation', question: `When engineers design missions, they strive for ultimate (18) ___ (ACCURATE) in every calculation.`, options: ['A. accurately', 'B. accuracy', 'C. accurate', 'D. inaccuracies', 'E. inaccurate'] },
-            { id: 19, type: 'multiple_choice', section: 'C. Word Formation', question: `Their ability to manage complex systems requires both skill and endless (19) ___ (PATIENT).`, options: ['A. patient', 'B. patience', 'C. patiently', 'D. impatient', 'E. impatience'] },
-            { id: 20, type: 'multiple_choice', section: 'C. Word Formation', question: `Along the way, they overcome challenges that demand they work (20) ___ (SUCCESS) and without error.`, options: ['A. successful', 'B. succeed', 'C. succeeding', 'D. successfully', 'E. successfulness'] },
+        function handleOptionClick(event) {
+            const selectedOption = event.currentTarget;
+            const qId = selectedOption.dataset.question;
+            const answerLetter = selectedOption.dataset.answer;
+            const container = selectedOption.closest(`[data-question-id="${qId}"]`);
+            container.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('selected', 'correct', 'incorrect'); });
+            selectedOption.classList.add('selected');
+            userAnswers[qId] = answerLetter;
+        }
 
-            // --- D. Specialized Vocabulary and Modals (Questions 21–30) ---
-            { id: 21, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `The art of designing the shape and structure of letters and text—known as ___ (21)—is essential to both graphic design and book publishing.`, options: ['A. Typography', 'B. cartography', 'C. architecture', 'D. sculpture', 'E. cinematography'] },
-            { id: 22, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Understanding the relationship between mass, volume, and space in constructing buildings belongs to the field of ___ (22), a discipline essential to civil engineering and urban planning.`, options: ['A. Typography', 'B. cinematography', 'C. architecture', 'D. cartography', 'E. Sculpture'] },
-            { id: 23, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `As a city expands, experts in ___ (23) work tirelessly to create accurate maps that reflect current roadways, terrain, and property lines.`, options: ['A. Typography', 'B. Cartography', 'C. cinematography', 'D. sculpture', 'E. architecture'] },
-            { id: 24, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Meanwhile, film production depends heavily on ___ (24), which provides knowledge about camera angles, lighting, and composition to convey a visual narrative.`, options: ['A. Cinematography', 'B. architecture', 'C. cartography', 'D. sculpture', 'E. Typography'] },
-            { id: 25, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `In the fine arts, ___ (25) investigates the creation of three-dimensional forms, influencing everything from monument construction to decorative pieces.`, options: ['A. Typography', 'B. architecture', 'C. sculpture', 'D. cartography', 'E. cinematography'] },
-            
-            { id: 26, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Which statement is the most assertive deduction based on the possibility of a past action?`, options: ['A. He might try to finish his work quickly so that he can go home tonight.', 'B. They might have been delayed by the severe weather that hit the region yesterday.', 'C. The flight must have been diverted to a different airport; it has been delayed for hours.', 'D. We could complete the report on time if everyone collaborates efficiently.', 'E. I will certainly attend the conference even if the cost is high.'] },
-            { id: 27, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Identify the sentence that contains a grammatical error in modal verb usage.`, options: ['A. The experimental process can often have an unexpected outcome.', 'B. Slow market growth is very likely to cause financial pressure.', 'C. It might be change the outcome of the entire competition.', 'D. Re-engineering the device could reduce operational noise significantly.', 'E. They will probably secure the necessary certification next year.'] },
-            { id: 28, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Which statement expresses a high degree of probability about a future event?`, options: ['A. They might win the next round if they practice hard every day.', 'B. The new policy will certainly generate high profits for the company next quarter.', 'C. The team must work perfectly to finalize the design.', 'D. He could secure a better position easily if he network for a few hours.', 'E. The updated software can improve data processing effectively.'] },
-            { id: 29, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `Identify the sentence with a grammatical error:`, options: ['A. The prototype might become obsolete within the year.', 'B. It could disrupt the satellite’s transmission signal.', 'C. High interest rates can often have the opposite effect on investment.', 'D. The new system is must perform faster than the previous one.', 'E. It\'ll most certainly help you complete the task faster.'] },
-            { id: 30, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: `The document ___ a major error; the entire team was recalled immediately.`, options: ['A. should be containing', 'B. might be containing', 'C. can be containing', 'D. must have contained', 'E. will be containing'] }
-        ];
+        function checkAllAnswers() {
+            let correctCount = 0;
+            let totalQuestions = 0;
+            for (const qId in CORRECT_ANSWERS) {
+                totalQuestions++;
+                const correctAnswer = CORRECT_ANSWERS[qId];
+                const userAnswer = userAnswers[qId];
+                const questionCard = document.getElementById(`q-${qId}`);
+                if (!questionCard) continue;
+                const optionsContainer = questionCard.querySelector(`[data-question-id="${qId}"]`);
+                optionsContainer.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('correct', 'incorrect', 'selected'); });
+                if (userAnswer) {
+                    const isCorrect = userAnswer === correctAnswer;
+                    const selectedOption = optionsContainer.querySelector(`[data-answer="${userAnswer}"]`);
+                    if (selectedOption) {
+                        selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        if (isCorrect) correctCount++;
+                    }
+                }
+                if (userAnswers[qId] !== correctAnswer) {
+                    const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
+                    if (correctOption) correctOption.classList.add('correct');
+                }
+            }
+            const scoreDisplay = document.getElementById('score-display');
+            const resultsSection = document.getElementById('results-section');
+            scoreDisplay.textContent = `${correctCount} / ${totalQuestions} (${((correctCount / totalQuestions) * 100).toFixed(1)}%)`;
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
-        let userAnswers = {};
-        const quizContainer = document.getElementById('quiz-container');
-        const loadingError = document.getElementById('loading-error');
-        let currentSectionTitle = null;
-
-        function renderQuiz() {
-            // Remove loading text
-            if(loadingError) loadingError.style.display = 'none';
-            
-            quizContainer.innerHTML = '';
-            
-            QUIZ_DATA.forEach(item => {
-                if (item.section && item.section !== currentSectionTitle) {
-                    currentSectionTitle = item.section;
-                    quizContainer.innerHTML += `<h2 class="text-xl sm:text-2xl font-bold text-indigo-700 mt-10 mb-4 border-b-2 border-indigo-200 pb-2">${currentSectionTitle}</h2>`;
-                }
-
-                if (item.type === 'reading_passage') {
-                    quizContainer.innerHTML += `
-                        <div class="mb-8 p-6 bg-gray-50 rounded-xl shadow-inner">
-                            <h3 class="text-xl font-semibold mb-3 text-gray-800">${item.title}</h3>
-                            <div class="passage-container text-gray-700 text-sm sm:text-base leading-relaxed">
-                                <p>${item.content}</p>
-                            </div>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const questionNumber = item.id;
-                const questionHtml = `<p class="font-medium text-gray-800">${questionNumber}. ${item.question}</p>`;
-                let optionsHtml = '';
-
-                item.options.forEach(optionText => {
-                    const letter = optionText.charAt(0);
-                    const text = optionText.substring(3).trim();
-                    optionsHtml += createOptionHtml(questionNumber, letter, `${letter}. ${text}`);
-                });
-
-                quizContainer.innerHTML += `
-                    <div id="q-${questionNumber}" class="bg-white p-5 rounded-xl shadow-md border border-gray-200 fade-in" data-type="${item.type}">
-                        <div class="text-base text-gray-600 mb-6 leading-relaxed">${questionHtml}</div>
-                        <div class="space-y-3 mt-4" data-question-id="${questionNumber}">${optionsHtml}</div>
-                    </div>
-                `;
-            });
-
-            quizContainer.innerHTML += `
-                <button onclick="checkAllAnswers()" class="w-full py-3 mt-12 mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition duration-150 ease-in-out">
-                    Check All Answers & Get Score
-                </button>
-            `;
-
-            attachEventListeners();
-        }
-
-        function createOptionHtml(qId, letter, text) {
-            return `
-                <div class="quiz-option p-3 rounded-lg border-2 border-gray-300 flex items-center" data-question="${qId}" data-answer="${letter}">
-                    <span class="text-sm font-semibold text-gray-800">${text}</span>
-                </div>
-            `;
-        }
-
-        function attachEventListeners() {
-            document.querySelectorAll('.quiz-option').forEach(option => {
-                option.addEventListener('click', handleOptionClick);
-            });
-            document.getElementById('results-section').classList.add('hidden');
-        }
-
-        function handleOptionClick(event) {
-            const selectedOption = event.currentTarget;
-            const qId = selectedOption.dataset.question;
-            const answerLetter = selectedOption.dataset.answer;
-            const container = selectedOption.closest(`[data-question-id="${qId}"]`);
-            container.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('selected', 'correct', 'incorrect'); });
-            selectedOption.classList.add('selected');
-            userAnswers[qId] = answerLetter;
-        }
-
-        function checkAllAnswers() {
-            let correctCount = 0;
-            let totalQuestions = 0;
-            for (const qId in CORRECT_ANSWERS) {
-                totalQuestions++;
-                const correctAnswer = CORRECT_ANSWERS[qId];
-                const userAnswer = userAnswers[qId];
-                const questionCard = document.getElementById(`q-${qId}`);
-                if (!questionCard) continue;
-                const optionsContainer = questionCard.querySelector(`[data-question-id="${qId}"]`);
-                optionsContainer.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('correct', 'incorrect', 'selected'); });
-                if (userAnswer) {
-                    const isCorrect = userAnswer === correctAnswer;
-                    const selectedOption = optionsContainer.querySelector(`[data-answer="${userAnswer}"]`);
-                    if (selectedOption) {
-                        selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
-                        if (isCorrect) correctCount++;
-                    }
-                }
-                if (userAnswers[qId] !== correctAnswer) {
-                    const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
-                    if (correctOption) correctOption.classList.add('correct');
-                }
-            }
-            const scoreDisplay = document.getElementById('score-display');
-            const resultsSection = document.getElementById('results-section');
-            scoreDisplay.textContent = `${correctCount} / ${totalQuestions} (${((correctCount / totalQuestions) * 100).toFixed(1)}%)`;
-            resultsSection.classList.remove('hidden');
-            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        // Run the function to display the quiz
-        renderQuiz();
-    </script>
+        window.onload = renderQuiz;
+    </script>
 </body>
 </html>
