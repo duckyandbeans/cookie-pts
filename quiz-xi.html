@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Mock Exam Practice (XI Grade)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
+        .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
+        .selected { border-color: #4f46e5; background-color: #e0e7ff; }
+        .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1rem; background-color: #ffffff; }
+        .error-underline { text-decoration: underline; text-decoration-color: currentColor; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+        .error-part { position: relative; display: inline-block; margin: 0 4px; }
+        .error-label { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; font-weight: 700; }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold mb-6">
+            &larr; Back to Home Menu
+        </a>
+
+        <header class="text-center mb-10 p-6 bg-indigo-600 text-white rounded-xl shadow-lg">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Advanced Mock Exam Practice (XI Grade)</h1>
+            <p class="text-lg font-light mt-1 opacity-90">Error Analysis, Reading, and Grammar</p>
+        </header>
+
+        <main id="quiz-container" class="space-y-8">
+            </main>
+
+        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden fade-in">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
+            <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
+            <p class="text-sm text-gray-500 mt-2">Check the colored boxes above for question-by-question feedback.</p>
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_ANSWERS = {
+            1: 'B', 2: 'B', 3: 'B', 4: 'A', 5: 'B', 6: 'B', 7: 'B', 8: 'B', 9: 'B', 10: 'B',
+            11: 'D', 12: 'D', 13: 'A', 14: 'E', 15: 'B', 16: 'D', 17: 'D', 18: 'B', 19: 'D', 20: 'C',
+            21: 'C', 22: 'A', 23: 'D', 24: 'C', 25: 'C', 26: 'E', 27: 'A', 28: 'A', 29: 'D', 30: 'B',
+            31: 'B', 32: 'A', 33: 'A', 34: 'C', 35: 'C', 36: 'D', 37: 'C', 38: 'A', 39: 'D', 40: 'A'
+        };
+
+        const QUIZ_DATA = [
+            { id: 1, type: 'error_analysis', section: 'A. Error Analysis', question: `Educators must <span data-part="A" class="error-part"><span class="error-underline">consider</span><span class="error-label text-indigo-600">A</span></span> ethical implications when using predictive analytics, and they <span data-part="B" class="error-part"><span class="error-underline">have to adapting</span><span class="error-label text-indigo-600">B</span></span> lesson plans based <span data-part="C" class="error-part"><span class="error-underline">on algorithmic</span><span class="error-label text-indigo-600">C</span></span> recommendations. The school board is <span data-part="D" class="error-part"><span class="error-underline">reviewing</span><span class="error-label text-indigo-600">D</span></span> AI integration policies.`, options: { 'A': 'consider', 'B': 'have to adapting', 'C': 'on algorithmic', 'D': 'reviewing', 'E': '(No Error)' } },
+            { id: 2, type: 'error_analysis', section: 'A. Error Analysis', question: `Authors submitting to peer-reviewed journals <span data-part="A" class="error-part"><span class="error-underline">have to</span><span class="error-label text-indigo-600">A</span></span> <span data-part="B" class="error-part"><span class="error-underline">ensuring</span><span class="error-label text-indigo-600">B</span></span> that their data <span data-part="C" class="error-part"><span class="error-underline">is reproducible</span><span class="error-label text-indigo-600">C</span></span>, and they must include <span data-part="D" class="error-part"><span class="error-underline">raw datasets</span><span class="error-label text-indigo-600">D</span></span> when requested by reviewers. The editorial board met to discuss transparency protocols.`, options: { 'A': 'have to', 'B': 'ensuring', 'C': 'is reproducible', 'D': 'raw datasets', 'E': '(No Error)' } },
+            { id: 3, type: 'error_analysis', section: 'A. Error Analysis', question: `During her first year, the resident struggled to <span data-part="A" class="error-part"><span class="error-underline">get used to</span><span class="error-label text-indigo-600">A</span></span> the overnight <span data-part="B" class="error-part"><span class="error-underline">shift’s</span><span class="error-label text-indigo-600">B</span></span>, especially since she <span data-part="C" class="error-part"><span class="error-underline">was used to working</span><span class="error-label text-indigo-600">C</span></span> standard hours in her previous clinical rotations. The attending physician <span data-part="D" class="error-part"><span class="error-underline">offered</span><span class="error-label text-indigo-600">D</span></span> mentorship and scheduling advice.`, options: { 'A': 'get used to', 'B': 'shift’s', 'C': 'was used to working', 'D': 'offered', 'E': '(No Error)' } },
+            { id: 4, type: 'error_analysis', section: 'A. Error Analysis', question: `The firm’s senior partner had trouble <span data-part="A" class="error-part"><span class="error-underline">being used to</span><span class="error-label text-indigo-600">A</span></span> collaborative design platforms, as he <span data-part="B" class="error-part"><span class="error-underline">used to draft</span><span class="error-label text-indigo-600">B</span></span> everything manually on tracing paper. The younger architects <span data-part="C" class="error-part"><span class="error-underline">offered to assist</span><span class="error-label text-indigo-600">C</span></span> <span data-part="D" class="error-part"><span class="error-underline">with the transition</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'being used to', 'B': 'used to draft', 'C': 'offered to assist', 'D': 'with the transition', 'E': '(No Error)' } },
+            { id: 5, type: 'error_analysis', section: 'A. Error Analysis', question: `The lecturer <span data-part="A" class="error-part"><span class="error-underline">emphasized the need</span><span class="error-label text-indigo-600">A</span></span> <span data-part="B" class="error-part"><span class="error-underline">to evaluating</span><span class="error-label text-indigo-600">B</span></span> fiscal policy through a long-term lens, especially when <span data-part="C" class="error-part"><span class="error-underline">considering</span><span class="error-label text-indigo-600">C</span></span> intergenerational equity. The students <span data-part="D" class="error-part"><span class="error-underline">submitted</span><span class="error-label text-indigo-600">D</span></span> their reflections after the session.`, options: { 'A': 'emphasized the need', 'B': 'to evaluating', 'C': 'considering', 'D': 'submitted', 'E': '(No Error)' } },
+            { id: 6, type: 'error_analysis', section: 'A. Error Analysis', question: `The team <span data-part="A" class="error-part"><span class="error-underline">proposed to redesign</span><span class="error-label text-indigo-600">A</span></span> the turbine blades in order <span data-part="B" class="error-part"><span class="error-underline">to maximizing</span><span class="error-label text-indigo-600">B</span></span> airflow efficiency and <span data-part="C" class="error-part"><span class="error-underline">reduce thermal</span><span class="error-label text-indigo-600">C</span></span> stress during peak operation. The prototype was <span data-part="D" class="error-part"><span class="error-underline">tested under simulated</span><span class="error-label text-indigo-600">D</span></span> conditions.`, options: { 'A': 'proposed to redesign', 'B': 'to maximizing', 'C': 'reduce thermal', 'D': 'tested under simulated', 'E': '(No Error)' } },
+            { id: 7, type: 'error_analysis', section: 'A. Error Analysis', question: `Despite the technician’s <span data-part="A" class="error-part"><span class="error-underline">reluctance</span><span class="error-label text-indigo-600">A</span></span> to recalibrate the equipment, the supervisor encouraged <span data-part="B" class="error-part"><span class="error-underline">him proceeding</span><span class="error-label text-indigo-600">B</span></span> with the <span data-part="C" class="error-part"><span class="error-underline">adjustments to ensure</span><span class="error-label text-indigo-600">C</span></span> accuracy in the final measurements. The results <span data-part="D" class="error-part"><span class="error-underline">were later validated</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'reluctance', 'B': 'him proceeding', 'C': 'adjustments to ensure', 'D': 'were later validated', 'E': '(No Error)' } },
+            { id: 8, type: 'error_analysis', section: 'A. Error Analysis', question: `<span data-part="A" class="error-part"><span class="error-underline">As long as</span><span class="error-label text-indigo-600">A</span></span> the algorithm continues to adapt to new linguistic inputs, it <span data-part="B" class="error-part"><span class="error-underline">would outperform</span><span class="error-label text-indigo-600">B</span></span> traditional models <span data-part="C" class="error-part"><span class="error-underline">and generate</span><span class="error-label text-indigo-600">C</span></span> more contextually accurate translations. The development team is <span data-part="D" class="error-part"><span class="error-underline">currently testing</span><span class="error-label text-indigo-600">D</span></span> multilingual datasets.`, options: { 'A': 'As long as', 'B': 'would outperform', 'C': 'and generate', 'D': 'currently testing', 'E': '(No Error)' } },
+            { id: 9, type: 'error_analysis', section: 'A. Error Analysis', question: `Even if the pathogen <span data-part="A" class="error-part"><span class="error-underline">mutates rapidly</span><span class="error-label text-indigo-600">A</span></span>, the vaccine <span data-part="B" class="error-part"><span class="error-underline">would still</span><span class="error-label text-indigo-600">B</span></span> offer partial immunity <span data-part="C" class="error-part"><span class="error-underline">and reduce hospitalization</span><span class="error-label text-indigo-600">C</span></span> rates <span data-part="D" class="error-part"><span class="error-underline">significantly</span><span class="error-label text-indigo-600">D</span></span>. The clinical trials were conducted across multiple continents.`, options: { 'A': 'mutates rapidly', 'B': 'would still', 'C': 'and reduce hospitalization', 'D': 'significantly', 'E': '(No Error)' } },
+            { id: 10, type: 'error_analysis', section: 'A. Error Analysis', question: `<span data-part="A" class="error-part"><span class="error-underline">Provided that</span><span class="error-label text-indigo-600">A</span></span> the satellite maintains its orbital velocity, <span data-part="B" class="error-part"><span class="error-underline">It will</span><span class="error-label text-indigo-600">B</span></span> transmit data <span data-part="C" class="error-part"><span class="error-underline">continuously and avoid</span><span class="error-label text-indigo-600">C</span></span> signal degradation caused by atmospheric interference. The engineers <span data-part="D" class="error-part"><span class="error-underline">had calibrated</span><span class="error-label text-indigo-600">D</span></span> the sensors manually before launch.`, options: { 'A': 'Provided that', 'B': 'It will', 'C': 'continuously and avoid', 'D': 'had calibrated', 'E': '(No Error)' } },
+            { id: 11, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'Whether or not the subject ___ prior trauma, the neural scan ___ anomalies and ___ cognitive processing. This finding ___ implications for therapeutic intervention.', options: ['A. reports / may reveal / may affect / has', 'B. reported / revealed / affected / had', 'C. had reported / would have revealed / would have affected / would have', 'D. reports / reveals / affects / has', 'E. would report / would reveal / would affect / had'] },
+            { id: 12, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'Provided that the compound ___ non-toxic in vitro, researchers ___ animal trials and ___ human testing phases. This progression ___ the timeline for FDA approval.', options: ['A. had proved / would have initiated / would have scheduled / would accelerate', 'B. proved / initiated / scheduled / accelerated', 'C. proves / initiates / schedules / accelerates', 'D. proves / will initiate / will schedule / will accelerate', 'E. would prove / would initiate / would schedule / accelerated'] },
+            { id: 13, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'If the pharmaceutical company ___ adverse reactions during clinical trials, it ___ the drug’s release and ___ further testing. This decision ___ public trust in regulatory oversight.', options: ['A. observed / delayed / initiated / restored', 'B. had observed / would have delayed / would have initiated / would have restored', 'C. observes / delays / initiates / restores', 'D. had observed / would delay / would initiate / restores', 'E. would observe / would delay / would initiate / restored'] },
+            { id: 14, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'Unless the intergovernmental panel ___ enforceable sanctions, major polluting nations ___ their emissions, ___ renewable infrastructure, or ___ climate reparations. This failure to act decisively ___ the legitimacy of future climate accords.', options: ['A. would establish / would reduce / would invest in / would offer / eroded', 'B. had established / would have reduced / would have invested in / would have offered / would erode', 'C. establishes / reduce / invest in / offer / erodes', 'D. established / did not reduce / did not invest in / did not offer / raised', 'E. establishes / will not reduce / will not invest in / will not offer / could erode'] },
+            { id: 15, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'If the international coalition ___ mass vaccine distribution in early 2024, vulnerable populations in remote regions ___ significantly lower infection rates today.', options: ['A. initiated / experience', 'B. had initiated / would be experiencing', 'C. initiates / will experience', 'D. has initiated / are experiencing', 'E. would initiate / would experience'] },
+            { id: 16, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'Physicists attempted ____ the quantum experiment, despite ____ _______ environmental variables. They continued ____ their apparatus and avoided _____ premature conclusions.', options: ['A. Replicating / failing / controlling / refining / drawing', 'B. To Replicate / fail / to control / to refine / to draw', 'C. Replicating / to fail / control / refine / drawing', 'D. To replicate / failing / controlling / refining / drawing', 'E. Replicate / fail / controlling / to refine / draw'] },
+            { id: 17, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'It’s challenging ____ ethical dilemmas in corporate settings. Many executives resist ____ conflicts of interest, prefer ___ neutrality, and fear _____ their reputation.', options: ['A. Navigating / acknowledging / maintaining / jeopardizing', 'B. To navigate / acknowledging / to maintain / to jeopardize', 'C. Navigating / to acknowledge / maintaining / to jeopardize', 'D. To navigate / acknowledging / to maintain / jeopardizing', 'E. Navigating / acknowledging / to maintain / jeopardizing'] },
+            { id: 18, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'The elderly man next door is just _____ in his rocking chair ____ out the window. I wish there were something I could do ____ him up.', options: ['A. Sit / gazing / cheering', 'B. Sitting / gazing / to cheer', 'C. To sit / to gaze / cherring', 'D. To sit / gazing / to cheer', 'E. Sitting / gazing / cheering'] },
+            { id: 19, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'I told the mail carrier that we would ___ away for two weeks on vacation. I asked her ____ ______ our mail until the 21st. She told me ____ out a form at the post office.', options: ['A. Being / stopping / delivering / filling', 'B. Be / stop / deliver / fill', 'C. To be / to stop / to deliver / filling', 'D. Be / to stop / delivering / to fill', 'E. To be / stopping / to deliver / to fill'] },
+            { id: 20, type: 'multiple_choice', section: 'B. Multiple Choice', question: 'Skydivers must ____ nerves of steel. I can’t imagine _____ out of a plane and _______ to the earth.', options: ['A. Having / to jump / fall', 'B. Having / jumping / falling', 'C. Have / jumping / falling', 'D. To have / jump / fall', 'E. To have / to jump / to fall'] },
+            { id: 'passage', type: 'reading_passage', title: 'Reading Passage for questions 21 – 30', content: `The Altan community, residing in a remote mountain region, exemplifies the critical intersection of environmental degradation and human well-being. For decades, this ethnic group has practiced subsistence farming on largely unfertile land, a struggle exacerbated by severe soil erosion and recurrent droughts. The proximity of a newly established industrial zone, a significant emitter of pollutants, has led to visibly poor air pollution and concerns over contaminated sewage affecting their water sources. This harsh environment contributes directly to widespread poverty and malnutrition, with unemployment rates soaring as traditional livelihoods become untenable. The average wage for those who find work is far below the national gross domestic product per capita, forcing many into precarious housing situations. In response, a multi-disciplinary team from a leading university has initiated a long-term study. The project’s stringent entry requirements attract top undergraduate students, many on scholarship, who work alongside senior researchers. Their mission is twofold: to find sustainable solutions for the environmental crisis, such as promoting biodegradable alternatives to plastic refuse, and to document the physiological impact on the residents. The team’s research aims to provide clear evidence of the challenges, moving beyond simple correlation to find causal data linking the environmental toxins to health outcomes. Early findings from the medical research arm are alarming. MRI scanning of adolescents has revealed potential alterations in white/grey matter, suggesting that chronic malnutrition during childhood and puberty may impact neurodevelopment. This could have lifelong consequences for cognition and overall lifespan. Furthermore, the constant struggle for survival appears to disrupt fundamental adaptive biological processes, including the circadian rhythm, leading to poor sleep and cognitive fatigue. The researchers believe that without intervention, the community’s poor academic performance and limited career prospects will persist, trapping the next generation in a cycle of poverty. The university team hopes their work will not only stabilize the local ecosystem but also provide a model for interventions in similar communities globally.`},
+            { id: 21, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "According to the passage, the Altan community's traditional lifestyle is threatened primarily by:", options: ['A. The recent introduction of extreme tourism and mountaineering.', 'B. A lack of non-academic achievement among their peers.', 'C. A combination of poor agricultural conditions and industrial pollution.', 'D. The high entry requirements for local university degrees.', 'E. Frequent flash floods and landslides from excessive aviation.'] },
+            { id: 22, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "The university project mentioned in the passage has a dual focus on:", options: ['A. Environmental sustainability and the physiological effects of hardship.', 'B. Offering student loans and improving the local housing industry.', 'C. Reducing carbon emissions from aviation and promoting trekking.', 'D. Studying the impact of peer pressure on academic performance.', 'E. Increasing the average wage and gross domestic product of the region.'] },
+            { id: 23, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "What specific tool is the research team using to investigate potential brain changes in the community's youth?", options: ['A. Causal data analysis', 'B. Cognition tests', 'C. Circadian rhythm monitors', 'D. MRI scanning', 'E. White/grey matter stimulants'] },
+            { id: 24, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "The passage suggests a link between malnutrition during puberty and which negative outcome?", options: ['A. An unstable circadian rhythm', 'B. An increase in subsistence farming', 'C. Impaired neurodevelopment', 'D. A shorter overall lifespan', 'E. A failure to achieve a university degree'] },
+            { id: 25, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "The university researchers are hoping to find 'causal data' (paragraph 2). This means they want to find:", options: ['A. A simple correlation between two independent factors.', 'B. Evidence of the community\'s adaptive biological processes.', 'C. Proof that one factor directly causes a specific effect.', 'D. The requirements for a scholarship to study the issue.', 'E. A consensus among their undergraduate peers.'] },
+            { id: 26, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "Which environmental problem is NOT explicitly mentioned as affecting the Altan community?", options: ['A. Air pollution', 'B. Unfertile soil', 'C. Contaminated sewage', 'D. Soil erosion', 'E. Landslides'] },
+            { id: 27, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "According to the text, what is a primary social consequence of the harsh environment and high unemployment?", options: ['A. Widespread poverty and malnutrition', 'B. A preference for non-academic achievement', 'C. A rise in ethnic group conflicts', 'D. An increase in students seeking a student loan', 'E. A community desire for extreme tourism'] },
+            { id: 28, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "The university team hopes their work will ultimately help to:", options: ['A. Stabilize the environment and improve future prospects for residents.', 'B. Document the challenges of trekking to the remote summit.', 'C. Provide career advice to undergraduates after they get their degree.', 'D. Stop the industrial zone from being a major emitter of biodegradable waste.', 'E. Improve the academic performance of the university\'s own students.'] },
+            { id: 29, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "The passage uses 'cognition' (paragraph 3) to refer to:", options: ['A. The process of reaching puberty.', 'B. The structure of white/grey matter.', 'C. The community\'s social structure.', 'D. Mental processes such as thinking and understanding.', 'E. The physical state of being malnourished.'] },
+            { id: 30, type: 'multiple_choice', section: 'C. Reading Comprehension', question: "What is implied about the students working on the university project?", options: ['A. They are all studying for a psychology or medicine degree.', 'B. They are undergraduates who met high standards to participate.', 'C. They are primarily focused on their own career paths.', 'D. They are peers who must take out student loans to join.', 'E. They are former residents of the Altan community.'] },
+            { id: 31, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'When studying the challenges faced by populations in harsh environments, researchers must look beyond a simple ___ (31). It is not enough to see that poverty and poor health exist together; scientists must find ___ (32) to understand exactly how one variable, like environmental degradation, directly causes a negative health outcome.', options: ['A. cognition', 'B. correlation', 'C. industry', 'D. evidence', 'E. degree'] },
+            { id: 32, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'This is question 32, please choose the best word to fill the blank.', options: ['A. causal data', 'B. white/grey matter', 'C. average wage', 'D. scholarship', 'E. Peer'] },
+            { id: 33, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'Consider communities in ___ (33) mountain regions that rely on ___ (34).', options: ['A. remote', 'B. sustainable', 'C. unfertile', 'D. biodegradable', 'E. harsh'] },
+            { id: 34, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'This is question 34, please choose the best word to fill the blank.', options: ['A. mountaineering', 'B. extreme tourism', 'C. subsistence farming', 'D. community', 'E. career'] },
+            { id: 35, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'If the land is ___ (35) and prone to erosion, crop yields are low. This can lead to chronic ___ (36), especially in children and adolescents.', options: ['A. remote', 'B. adaptive', 'C. unfertile', 'D. sustainable', 'E. stable'] },
+            { id: 36, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'This is question 36, please choose the best word to fill the blank.', options: ['A. unemployment', 'B. poverty', 'C. landslide', 'D. malnutrition', 'E. drought'] },
+            { id: 37, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'This is a critical concern because the period of ___ (37) is a vital window for brain development.', options: ['A. lifespan', 'B. career', 'C. puberty', 'D. cognition', 'E. circadian rhythm'] },
+            { id: 38, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'Scientists are increasingly using advanced scanning techniques to study how nutritional deficiencies affect ___ (38).', options: ['A. neurodevelopment', 'B. gross domestic product', 'C. academic performance', 'D. housing', 'E. sewage'] },
+            { id: 39, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'The evidence suggests that a lack of proper nutrients during these formative years can impair cognitive development. This, in turn, has a direct, negative impact on a student\'s ___ (39).', options: ['A. non-academic achievement', 'B. adaptive biological process', 'C. average wage', 'D. academic performance', 'E. undergraduate'] },
+            { id: 40, type: 'multiple_choice', section: 'D. Cloze Test/Vocabulary', question: 'As a result, even bright individuals from these communities may struggle to meet the ___ (40) for university, limiting their future career paths.', options: ['A. entry requirements', 'B. student loans', 'C. scholarships', 'D. degrees', 'E. career'] }
+        ];
+
+        let userAnswers = {};
+        const quizContainer = document.getElementById('quiz-container');
+        let currentSectionTitle = null;
+
+        function renderQuiz() {
+            quizContainer.innerHTML = '';
+            QUIZ_DATA.forEach(item => {
+                if (item.section && item.section !== currentSectionTitle) {
+                    currentSectionTitle = item.section;
+                    quizContainer.innerHTML += `<h2 class="text-xl sm:text-2xl font-bold text-indigo-700 mt-10 mb-4 border-b-2 border-indigo-200 pb-2">${currentSectionTitle}</h2>`;
+                }
+                if (item.type === 'reading_passage') {
+                    quizContainer.innerHTML += `
+                        <div class="mb-8 p-6 bg-gray-50 rounded-xl shadow-inner">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">${item.title}</h3>
+                            <div class="passage-container text-gray-700 text-sm sm:text-base leading-relaxed">
+                                <p>${item.content.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                const questionNumber = item.id;
+                const questionHtml = item.type === 'error_analysis' ? `${questionNumber}. ${item.question}` : `<p class="font-medium text-gray-800">${questionNumber}. ${item.question}</p>`;
+                let optionsHtml = '';
+                if (item.type === 'error_analysis') {
+                    for (const letter in item.options) { optionsHtml += createOptionHtml(questionNumber, letter, `${letter}) ${item.options[letter]}`); }
+                } else if (item.type === 'multiple_choice') {
+                    item.options.forEach(optionText => {
+                        const letter = optionText.charAt(0);
+                        const text = optionText.substring(3).trim();
+                        optionsHtml += createOptionHtml(questionNumber, letter, `${letter}. ${text}`);
+                    });
+                }
+                quizContainer.innerHTML += `
+                    <div id="q-${questionNumber}" class="bg-white p-5 rounded-xl shadow-md border border-gray-200 fade-in" data-type="${item.type}">
+                        <div class="text-base text-gray-600 mb-6 leading-relaxed">${questionHtml}</div>
+                        <div class="space-y-3 mt-4" data-question-id="${questionNumber}">${optionsHtml}</div>
+                        ${item.type === 'error_analysis' ? '<div class="mt-8 text-sm text-gray-500 font-medium">The error label (A, B, C, D) is underlined above. Select (E) if there is no error.</div>' : ''}
+                    </div>
+                `;
+            });
+            quizContainer.innerHTML += `
+                <button onclick="checkAllAnswers()" class="w-full py-3 mt-12 mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition duration-150 ease-in-out">
+                    Check All Answers & Get Score
+                </button>
+            `;
+            attachEventListeners();
+        }
+
+        function createOptionHtml(qId, letter, text) {
+            return `
+                <div class="quiz-option p-3 rounded-lg border-2 border-gray-300 flex items-center" data-question="${qId}" data-answer="${letter}">
+                    <span class="text-sm font-semibold text-gray-800">${text}</span>
+                </div>
+            `;
+        }
+
+        function attachEventListeners() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+            document.getElementById('results-section').classList.add('hidden');
+        }
+
+        function handleOptionClick(event) {
+            const selectedOption = event.currentTarget;
+            const qId = selectedOption.dataset.question;
+            const answerLetter = selectedOption.dataset.answer;
+            const container = selectedOption.closest(`[data-question-id="${qId}"]`);
+            const questionCard = document.getElementById(`q-${qId}`);
+            container.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('selected', 'correct', 'incorrect'); });
+            selectedOption.classList.add('selected');
+            userAnswers[qId] = answerLetter;
+            if (questionCard.dataset.type === 'error_analysis') {
+                questionCard.querySelectorAll('.error-part').forEach(part => {
+                    part.querySelector('.error-underline').classList.remove('text-red-600', 'text-green-600');
+                    part.querySelector('.error-label').classList.remove('text-red-600', 'text-green-600');
+                    part.querySelector('.error-label').classList.add('text-indigo-600');
+                });
+            }
+        }
+
+        function checkAllAnswers() {
+            let correctCount = 0;
+            let totalQuestions = 0;
+            for (const qId in CORRECT_ANSWERS) {
+                totalQuestions++;
+                const correctAnswer = CORRECT_ANSWERS[qId];
+                const userAnswer = userAnswers[qId];
+                const questionCard = document.getElementById(`q-${qId}`);
+                if (!questionCard) continue;
+                const optionsContainer = questionCard.querySelector(`[data-question-id="${qId}"]`);
+                optionsContainer.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('correct', 'incorrect', 'selected'); });
+                if (userAnswer) {
+                    const isCorrect = userAnswer === correctAnswer;
+                    const selectedOption = optionsContainer.querySelector(`[data-answer="${userAnswer}"]`);
+                    if (selectedOption) {
+                        selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        if (isCorrect) correctCount++;
+                    }
+                    if (questionCard.dataset.type === 'error_analysis') {
+                        questionCard.querySelectorAll('.error-part').forEach(part => {
+                            part.querySelector('.error-underline').classList.remove('text-red-600', 'text-green-600');
+                            part.querySelector('.error-label').classList.remove('text-red-600', 'text-green-600');
+                            part.querySelector('.error-label').classList.add('text-indigo-600');
+                        });
+                        const correctPart = questionCard.querySelector(`[data-part="${correctAnswer}"] .error-underline`);
+                        const correctLabel = questionCard.querySelector(`[data-part="${correctAnswer}"] .error-label`);
+                        if (correctPart) {
+                            correctPart.classList.add('text-green-600');
+                            correctLabel.classList.remove('text-indigo-600');
+                            correctLabel.classList.add('text-green-600');
+                        }
+                        if (!isCorrect && userAnswer !== 'E') {
+                            const incorrectPart = questionCard.querySelector(`[data-part="${userAnswer}"] .error-underline`);
+                            const incorrectLabel = questionCard.querySelector(`[data-part="${userAnswer}"] .error-label`);
+                            if (incorrectPart) {
+                                incorrectPart.classList.add('text-red-600');
+                                incorrectLabel.classList.remove('text-indigo-600');
+                                incorrectLabel.classList.add('text-red-600');
+                            }
+                        }
+                    }
+                }
+                if (userAnswers[qId] !== correctAnswer) {
+                    const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
+                    if (correctOption) correctOption.classList.add('correct');
+                }
+            }
+            const scoreDisplay = document.getElementById('score-display');
+            const resultsSection = document.getElementById('results-section');
+            scoreDisplay.textContent = `${correctCount} / ${totalQuestions} (${((correctCount / totalQuestions) * 100).toFixed(1)}%)`;
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>
