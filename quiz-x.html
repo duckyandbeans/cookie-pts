@@ -41,11 +41,11 @@
         </div>
     </div>
 
-    <script>
+<script>
         const CORRECT_ANSWERS = {
-            1: 'B', 2: 'C', 3: 'B', 4: 'A', 5: 'C', 6: 'B', 7: 'D', 8: 'D', 9: 'C', 10: 'D',
+            1: 'B', 2: 'C', 3: 'B', 4: 'C', 5: 'D', 6: 'B', 7: 'D', 8: 'D', 9: 'C', 10: 'D',
             11: 'C', 12: 'D', 13: 'D', 14: 'B', 15: 'C',
-            16: 'B', 17: 'A', 18: 'B', 19: 'B', 20: 'D',
+            16: 'A', 17: 'B', 18: 'B', 19: 'D', 20: 'C',
             21: 'A', 22: 'C', 23: 'B', 24: 'A', 25: 'C', 26: 'C', 27: 'C', 28: 'B', 29: 'D', 30: 'D'
         };
 
@@ -60,17 +60,10 @@
             { id: 2, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The author’s main purpose in describing \'greenwashing\' is to ______.', options: ['A. show that all tourism companies are inherently deceptive.', 'B. encourage consumers to spend more money on travel.', 'C. highlight an ongoing challenge to the ethical implementation of ecotourism.', 'D. argue that certification schemes are unnecessary for travelers.', 'E. compare the principles of conservation and economic benefit.'] },
             { id: 3, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'Which statement best reflects the author’s attitude toward the concept of ecotourism?', options: ['A. It is a temporary trend that will eventually fade.', 'B. It is a practical and necessary model, despite facing hurdles.', 'C. It is overly idealistic and conflicts with economic reality.', 'D. It is a niche idea irrelevant to the major global travel industry.', 'E. It is chaotic and inconsistent among different countries.'] },
             
-            // ADDED PASSAGE FOR CONTEXT
-            { 
-                id: 'passage2', 
-                type: 'reading_passage', 
-                title: 'Passage 2: Communication in the Animal Kingdom', 
-                content: "While humans rely heavily on complex language systems, animals have developed fascinating methods to convey information. Dolphins, for instance, utilize a sophisticated range of clicks and whistles. Sound is their most practical medium because it travels four times faster in water than in air, allowing them to communicate over vast distances where vision is limited. Similarly, birds utilize songs not merely for aesthetic reasons but for survival. Their calls serve a dual purpose: intricate melodies are often used to attract mates during breeding season, while sharp, repetitive calls serve as warnings to rivals about territory boundaries or to alert the flock about approaching predators."
-            },
-            { id: 4, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'Why might sound be considered the most practical form of communication for dolphins?', options: ['A. It allows communication over great distances underwater.', 'B. It helps them identify colors and shapes in the ocean.', 'C. It prevents them from needing to see predators.', 'D. It can be transmitted only through surface vibrations.', 'E. It is used to release pheromones effectively.'] },
-            { id: 5, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The passage suggests that birdsong serves a dual purpose because it _____.', options: ['A. is used only for attracting mates', 'B. varies depending on emotional tone', 'C. can both warn others and claim territory', 'D. is similar in all species', 'E. occurs only during daylight'] },
+            // REPLACED DUPLICATE QUESTIONS (4 & 5) WITH NEW ECOTOURISM QUESTIONS
+            { id: 4, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'According to the passage, why are natural environments considered "economic assets"?', options: ['A. They can be sold to private developers for housing.', 'B. They provide unlimited resources for mass production.', 'C. They generate value only if their long-term health is guaranteed.', 'D. They are cheaper to maintain than urban tourist centers.', 'E. They allow governments to increase taxes on local people.'] },
+            { id: 5, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The text suggests that traditional mass tourism differs from ecotourism because it often:', options: ['A. Focuses too much on local well-being.', 'B. Fails to attract international travelers.', 'C. Requires stricter government regulations.', 'D. Causes money to leave the local economy rather than stay there.', 'E. Prohibits the construction of hotels.'] },
             
-            // BACK TO ECOTOURISM QUESTIONS
             { id: 6, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'Refer to Passage 1: What conclusion can be drawn from the description of \'leakage\'?', options: ['A. Ecotourism is designed to maximize leakage for foreign investors.', 'B. Traditional mass tourism often fails to support local economies effectively.', 'C. Leakage is a key element of sustainable economic development.', 'D. Local communities rarely benefit from any form of tourism.', 'E. The United Nations strictly prohibits leakage in all travel markets.'] },
             { id: 7, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The word "viability" in the final sentence of Passage 1 most closely means the ability to...', options: ['A. increase profits exponentially', 'B. remain controversial and exclusive', 'C. adapt quickly to political changes', 'D. sustain success over a long period', 'E. rely solely on government funding'] },
             { id: 8, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'If companies falsely market their activities as eco-friendly, the phrasal verb that best replaces "falsely market" in this context is...', options: ['A. turn up', 'B. carry out', 'C. put off', 'D. make up', 'E. call off'] },
@@ -83,11 +76,12 @@
             { id: 14, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: 'If they ___ the technology to your organization last year, they ___ already seeing the benefits now.', options: ['A. had sold / may see', 'B. had sold / might be seeing', 'C. sold / would see', 'D. sold / might see', 'E. have sold / might have seen'] },
             { id: 15, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: '___, the team would have won the championship easily.', options: ['A. If the rain had not started', 'B. Unless they had changed their strategy', 'C. Had the star player not sustained the injury', 'D. If the coach has made an earlier substitution', 'E. Should the opponent play poorly'] },
 
-            { id: 16, type: 'multiple_choice', section: 'C. Word Formation', question: 'Creative expression has always been a powerful form of human connection. Every (16) ___ (ART) hopes to touch people’s hearts through their creations.', options: ['A. artistry', 'B. artist', 'C. artistic', 'D. artful', 'E. artistically'] },
-            { id: 17, type: 'multiple_choice', section: 'C. Word Formation', question: '...and each masterpiece carries a deep (17) ___ (MEAN) that reflects emotion, culture, and imagination.', options: ['A. meaning', 'B. meaningful', 'C. mean', 'D. meaningfully', 'E. meaningless'] },
-            { id: 18, type: 'multiple_choice', section: 'C. Word Formation', question: 'When people admire a painting or listen to music, they often experience feelings of encouragement or even (18) ___ (SAD).', options: ['A. sadly', 'B. sadness', 'C. sad', 'D. sadnesses', 'E. sadden'] },
-            { id: 19, type: 'multiple_choice', section: 'C. Word Formation', question: 'Their ability to transform simple ideas into beauty requires both talent and endless (19) ___ (PATIENT).', options: ['A. patient', 'B. patience', 'C. patiently', 'D. impatience', 'E. impatient'] },
-            { id: 20, type: 'multiple_choice', section: 'C. Word Formation', question: 'Along the way, they face challenges that demand (20) ___ (PERSEVERE) and hard work.', options: ['A. persevering', 'B. persevere', 'C. persevered', 'D. perseverance', 'E. perseveringly'] },
+            // REWRITTEN WORD FORMATION TO AVOID "ARTIST" DUPLICATES (Now about Technology)
+            { id: 16, type: 'multiple_choice', section: 'C. Word Formation', question: 'The rapid growth of the internet has changed how we communicate. Every digital (16) ___ (INVENT) hopes to create a tool that connects the world.', options: ['A. inventor', 'B. invention', 'C. inventive', 'D. inventively', 'E. inventing'] },
+            { id: 17, type: 'multiple_choice', section: 'C. Word Formation', question: 'However, simply having a device is not enough; it must have a (17) ___ (FUNCTION) that improves our daily lives.', options: ['A. function', 'B. functional', 'C. functioning', 'D. functionally', 'E. functioned'] },
+            { id: 18, type: 'multiple_choice', section: 'C. Word Formation', question: 'Without proper security, users often experience feelings of anxiety or even (18) ___ (HELPLESS) when their data is stolen.', options: ['A. help', 'B. helplessness', 'C. helpful', 'D. helping', 'E. helpfully'] },
+            { id: 19, type: 'multiple_choice', section: 'C. Word Formation', question: 'Creating a secure network requires technical skill and endless (19) ___ (DEDICATE) from the programming team.', options: ['A. dedicate', 'B. dedicated', 'C. dedicating', 'D. dedication', 'E. dedicates'] },
+            { id: 20, type: 'multiple_choice', section: 'C. Word Formation', question: 'Despite the risks, the (20) ___ (EVOLVE) of technology continues to move humanity forward.', options: ['A. evolving', 'B. evolved', 'C. evolution', 'D. evolutionary', 'E. evolves'] },
 
             { id: 21, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: 'The study of substances, their composition, and reactions—known as ___ (21)—has led to the creation of medicines and countless materials we use daily.', options: ['A. Chemistry', 'B. dermatology', 'C. meteorology', 'D. ecology', 'E. physics'] },
             { id: 22, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: 'Understanding how the human heart, lungs, and brain interact belongs to the field of ___ (22), a discipline essential to both medicine and sports science.', options: ['A. Ornithology', 'B. zoology', 'C. physiology', 'D. dermatology', 'E. Microbiology'] },
