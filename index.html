@@ -179,9 +179,7 @@
                     <th class="col-alloc">Alloc TP 3</th>
             `;
 
-            if (!isXII) {
-                headersHTML += `<th>Leftover Cookie</th>`;
-            }
+            // REMOVED: Leftover Cookie Column
 
             headersHTML += `
                     <th>TP 1 (Org)</th>
@@ -201,7 +199,6 @@
             `;
 
             if(isXII) {
-                // If XII, use the ph3/ph4 data, default to 0 if missing
                 rowHTML += `
                     <td>${s.ph3 || 0}</td>
                     <td>${s.ph4 || 0}</td>
@@ -214,9 +211,7 @@
                     <td class="col-alloc">${s.alloc[2]}</td>
             `;
 
-            if (!isXII) {
-                rowHTML += `<td>${s.leftover}</td>`;
-            }
+            // REMOVED: Leftover Cookie Data
 
             rowHTML += `
                     <td>${s.org[0]}</td>
