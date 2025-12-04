@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X Grade Mock Exam Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
+        .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
+        .selected { border-color: #4f46e5; background-color: #e0e7ff; }
+        .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1rem; background-color: #ffffff; margin-bottom: 2rem; }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold mb-6">
+            &larr; Back to Home Menu
+        </a>
+
+        <header class="text-center mb-10 p-6 bg-indigo-600 text-white rounded-xl shadow-lg">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">X Grade Mock Exam Practice</h1>
+            <p class="text-lg font-light mt-1 opacity-90">Ecotourism, Conditionals, and Vocabulary</p>
+        </header>
+
+        <main id="quiz-container" class="space-y-8">
+            </main>
+
+        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden fade-in">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
+            <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
+            <p class="text-sm text-gray-500 mt-2">Review your answers using the color-coded feedback above.</p>
+        </div>
+
+    </div>
+
+    <script>
+        const CORRECT_ANSWERS = {
+            1: 'B', 2: 'C', 3: 'B', 4: 'A', 5: 'C', 6: 'B', 7: 'D', 8: 'D', 9: 'C', 10: 'D',
+            11: 'C', 12: 'D', 13: 'D', 14: 'B', 15: 'C',
+            16: 'B', 17: 'A', 18: 'B', 19: 'B', 20: 'D',
+            21: 'A', 22: 'C', 23: 'B', 24: 'A', 25: 'C', 26: 'C', 27: 'C', 28: 'B', 29: 'D', 30: 'D'
+        };
+
+        const QUIZ_DATA = [
+            { 
+                id: 'passage', 
+                type: 'reading_passage', 
+                title: 'Reading Passage: The Global Rise of Ecotourism', 
+                content: `Ecotourism, defined as responsible travel to natural areas that conserves the environment and improves the well-being of local people, has shifted from a niche concept to a major driver in the global travel industry. Central to this transformation is the understanding that natural environments are valuable economic assets only when their long-term health is guaranteed. This realization has prompted international bodies, including the United Nations, to promote sustainable practices vigorously.\nThe success of ecotourism hinges on several key elements. First, it requires minimizing the negative environmental impact of tourism activities, such as reducing waste and limiting infrastructure development in sensitive areas. Second, it must generate financial benefits for the protection of natural areas and for the local communities residing near them. This is often achieved through direct employment, educational initiatives, and funding for conservation efforts. In contrast, traditional mass tourism often results in leakage, where a significant portion of the money spent by tourists is directed out of the local economy to large international corporations.\nHowever, challenges persist. Greenwashing, where companies falsely market their activities as environmentally friendly, confuses consumers and dilutes the ethical principles of true ecotourism. Furthermore, achieving an equitable balance between conservation mandates (which may restrict access) and community needs (which require economic income) often presents local governance conflicts. Education and certification schemes are essential tools for ensuring transparency and maintaining the integrity of the movement. Ultimately, the long-term viability of ecotourism depends on the collaborative efforts of governments, operators, and informed travelers.`
+            },
+            { id: 1, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'What can be inferred about the primary goal of ecotourism?', options: ['A. It is limited to maximizing tourist profits in developing nations.', 'B. It aims to make natural areas profitable while ensuring their preservation.', 'C. It exclusively funds research by international conservation groups.', 'D. It prohibits all forms of human infrastructure in natural reserves.', 'E. It relies mainly on government subsidies and taxes.'] },
+            { id: 2, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The author’s main purpose in describing \'greenwashing\' is to ______.', options: ['A. show that all tourism companies are inherently deceptive.', 'B. encourage consumers to spend more money on travel.', 'C. highlight an ongoing challenge to the ethical implementation of ecotourism.', 'D. argue that certification schemes are unnecessary for travelers.', 'E. compare the principles of conservation and economic benefit.'] },
+            { id: 3, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'Which statement best reflects the author’s attitude toward the concept of ecotourism?', options: ['A. It is a temporary trend that will eventually fade.', 'B. It is a practical and necessary model, despite facing hurdles.', 'C. It is overly idealistic and conflicts with economic reality.', 'D. It is a niche idea irrelevant to the major global travel industry.', 'E. It is chaotic and inconsistent among different countries.'] },
+            { id: 4, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'Why might sound be considered the most practical form of communication for dolphins?', options: ['A. It allows communication over great distances underwater.', 'B. It helps them identify colors and shapes in the ocean.', 'C. It prevents them from needing to see predators.', 'D. It can be transmitted only through surface vibrations.', 'E. It is used to release pheromones effectively.'] },
+            { id: 5, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The passage suggests that birdsong serves a dual purpose because it _____.', options: ['A. is used only for attracting mates', 'B. varies depending on emotional tone', 'C. can both warn others and claim territory', 'D. is similar in all species', 'E. occurs only during daylight'] },
+            { id: 6,
