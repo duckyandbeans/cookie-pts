@@ -6,15 +6,14 @@
     <title>X Grade Mock Exam Practice</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        body { font-family: sans-serif; background-color: #f7f9fb; }
         .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
         .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
         .selected { border-color: #4f46e5; background-color: #e0e7ff; }
         .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
         .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1rem; background-color: #ffffff; margin-bottom: 2rem; }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -32,12 +31,11 @@
         <main id="quiz-container" class="space-y-8">
             </main>
 
-        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden fade-in">
+        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden">
             <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
             <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
             <p class="text-sm text-gray-500 mt-2">Review your answers using the color-coded feedback above.</p>
         </div>
-
     </div>
 
     <script>
@@ -53,7 +51,7 @@
                 id: 'passage', 
                 type: 'reading_passage', 
                 title: 'Reading Passage: The Global Rise of Ecotourism', 
-                content: `Ecotourism, defined as responsible travel to natural areas that conserves the environment and improves the well-being of local people, has shifted from a niche concept to a major driver in the global travel industry. Central to this transformation is the understanding that natural environments are valuable economic assets only when their long-term health is guaranteed. This realization has prompted international bodies, including the United Nations, to promote sustainable practices vigorously.\nThe success of ecotourism hinges on several key elements. First, it requires minimizing the negative environmental impact of tourism activities, such as reducing waste and limiting infrastructure development in sensitive areas. Second, it must generate financial benefits for the protection of natural areas and for the local communities residing near them. This is often achieved through direct employment, educational initiatives, and funding for conservation efforts. In contrast, traditional mass tourism often results in leakage, where a significant portion of the money spent by tourists is directed out of the local economy to large international corporations.\nHowever, challenges persist. Greenwashing, where companies falsely market their activities as environmentally friendly, confuses consumers and dilutes the ethical principles of true ecotourism. Furthermore, achieving an equitable balance between conservation mandates (which may restrict access) and community needs (which require economic income) often presents local governance conflicts. Education and certification schemes are essential tools for ensuring transparency and maintaining the integrity of the movement. Ultimately, the long-term viability of ecotourism depends on the collaborative efforts of governments, operators, and informed travelers.`
+                content: `Ecotourism, defined as responsible travel to natural areas that conserves the environment and improves the well-being of local people, has shifted from a niche concept to a major driver in the global travel industry. Central to this transformation is the understanding that natural environments are valuable economic assets only when their long-term health is guaranteed. This realization has prompted international bodies, including the United Nations, to promote sustainable practices vigorously.<br><br>The success of ecotourism hinges on several key elements. First, it requires minimizing the negative environmental impact of tourism activities, such as reducing waste and limiting infrastructure development in sensitive areas. Second, it must generate financial benefits for the protection of natural areas and for the local communities residing near them. This is often achieved through direct employment, educational initiatives, and funding for conservation efforts. In contrast, traditional mass tourism often results in leakage, where a significant portion of the money spent by tourists is directed out of the local economy to large international corporations.<br><br>However, challenges persist. Greenwashing, where companies falsely market their activities as environmentally friendly, confuses consumers and dilutes the ethical principles of true ecotourism. Furthermore, achieving an equitable balance between conservation mandates (which may restrict access) and community needs (which require economic income) often presents local governance conflicts. Education and certification schemes are essential tools for ensuring transparency and maintaining the integrity of the movement. Ultimately, the long-term viability of ecotourism depends on the collaborative efforts of governments, operators, and informed travelers.`
             },
             { id: 1, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'What can be inferred about the primary goal of ecotourism?', options: ['A. It is limited to maximizing tourist profits in developing nations.', 'B. It aims to make natural areas profitable while ensuring their preservation.', 'C. It exclusively funds research by international conservation groups.', 'D. It prohibits all forms of human infrastructure in natural reserves.', 'E. It relies mainly on government subsidies and taxes.'] },
             { id: 2, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The author’s main purpose in describing \'greenwashing\' is to ______.', options: ['A. show that all tourism companies are inherently deceptive.', 'B. encourage consumers to spend more money on travel.', 'C. highlight an ongoing challenge to the ethical implementation of ecotourism.', 'D. argue that certification schemes are unnecessary for travelers.', 'E. compare the principles of conservation and economic benefit.'] },
@@ -61,23 +59,23 @@
             { id: 4, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'Why might sound be considered the most practical form of communication for dolphins?', options: ['A. It allows communication over great distances underwater.', 'B. It helps them identify colors and shapes in the ocean.', 'C. It prevents them from needing to see predators.', 'D. It can be transmitted only through surface vibrations.', 'E. It is used to release pheromones effectively.'] },
             { id: 5, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The passage suggests that birdsong serves a dual purpose because it _____.', options: ['A. is used only for attracting mates', 'B. varies depending on emotional tone', 'C. can both warn others and claim territory', 'D. is similar in all species', 'E. occurs only during daylight'] },
             { id: 6, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'What conclusion can be drawn from the description of \'leakage\' in the passage?', options: ['A. Ecotourism is designed to maximize leakage for foreign investors.', 'B. Traditional mass tourism often fails to support local economies effectively.', 'C. Leakage is a key element of sustainable economic development.', 'D. Local communities rarely benefit from any form of tourism.', 'E. The United Nations strictly prohibits leakage in all travel markets.'] },
-            { id: 7, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The word "viability" in the final sentence most closely means the ability to 
-
-[Image of a sustainable solar power farm]
-.', options: ['A. increase profits exponentially', 'B. remain controversial and exclusive', 'C. adapt quickly to political changes', 'D. sustain success over a long period', 'E. rely solely on government funding'] },
-            { id: 8, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'If companies falsely market their activities as eco-friendly, the phrasal verb that best replaces "falsely market" in this context is .', options: ['A. turn up', 'B. carry out', 'C. put off', 'D. make up', 'E. call off'] },
+            { id: 7, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The word "viability" in the final sentence most closely means the ability to...', options: ['A. increase profits exponentially', 'B. remain controversial and exclusive', 'C. adapt quickly to political changes', 'D. sustain success over a long period', 'E. rely solely on government funding'] },
+            { id: 8, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'If companies falsely market their activities as eco-friendly, the phrasal verb that best replaces "falsely market" in this context is...', options: ['A. turn up', 'B. carry out', 'C. put off', 'D. make up', 'E. call off'] },
             { id: 9, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'The successful implementation of ecotourism requires a compromise between _____.', options: ['A. maximizing profits and attracting more tourists', 'B. local governance conflicts and international bodies', 'C. restricting access for conservation and ensuring local economic income', 'D. reducing waste and limiting all infrastructure development', 'E. international bodies and international corporations'] },
             { id: 10, type: 'multiple_choice', section: 'A. Reading Comprehension', question: 'What overall recommendation does the writer give regarding the success of ecotourism?', options: ['A. Focus exclusively on international government funding.', 'B. Prioritize reducing infrastructure development above all else.', 'C. Avoid involving local communities to maintain conservation integrity.', 'D. Encourage collaborative effort among all stakeholders.', 'E. Rely strictly on traditional mass tourism models.'] },
+            
             { id: 11, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: 'If the 2024 general election ___ next month, almost twice as many people say they ___ for the current incumbent as for the primary opposition candidate.', options: ['A. were held / would vote', 'B. was held / would have voted', 'C. is held / will vote', 'D. had been held / would vote', 'E. would hold / voted'] },
             { id: 12, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: 'If you ___ someone dear to you with chronic pain, ___ them to ask their specialist about alternative therapy options.', options: ['A. have / encourage', 'B. have had / encouraging', 'C. had / encourage', 'D. know / encourage', 'E. had known / encouraged'] },
             { id: 13, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: 'If I ___ in your situation last week, I ___ that she should deal with the financial problems herself.', options: ['A. were / would tell', 'B. am / will tell', 'C. was / would tell', 'D. had been / would have told', 'E. had been / would tell'] },
             { id: 14, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: 'If they ___ the technology to your organization last year, they ___ already seeing the benefits now.', options: ['A. had sold / may see', 'B. had sold / might be seeing', 'C. sold / would see', 'D. sold / might see', 'E. have sold / might have seen'] },
             { id: 15, type: 'multiple_choice', section: 'B. Conditionals and Tense', question: '___, the team would have won the championship easily.', options: ['A. If the rain had not started', 'B. Unless they had changed their strategy', 'C. Had the star player not sustained the injury', 'D. If the coach has made an earlier substitution', 'E. Should the opponent play poorly'] },
+
             { id: 16, type: 'multiple_choice', section: 'C. Word Formation', question: 'Creative expression has always been a powerful form of human connection. Every (16) ___ (ART) hopes to touch people’s hearts through their creations.', options: ['A. artistry', 'B. artist', 'C. artistic', 'D. artful', 'E. artistically'] },
             { id: 17, type: 'multiple_choice', section: 'C. Word Formation', question: '...and each masterpiece carries a deep (17) ___ (MEAN) that reflects emotion, culture, and imagination.', options: ['A. meaning', 'B. meaningful', 'C. mean', 'D. meaningfully', 'E. meaningless'] },
             { id: 18, type: 'multiple_choice', section: 'C. Word Formation', question: 'When people admire a painting or listen to music, they often experience feelings of encouragement or even (18) ___ (SAD).', options: ['A. sadly', 'B. sadness', 'C. sad', 'D. sadnesses', 'E. sadden'] },
             { id: 19, type: 'multiple_choice', section: 'C. Word Formation', question: 'Their ability to transform simple ideas into beauty requires both talent and endless (19) ___ (PATIENT).', options: ['A. patient', 'B. patience', 'C. patiently', 'D. impatience', 'E. impatient'] },
             { id: 20, type: 'multiple_choice', section: 'C. Word Formation', question: 'Along the way, they face challenges that demand (20) ___ (PERSEVERE) and hard work.', options: ['A. persevering', 'B. persevere', 'C. persevered', 'D. perseverance', 'E. perseveringly'] },
+
             { id: 21, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: 'The study of substances, their composition, and reactions—known as ___ (21)—has led to the creation of medicines and countless materials we use daily.', options: ['A. Chemistry', 'B. dermatology', 'C. meteorology', 'D. ecology', 'E. physics'] },
             { id: 22, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: 'Understanding how the human heart, lungs, and brain interact belongs to the field of ___ (22), a discipline essential to both medicine and sports science.', options: ['A. Ornithology', 'B. zoology', 'C. physiology', 'D. dermatology', 'E. Microbiology'] },
             { id: 23, type: 'multiple_choice', section: 'D. Specialized Vocabulary and Modals', question: 'As the planet faces unpredictable weather patterns, experts in ___ (23) work tirelessly to forecast hurricanes and rising global temperatures.', options: ['A. Ornithology', 'B. meteorology', 'C. microbiology', 'D. ecology', 'E. physiology'] },
@@ -96,7 +94,6 @@
 
         function renderQuiz() {
             quizContainer.innerHTML = '';
-            
             QUIZ_DATA.forEach(item => {
                 if (item.section && item.section !== currentSectionTitle) {
                     currentSectionTitle = item.section;
@@ -108,7 +105,7 @@
                         <div class="mb-8 p-6 bg-gray-50 rounded-xl shadow-inner">
                             <h3 class="text-xl font-semibold mb-3 text-gray-800">${item.title}</h3>
                             <div class="passage-container text-gray-700 text-sm sm:text-base leading-relaxed">
-                                <p>${item.content.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>
+                                <p>${item.content}</p>
                             </div>
                         </div>
                     `;
@@ -141,12 +138,11 @@
 
             attachEventListeners();
         }
-        
+
         function createOptionHtml(qId, letter, text) {
-            const cleanedText = text.replace(/\$\$/g, ''); 
             return `
                 <div class="quiz-option p-3 rounded-lg border-2 border-gray-300 flex items-center" data-question="${qId}" data-answer="${letter}">
-                    <span class="text-sm font-semibold text-gray-800">${cleanedText}</span>
+                    <span class="text-sm font-semibold text-gray-800">${text}</span>
                 </div>
             `;
         }
@@ -155,7 +151,6 @@
             document.querySelectorAll('.quiz-option').forEach(option => {
                 option.addEventListener('click', handleOptionClick);
             });
-            document.getElementById('results-section').classList.add('hidden');
         }
 
         function handleOptionClick(event) {
@@ -163,11 +158,7 @@
             const qId = selectedOption.dataset.question;
             const answerLetter = selectedOption.dataset.answer;
             const container = selectedOption.closest(`[data-question-id="${qId}"]`);
-            
-            container.querySelectorAll('.quiz-option').forEach(option => {
-                option.classList.remove('selected', 'correct', 'incorrect');
-            });
-
+            container.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('selected', 'correct', 'incorrect'); });
             selectedOption.classList.add('selected');
             userAnswers[qId] = answerLetter;
         }
@@ -175,38 +166,27 @@
         function checkAllAnswers() {
             let correctCount = 0;
             let totalQuestions = 0;
-
             for (const qId in CORRECT_ANSWERS) {
                 totalQuestions++;
                 const correctAnswer = CORRECT_ANSWERS[qId];
                 const userAnswer = userAnswers[qId];
                 const questionCard = document.getElementById(`q-${qId}`);
-                
                 if (!questionCard) continue;
-
                 const optionsContainer = questionCard.querySelector(`[data-question-id="${qId}"]`);
-                optionsContainer.querySelectorAll('.quiz-option').forEach(option => {
-                    option.classList.remove('correct', 'incorrect', 'selected');
-                });
-                
+                optionsContainer.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('correct', 'incorrect', 'selected'); });
                 if (userAnswer) {
                     const isCorrect = userAnswer === correctAnswer;
                     const selectedOption = optionsContainer.querySelector(`[data-answer="${userAnswer}"]`);
-                    
                     if (selectedOption) {
                         selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
                         if (isCorrect) correctCount++;
                     }
                 }
-
                 if (userAnswers[qId] !== correctAnswer) {
                     const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
-                    if (correctOption) {
-                        correctOption.classList.add('correct');
-                    }
+                    if (correctOption) correctOption.classList.add('correct');
                 }
             }
-
             const scoreDisplay = document.getElementById('score-display');
             const resultsSection = document.getElementById('results-section');
             scoreDisplay.textContent = `${correctCount} / ${totalQuestions} (${((correctCount / totalQuestions) * 100).toFixed(1)}%)`;
@@ -214,8 +194,7 @@
             resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        window.onload = renderQuiz;
+        document.addEventListener('DOMContentLoaded', renderQuiz);
     </script>
-
 </body>
 </html>
