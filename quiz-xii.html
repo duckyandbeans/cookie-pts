@@ -1,199 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced XII Grade Mock Exam Quiz</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
-        .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
-        .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
-        .selected { border-color: #4f46e5; background-color: #e0e7ff; }
-        .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
-        .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1rem; background-color: #ffffff; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced XII Grade Mock Exam Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
+        .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
+        .selected { border-color: #4f46e5; background-color: #e0e7ff; }
+        .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1rem; background-color: #ffffff; margin-bottom: 2rem; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body class="p-4 sm:p-8">
 
-    <div class="max-w-4xl mx-auto">
-        <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold mb-6">
-            &larr; Back to Home Menu
-        </a>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold mb-6">
+            &larr; Back to Home Menu
+        </a>
 
-        <header class="text-center mb-10 p-6 bg-indigo-600 text-white rounded-xl shadow-lg">
-            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">XII Grade Mock Exam Practice (Advanced) - Revised</h1>
-            <p class="text-lg font-light mt-1 opacity-90">Quantum Computing, Vocabulary, and Advanced Grammar</p>
-        </header>
+        <header class="text-center mb-10 p-6 bg-indigo-600 text-white rounded-xl shadow-lg">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">XII Grade Mock Exam Practice (Advanced) - Revised</h1>
+            <p class="text-lg font-light mt-1 opacity-90">Quantum Computing, Vocabulary, and Advanced Grammar</p>
+        </header>
 
-        <main id="quiz-container" class="space-y-8">
-            </main>
+        <main id="quiz-container" class="space-y-8"></main>
 
-        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden fade-in">
-            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
-            <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
-            <p class="text-sm text-gray-500 mt-2">Check the colored boxes above for question-by-question feedback.</p>
-        </div>
-    </div>
+        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
+            <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
+            <p class="text-sm text-gray-500 mt-2">Check the colored boxes above for question-by-question feedback.</p>
+        </div>
+    </div>
 
-    <script>
-        const CORRECT_ANSWERS = {
-            1: 'B', 2: 'C', 3: 'A', 4: 'C', 5: 'D', 6: 'B', 7: 'C', 8: 'C', 9: 'D', 10: 'C',
-            11: 'B', 12: 'B', 13: 'C', 14: 'D', 15: 'B', 16: 'D', 17: 'E', 18: 'A', 19: 'D', 20: 'D',
-            21: 'C', 22: 'D', 23: 'C', 24: 'D', 25: 'C', 26: 'C', 27: 'D', 28: 'B', 29: 'C', 30: 'D',
-            31: 'C', 32: 'B', 33: 'C', 34: 'C', 35: 'C', 36: 'D', 37: 'C', 38: 'B', 39: 'B', 40: 'C'
-        };
+    <script>
+        const CORRECT_ANSWERS = {
+            1: 'B', 2: 'C', 3: 'A', 4: 'C', 5: 'D', 6: 'B', 7: 'C', 8: 'C', 9: 'D', 10: 'C',
+            11: 'B', 12: 'B', 13: 'C', 14: 'D', 15: 'B', 16: 'D', 17: 'E', 18: 'A', 19: 'D', 20: 'D',
+            21: 'C', 22: 'D', 23: 'C', 24: 'D', 25: 'C', 26: 'C', 27: 'D', 28: 'B', 29: 'C', 30: 'D',
+            31: 'C', 32: 'B', 33: 'C', 34: 'C', 35: 'C', 36: 'D', 37: 'C', 38: 'B', 39: 'B', 40: 'C'
+        };
 
-        const QUIZ_DATA = [
-            { id: 'passage1', type: 'reading_passage', title: 'Reading Comprehension Passage 1: Quantum Computing Fundamentals', content: `The rapid development of Quantum Computing (QC) is fundamentally reshaping the technological landscape. Initially perceived as a theoretical concept, quantum systems are now achieving feats impossible for classical supercomputers, offering unprecedented speed in optimization and simulation. While proponents hail QC’s potential to revolutionize material science and drug discovery, the transformation is not without its critics.<br><br>A core debate revolves around the future feasibility of widespread adoption. Some suggest QC could immediately displace all classical computation, but a more widely accepted view is that QC should augment, not supplant, current high-performance computing. Quantum computers are proving particularly effective in tasks involving complex probability, cryptography, and molecular modeling, thus freeing up classical systems to focus on routine data processing and human interaction.<br><br>The ethical considerations of using QC are also paramount. Concerns include national security implications, the potential for a 'quantum divide' where nations or corporations with QC power hold an asymmetrical advantage, and the environmental cost of cooling the necessary hardware to near-absolute zero. Successful implementation requires careful policy development to ensure security and accessibility.<br><br>Ultimately, the goal is not simply to achieve faster computation, but to leverage QC to solve problems currently considered intractable, creating a more sustainable and scientifically advanced future. It demands ongoing investment in research and open collaboration among all international stakeholders.`},
-            { id: 1, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'The widely accepted view is that Quantum Computing should immediately displace all classical computation.', options: ['A. TRUE', 'B. FALSE', 'C. NOT GIVEN', 'D. ONLY TRUE FOR CRYPTOGRAPHY', 'E. ONLY FALSE FOR DATA PROCESSING'] },
-            { id: 2, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'The cooling requirements for quantum computers are less demanding than for classical supercomputers.', options: ['A. TRUE', 'B. FALSE', 'C. NOT GIVEN', 'D. ONLY TRUE FOR FIBER OPTICS', 'E. ONLY FALSE FOR SUPERCONDUCTORS'] },
-            { id: 3, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'The successful integration of Quantum Computing requires ongoing investment in research.', options: ['A. TRUE', 'B. FALSE', 'C. NOT GIVEN', 'D. ONLY TRUE FOR MILITARY APPLICATIONS', 'E. ONLY FALSE FOR UNIVERSITY LABS'] },
-            { id: 4, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What is the main idea of the first paragraph?', options: ['A. QC is a theoretical concept criticized by all scientists.', 'B. The transformation to QC is solely driven by optimization and simulation speed.', 'C. The rapid development of QC is fundamentally reshaping technology through unprecedented speed and specialization.', 'D. The only use for QC is routine data processing for corporations.', 'E. Critics have successfully stopped the adoption of QC in most labs.'] },
-            { id: 5, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What can be inferred about the tasks classical systems are not primarily responsible for in the quantum era?', options: ['A. Molecular modeling and complex probability.', 'B. Providing instant optimization results.', 'C. Automating data analysis tasks.', 'D. Tasks involving routine data processing and human interaction.', 'E. Generating practice problems for core subjects.'] },
-            { id: 6, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'How does the third paragraph relate to the second paragraph?', options: ['A. It contrasts the effectiveness of QC in complex probability with its failure in routine processing.', 'B. It introduces the security and accessibility requirements needed to manage the challenges of QC adoption.', 'C. It provides a new argument suggesting QC is too environmentally costly to be used effectively.', 'D. It criticizes the focus on material science mentioned in the previous section.', 'E. It argues that environmental cost is less important than national security.'] },
-            { id: 7, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What specific ethical concern is highlighted in paragraph three?', options: ['A. The high cost of manufacturing qubits.', 'B. The potential for scientists to become overly reliant on technology.', 'C. The possibility of a \'quantum divide\' and national security implications.', 'D. The lack of funding available for continued QC research.', 'E. The failure of QC to effectively simulate chemical reactions.'] },
-            { id: 8, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What specific benefit does the passage mention QC is effective at providing?', options: ['A. Offering developers higher salaries for using the technology.', 'B. Allowing governments to completely avoid difficult policy decisions.', 'C. Freeing up classical systems to focus on routine tasks and human interaction.', 'D. Guaranteeing that all users achieve the highest possible encryption level.', 'E. Eliminating the need for any form of network security.'] },
-            { id: 9, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What does the author suggest about international collaboration?', options: ['A. It must be created exclusively by technology developers.', 'B. It should focus narrowly on controlling data usage.', 'C. It is only required in labs located in low-income communities.', 'D. It is essential for achieving the ultimate goal of solving intractable problems.', 'E. It can be replaced entirely by ongoing governmental policy development.'] },
-            { id: 10, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What is the tone of the passage on Quantum Computing in science?', options: ['A. Enthusiastic and aggressively promotional.', 'B. Measured and critical of all new technology.', 'C. Balanced and analytical regarding potential and challenges.', 'D. Humorous and light-hearted about serious issues.', 'E. Pessimistic and deeply skeptical of future success.'] },
-            { id: 'passage2', type: 'reading_passage', title: 'Reading Comprehension Passage 2: The Threat to Cryptography', content: `The threat posed by quantum computers to current cryptographic standards, once a theoretical concern, has become a pressing global issue, accelerated by the rapid advances in qubit stability. This shift offers an opportunity for a complete overhaul of security, forcing many systems to adopt 'post-quantum cryptography' (PQC) and avoid potential catastrophic data breaches. National security agencies benefit from the mandate to consolidate outdated systems and gain access to a wider, globally tested range of secure algorithms.<br><br>However, the transition presents new implementation challenges. Ensuring seamless backward compatibility with legacy systems can be difficult when underlying mathematical principles are primarily digital. Furthermore, the blurring of lines between academic research and government intelligence can lead to over-regulation and a chilling effect on open-source development for researchers who struggle to share non-classified findings. Developers must implement clear migration protocols and establish standards to ensure security and accessibility are maintained. The long-term success of PQC hinges on the effective deployment of new, robust algorithms and a cultural commitment to proactive defense over reactive patching.`},
-            { id: 11, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'Which inference can best be drawn about the primary driver of the shift to post-quantum cryptography?', options: ['A. The desire of companies to save money on reduced security costs.', 'B. The necessity imposed by rapid improvements in qubit stability.', 'C. The gradual improvement of video conferencing technology.', 'D. Government subsidies encouraging systems to adopt PQC.', 'E. A significant increase in the cost of current encryption hardware.'] },
-            { id: 12, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'Considering both paragraphs, what conclusion best reflects the relationship between PQC adoption and open-source development?', options: ['A. PQC automatically improves open-source sharing by providing flexibility.', 'B. The blurred lines between academia and government can lead to over-regulation and a chilling effect on open development.', 'C. Open-source development is not a primary concern for PQC implementers.', 'D. The elimination of current cryptographic standards is the single most important factor for good security.', 'E. Over-regulation is only an issue for developers who struggle with mathematics.'] },
-            { id: 13, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'What measure is explicitly mentioned as a requirement for developers to maintain security and accessibility?', options: ['A. Providing free unlimited lunch deliveries to all remote staff.', 'B. Mandating all employees take a one-hour midday nap.', 'C. Implementing clear migration protocols and establishing standards.', 'D. Increasing the number of mandatory weekly team-building meetings.', 'E. Requiring that all work-related communication stops completely after 3 PM.'] },
-            { id: 14, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'What is the key factor upon which the long-term success of post-quantum security models depends?', options: ['A. Securing massive reductions in global computation prices.', 'B. A return to mandatory office attendance for all new hires.', 'C. Eliminating the need for any kind of new mathematical algorithm.', 'D. A cultural commitment to proactive defense over reactive patching and effective algorithm deployment.', 'E. The complete abolition of all existing security protocols.'] },
-            { id: 15, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'What is the main idea of the first paragraph about the quantum threat?', options: ['A. It is a temporary trend caused by new tax incentives.', 'B. The shift to PQC, accelerated by quantum advances, benefits both security systems and national agencies.', 'C. The only real benefit of PQC is allowing systems to avoid network congestion.', 'D. Companies benefit more from the shift than individual users do.', 'E. PQC was always mainstream but went unnoticed until recently.'] },
-            { id: 16, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'The scientific community worked to __________ a new material with unique electrical properties by combining existing elements.', options: ['A. hinder', 'B. amass', 'C. obfuscate', 'D. synthesize', 'E. bear'] },
-            { id: 17, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'A sudden failure in the cooling system threatened to __________ the athlete\'s chances of competing in the final event.', options: ['A. clarify', 'B. commence', 'C. enhance', 'D. amass', 'E. invalidate'] },
-            { id: 18, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'The lecture helped to __________ the complex principles of quantum superposition for the undergraduate students.', options: ['A. clarify', 'B. commence', 'C. synthesize', 'D. block', 'E. caution'] },
-            { id: 19, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'They were instructed to __________ all the raw experimental measurements into a single, secure database before the audit.', options: ['A. dispense', 'B. hinder', 'C. commence', 'D. consolidate', 'E. blur'] },
-            { id: 20, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'Once the funding was secured, the lab could finally __________ the new phase of cryptographic trials.', options: ['A. dispel', 'B. amass', 'C. challenge', 'D. initiate', 'E. baffle'] },
-            { id: 21, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'By the time the security system was upgraded, the company __________ outdated protocols for several months, causing a major vulnerability.', options: ['A. will have been using', 'B. has been using', 'C. had been using', 'D. is using', 'E. were using'] },
-            { id: 22, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'The physicists noticed that the qubits __________ when the power failure unexpectedly occurred, but the entanglement was not lost.', options: ['A. have been monitoring', 'B. are monitoring', 'C. monitor', 'D. were monitoring', 'E. had monitored'] },
-            { id: 23, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'Every time the algorithm automatically __________ the decryption, the computation takes less than a millisecond.', options: ['A. ran', 'B. has run', 'C. runs', 'D. is running', 'E. had run'] },
-            { id: 24, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'We __________ the final white paper on quantum key distribution by the end of next fiscal quarter, so the deadline is firm.', options: ['A. are submitting', 'B. will submit', 'C. submits', 'D. will have submitted', 'E. submitted'] },
-            { id: 25, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'I sincerely apologize for the delay in the transfer; I __________ to execute the transaction earlier, but the network was down.', options: ['A. am intending', 'B. have intended', 'C. had intended', 'D. was intending', 'E. intend'] },
-            { id: 26, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'To prevent unauthorized access, all researchers __________ sign a non-disclosure agreement immediately upon entering the facility.', options: ['A. should', 'B. ought to', 'C. must', 'D. have to', 'E. need to'] },
-            { id: 27, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'If you want to increase your data security, you __________ implement two-factor authentication on all your accounts.', options: ['A. must', 'B. need', 'C. ought to', 'D. should', 'E. have to'] },
-            { id: 28, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'The national protocol states that all classified documents __________ be stored in a secured vault immediately after use.', options: ['A. should', 'B. must', 'C. ought to', 'D. need to', 'E. are'] },
-            { id: 29, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'If you plan to work in the field of quantum physics, you __________ possess an advanced degree in mathematics to be eligible.', options: ['A. ought', 'B. should', 'C. must', 'D. need', 'E. have'] },
-            { id: 30, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'To effectively counter future threats, cryptographic systems __________ evolve constantly to anticipate new attack vectors.', options: ['A. ought to', 'B. should', 'C. have to', 'D. must', 'E. need'] },
-            { id: 31, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'The committee unanimously agreed __________ the budget for the new supercomputer until the final project proposal was submitted.', options: ['A. postponing', 'B. postpone', 'C. to approve', 'D. to be postponing', 'E. having postponed'] },
-            { id: 32, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'The CEO denied __________ any prior knowledge of the security vulnerability, claiming the news was fabricated.', options: ['A. to reveal', 'B. receiving', 'C. receive', 'D. to be revealing', 'E. to have revealed'] },
-            { id: 33, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'I can’t afford __________ in high-risk crypto assets right now; I need to focus on stability and saving.', options: ['A. buying', 'B. buy', 'C. to invest', 'D. to be buying', 'E. having bought'] },
-            { id: 34, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'The developer kept __________ the code for hours, even after finding the main error, because he suspected a subtle memory leak.', options: ['A. to repeat', 'B. repeat', 'C. repeating', 'D. debugging', 'E. to have repeated'] },
-            { id: 35, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'The project manager postponed __________ the final review meeting until the test results were fully validated.', options: ['A. to announce', 'B. announce', 'C. scheduling', 'D. to be announcing', 'E. to have announced'] },
-            { id: 36, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'If the team had not discovered the loophole, the proprietary data __________ so compromised today.', options: ['A. would have been', 'B. will be', 'C. is', 'D. would be compromised', 'E. has been'] },
-            { id: 37, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'Unless the new security patch is deployed immediately, the network __________ to external attacks.', options: ['A. was', 'B. is', 'C. will be vulnerable', 'D. remained', 'E. had remained'] },
-            { id: 38, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'The groundbreaking quantum experiment __________ by the research institute last month and received worldwide attention.', options: ['A. has performed', 'B. was performed', 'C. performed', 'D. is performing', 'E. has been performing'] },
-            { id: 39, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'The new encryption standard __________ by the international body after extensive testing and has been deployed globally.', options: ['A. has adopted', 'B. was adopted', 'C. adopted', 'D. is adopting', 'E. had adopted'] },
-            { id: 40, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'All existing cryptographic keys __________ by the compliance team by the end of the next quarter, according to the new mandate.', options: ['A. will complete', 'B. are completing', 'C. will be rotated', 'D. have completed', 'E. had been completed'] }
-        ];
+        const QUIZ_DATA = [
+            { id: 'passage1', type: 'reading_passage', title: 'Reading Comprehension Passage 1: Quantum Computing Fundamentals', content: `The rapid development of Quantum Computing (QC) is fundamentally reshaping the technological landscape. Initially perceived as a theoretical concept, quantum systems are now achieving feats impossible for classical supercomputers, offering unprecedented speed in optimization and simulation. While proponents hail QC’s potential to revolutionize material science and drug discovery, the transformation is not without its critics.<br><br>A core debate revolves around the future feasibility of widespread adoption. Some suggest QC could immediately displace all classical computation, but a more widely accepted view is that QC should augment, not supplant, current high-performance computing. Quantum computers are proving particularly effective in tasks involving complex probability, cryptography, and molecular modeling, thus freeing up classical systems to focus on routine data processing and human interaction.<br><br>The ethical considerations of using QC are also paramount. Concerns include national security implications, the potential for a 'quantum divide' where nations or corporations with QC power hold an asymmetrical advantage, and the environmental cost of cooling the necessary hardware to near-absolute zero. Successful implementation requires careful policy development to ensure security and accessibility.<br><br>Ultimately, the goal is not simply to achieve faster computation, but to leverage QC to solve problems currently considered intractable, creating a more sustainable and scientifically advanced future. It demands ongoing investment in research and open collaboration among all international stakeholders.`},
+            { id: 1, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'The widely accepted view is that Quantum Computing should immediately displace all classical computation.', options: ['A. TRUE', 'B. FALSE', 'C. NOT GIVEN', 'D. ONLY TRUE FOR CRYPTOGRAPHY', 'E. ONLY FALSE FOR DATA PROCESSING'] },
+            { id: 2, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'The cooling requirements for quantum computers are less demanding than for classical supercomputers.', options: ['A. TRUE', 'B. FALSE', 'C. NOT GIVEN', 'D. ONLY TRUE FOR FIBER OPTICS', 'E. ONLY FALSE FOR SUPERCONDUCTORS'] },
+            { id: 3, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'The successful integration of Quantum Computing requires ongoing investment in research.', options: ['A. TRUE', 'B. FALSE', 'C. NOT GIVEN', 'D. ONLY TRUE FOR MILITARY APPLICATIONS', 'E. ONLY FALSE FOR UNIVERSITY LABS'] },
+            { id: 4, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What is the main idea of the first paragraph?', options: ['A. QC is a theoretical concept criticized by all scientists.', 'B. The transformation to QC is solely driven by optimization and simulation speed.', 'C. The rapid development of QC is fundamentally reshaping technology through unprecedented speed and specialization.', 'D. The only use for QC is routine data processing for corporations.', 'E. Critics have successfully stopped the adoption of QC in most labs.'] },
+            { id: 5, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What can be inferred about the tasks classical systems are not primarily responsible for in the quantum era?', options: ['A. Molecular modeling and complex probability.', 'B. Providing instant optimization results.', 'C. Automating data analysis tasks.', 'D. Tasks involving routine data processing and human interaction.', 'E. Generating practice problems for core subjects.'] },
+            { id: 6, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'How does the third paragraph relate to the second paragraph?', options: ['A. It contrasts the effectiveness of QC in complex probability with its failure in routine processing.', 'B. It introduces the security and accessibility requirements needed to manage the challenges of QC adoption.', 'C. It provides a new argument suggesting QC is too environmentally costly to be used effectively.', 'D. It criticizes the focus on material science mentioned in the previous section.', 'E. It argues that environmental cost is less important than national security.'] },
+            { id: 7, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What specific ethical concern is highlighted in paragraph three?', options: ['A. The high cost of manufacturing qubits.', 'B. The potential for scientists to become overly reliant on technology.', 'C. The possibility of a \'quantum divide\' and national security implications.', 'D. The lack of funding available for continued QC research.', 'E. The failure of QC to effectively simulate chemical reactions.'] },
+            { id: 8, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What specific benefit does the passage mention QC is effective at providing?', options: ['A. Offering developers higher salaries for using the technology.', 'B. Allowing governments to completely avoid difficult policy decisions.', 'C. Freeing up classical systems to focus on routine tasks and human interaction.', 'D. Guaranteeing that all users achieve the highest possible encryption level.', 'E. Eliminating the need for any form of network security.'] },
+            { id: 9, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What does the author suggest about international collaboration?', options: ['A. It must be created exclusively by technology developers.', 'B. It should focus narrowly on controlling data usage.', 'C. It is only required in labs located in low-income communities.', 'D. It is essential for achieving the ultimate goal of solving intractable problems.', 'E. It can be replaced entirely by ongoing governmental policy development.'] },
+            { id: 10, type: 'multiple_choice', section: 'Questions 1–10: Quantum Computing Fundamentals', question: 'What is the tone of the passage on Quantum Computing in science?', options: ['A. Enthusiastic and aggressively promotional.', 'B. Measured and critical of all new technology.', 'C. Balanced and analytical regarding potential and challenges.', 'D. Humorous and light-hearted about serious issues.', 'E. Pessimistic and deeply skeptical of future success.'] },
+            { id: 'passage2', type: 'reading_passage', title: 'Reading Comprehension Passage 2: The Threat to Cryptography', content: `The threat posed by quantum computers to current cryptographic standards, once a theoretical concern, has become a pressing global issue, accelerated by the rapid advances in qubit stability. This shift offers an opportunity for a complete overhaul of security, forcing many systems to adopt 'post-quantum cryptography' (PQC) and avoid potential catastrophic data breaches. National security agencies benefit from the mandate to consolidate outdated systems and gain access to a wider, globally tested range of secure algorithms.<br><br>However, the transition presents new implementation challenges. Ensuring seamless backward compatibility with legacy systems can be difficult when underlying mathematical principles are primarily digital. Furthermore, the blurring of lines between academic research and government intelligence can lead to over-regulation and a chilling effect on open-source development for researchers who struggle to share non-classified findings. Developers must implement clear migration protocols and establish standards to ensure security and accessibility are maintained. The long-term success of PQC hinges on the effective deployment of new, robust algorithms and a cultural commitment to proactive defense over reactive patching.`},
+            { id: 11, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'Which inference can best be drawn about the primary driver of the shift to post-quantum cryptography?', options: ['A. The desire of companies to save money on reduced security costs.', 'B. The necessity imposed by rapid improvements in qubit stability.', 'C. The gradual improvement of video conferencing technology.', 'D. Government subsidies encouraging systems to adopt PQC.', 'E. A significant increase in the cost of current encryption hardware.'] },
+            { id: 12, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'Considering both paragraphs, what conclusion best reflects the relationship between PQC adoption and open-source development?', options: ['A. PQC automatically improves open-source sharing by providing flexibility.', 'B. The blurred lines between academia and government can lead to over-regulation and a chilling effect on open development.', 'C. Open-source development is not a primary concern for PQC implementers.', 'D. The elimination of current cryptographic standards is the single most important factor for good security.', 'E. Over-regulation is only an issue for developers who struggle with mathematics.'] },
+            { id: 13, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'What measure is explicitly mentioned as a requirement for developers to maintain security and accessibility?', options: ['A. Providing free unlimited lunch deliveries to all remote staff.', 'B. Mandating all employees take a one-hour midday nap.', 'C. Implementing clear migration protocols and establishing standards.', 'D. Increasing the number of mandatory weekly team-building meetings.', 'E. Requiring that all work-related communication stops completely after 3 PM.'] },
+            { id: 14, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'What is the key factor upon which the long-term success of post-quantum security models depends?', options: ['A. Securing massive reductions in global computation prices.', 'B. A return to mandatory office attendance for all new hires.', 'C. Eliminating the need for any kind of new mathematical algorithm.', 'D. A cultural commitment to proactive defense over reactive patching and effective algorithm deployment.', 'E. The complete abolition of all existing security protocols.'] },
+            { id: 15, type: 'multiple_choice', section: 'Questions 11–15: The Threat to Cryptography', question: 'What is the main idea of the first paragraph about the quantum threat?', options: ['A. It is a temporary trend caused by new tax incentives.', 'B. The shift to PQC, accelerated by quantum advances, benefits both security systems and national agencies.', 'C. The only real benefit of PQC is allowing systems to avoid network congestion.', 'D. Companies benefit more from the shift than individual users do.', 'E. PQC was always mainstream but went unnoticed until recently.'] },
+            { id: 16, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'The scientific community worked to __________ a new material with unique electrical properties by combining existing elements.', options: ['A. hinder', 'B. amass', 'C. obfuscate', 'D. synthesize', 'E. bear'] },
+            { id: 17, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'A sudden failure in the cooling system threatened to __________ the athlete\'s chances of competing in the final event.', options: ['A. clarify', 'B. commence', 'C. enhance', 'D. amass', 'E. invalidate'] },
+            { id: 18, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'The lecture helped to __________ the complex principles of quantum superposition for the undergraduate students.', options: ['A. clarify', 'B. commence', 'C. synthesize', 'D. block', 'E. caution'] },
+            { id: 19, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'They were instructed to __________ all the raw experimental measurements into a single, secure database before the audit.', options: ['A. dispense', 'B. hinder', 'C. commence', 'D. consolidate', 'E. blur'] },
+            { id: 20, type: 'multiple_choice', section: 'Questions 16–20: Vocabulary', question: 'Once the funding was secured, the lab could finally __________ the new phase of cryptographic trials.', options: ['A. dispel', 'B. amass', 'C. challenge', 'D. initiate', 'E. baffle'] },
+            { id: 21, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'By the time the security system was upgraded, the company __________ outdated protocols for several months, causing a major vulnerability.', options: ['A. will have been using', 'B. has been using', 'C. had been using', 'D. is using', 'E. were using'] },
+            { id: 22, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'The physicists noticed that the qubits __________ when the power failure unexpectedly occurred, but the entanglement was not lost.', options: ['A. have been monitoring', 'B. are monitoring', 'C. monitor', 'D. were monitoring', 'E. had monitored'] },
+            { id: 23, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'Every time the algorithm automatically __________ the decryption, the computation takes less than a millisecond.', options: ['A. ran', 'B. has run', 'C. runs', 'D. is running', 'E. had run'] },
+            { id: 24, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'We __________ the final white paper on quantum key distribution by the end of next fiscal quarter, so the deadline is firm.', options: ['A. are submitting', 'B. will submit', 'C. submits', 'D. will have submitted', 'E. submitted'] },
+            { id: 25, type: 'multiple_choice', section: 'Questions 21–25: Tenses & Verb Forms', question: 'I sincerely apologize for the delay in the transfer; I __________ to execute the transaction earlier, but the network was down.', options: ['A. am intending', 'B. have intended', 'C. had intended', 'D. was intending', 'E. intend'] },
+            { id: 26, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'To prevent unauthorized access, all researchers __________ sign a non-disclosure agreement immediately upon entering the facility.', options: ['A. should', 'B. ought to', 'C. must', 'D. have to', 'E. need to'] },
+            { id: 27, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'If you want to increase your data security, you __________ implement two-factor authentication on all your accounts.', options: ['A. must', 'B. need', 'C. ought to', 'D. should', 'E. have to'] },
+            { id: 28, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'The national protocol states that all classified documents __________ be stored in a secured vault immediately after use.', options: ['A. should', 'B. must', 'C. ought to', 'D. need to', 'E. are'] },
+            { id: 29, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'If you plan to work in the field of quantum physics, you __________ possess an advanced degree in mathematics to be eligible.', options: ['A. ought', 'B. should', 'C. must', 'D. need', 'E. have'] },
+            { id: 30, type: 'multiple_choice', section: 'Questions 26–30: Modals', question: 'To effectively counter future threats, cryptographic systems __________ evolve constantly to anticipate new attack vectors.', options: ['A. ought to', 'B. should', 'C. have to', 'D. must', 'E. need'] },
+            { id: 31, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'The committee unanimously agreed __________ the budget for the new supercomputer until the final project proposal was submitted.', options: ['A. postponing', 'B. postpone', 'C. to approve', 'D. to be postponing', 'E. having postponed'] },
+            { id: 32, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'The CEO denied __________ any prior knowledge of the security vulnerability, claiming the news was fabricated.', options: ['A. to reveal', 'B. receiving', 'C. receive', 'D. to be revealing', 'E. to have revealed'] },
+            { id: 33, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'I can’t afford __________ in high-risk crypto assets right now; I need to focus on stability and saving.', options: ['A. buying', 'B. buy', 'C. to invest', 'D. to be buying', 'E. having bought'] },
+            { id: 34, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'The developer kept __________ the code for hours, even after finding the main error, because he suspected a subtle memory leak.', options: ['A. to repeat', 'B. repeat', 'C. repeating', 'D. debugging', 'E. to have repeated'] },
+            { id: 35, type: 'multiple_choice', section: 'Questions 31–35: Gerunds & Infinitives', question: 'The project manager postponed __________ the final review meeting until the test results were fully validated.', options: ['A. to announce', 'B. announce', 'C. scheduling', 'D. to be announcing', 'E. to have announced'] },
+            { id: 36, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'If the team had not discovered the loophole, the proprietary data __________ so compromised today.', options: ['A. would have been', 'B. will be', 'C. is', 'D. would be compromised', 'E. has been'] },
+            { id: 37, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'Unless the new security patch is deployed immediately, the network __________ to external attacks.', options: ['A. was', 'B. is', 'C. will be vulnerable', 'D. remained', 'E. had remained'] },
+            { id: 38, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'The groundbreaking quantum experiment __________ by the research institute last month and received worldwide attention.', options: ['A. has performed', 'B. was performed', 'C. performed', 'D. is performing', 'E. has been performing'] },
+            { id: 39, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'The new encryption standard __________ by the international body after extensive testing and has been deployed globally.', options: ['A. has adopted', 'B. was adopted', 'C. adopted', 'D. is adopting', 'E. had adopted'] },
+            { id: 40, type: 'multiple_choice', section: 'Questions 36–40: Conditionals & Passive Voice', question: 'All existing cryptographic keys __________ by the compliance team by the end of the next quarter, according to the new mandate.', options: ['A. will complete', 'B. are completing', 'C. will be rotated', 'D. have completed', 'E. had been completed'] }
+        ];
 
-        let userAnswers = {};
-        const quizContainer = document.getElementById('quiz-container');
-        let currentSectionTitle = null;
+        let userAnswers = {};
+        const quizContainer = document.getElementById('quiz-container');
+        let currentSectionTitle = null;
 
-        function renderQuiz() {
-            quizContainer.innerHTML = '';
-            QUIZ_DATA.forEach(item => {
-                if (item.section && item.section !== currentSectionTitle) {
-                    currentSectionTitle = item.section;
-                    quizContainer.innerHTML += `<h2 class="text-xl sm:text-2xl font-bold text-indigo-700 mt-10 mb-4 border-b-2 border-indigo-200 pb-2">${currentSectionTitle}</h2>`;
-                }
-                if (item.type === 'reading_passage') {
-                    quizContainer.innerHTML += `
-                        <div class="mb-8 p-6 bg-gray-50 rounded-xl shadow-inner">
-                            <h3 class="text-xl font-semibold mb-3 text-gray-800">${item.title}</h3>
-                            <div class="passage-container text-gray-700 text-sm sm:text-base leading-relaxed">
-                                <p>${item.content.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>
-                            </div>
-                        </div>
-                    `;
-                    return;
-                }
-                const questionNumber = item.id;
-                const questionHtml = `<p class="font-medium text-gray-800">${questionNumber}. ${item.question}</p>`;
-                let optionsHtml = '';
-                item.options.forEach(optionText => {
-                    const letter = optionText.charAt(0);
-                    const text = optionText.substring(3).trim();
-                    optionsHtml += createOptionHtml(questionNumber, letter, `${letter}. ${text}`);
-                });
-                quizContainer.innerHTML += `
-                    <div id="q-${questionNumber}" class="bg-white p-5 rounded-xl shadow-md border border-gray-200 fade-in" data-type="${item.type}">
-                        <div class="text-base text-gray-600 mb-6 leading-relaxed">${questionHtml}</div>
-                        <div class="space-y-3 mt-4" data-question-id="${questionNumber}">${optionsHtml}</div>
-                    </div>
-                `;
-            });
-            quizContainer.innerHTML += `
-                <button onclick="checkAllAnswers()" class="w-full py-3 mt-12 mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition duration-150 ease-in-out">
-                    Check All Answers & Get Score
-                </button>
-            `;
-            attachEventListeners();
-        }
+        function renderQuiz() {
+            quizContainer.innerHTML = '';
+            QUIZ_DATA.forEach(item => {
+                if (item.section && item.section !== currentSectionTitle) {
+                    currentSectionTitle = item.section;
+                    quizContainer.innerHTML += `<h2 class="text-xl sm:text-2xl font-bold text-indigo-700 mt-10 mb-4 border-b-2 border-indigo-200 pb-2">${currentSectionTitle}</h2>`;
+                }
+                if (item.type === 'reading_passage') {
+                    quizContainer.innerHTML += `
+                        <div class="mb-8 p-6 bg-gray-50 rounded-xl shadow-inner">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">${item.title}</h3>
+                            <div class="passage-container text-gray-700 text-sm sm:text-base leading-relaxed">
+                                <p>${item.content.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                const questionNumber = item.id;
+                const questionHtml = item.type === 'error_analysis' ? `${questionNumber}. ${item.question}` : `<p class="font-medium text-gray-800">${questionNumber}. ${item.question}</p>`;
+                let optionsHtml = '';
+                if (item.type === 'error_analysis') {
+                    for (const letter in item.options) { optionsHtml += createOptionHtml(questionNumber, letter, `${letter}) ${item.options[letter]}`); }
+                } else if (item.type === 'multiple_choice') {
+                    item.options.forEach(optionText => {
+                        const letter = optionText.charAt(0);
+                        const text = optionText.substring(3).trim();
+                        optionsHtml += createOptionHtml(questionNumber, letter, `${letter}. ${text}`);
+                    });
+                }
+                quizContainer.innerHTML += `
+                    <div id="q-${questionNumber}" class="bg-white p-5 rounded-xl shadow-md border border-gray-200 fade-in" data-type="${item.type}">
+                        <div class="text-base text-gray-600 mb-6 leading-relaxed">${questionHtml}</div>
+                        <div class="space-y-3 mt-4" data-question-id="${questionNumber}">${optionsHtml}</div>
+                        ${item.type === 'error_analysis' ? '<div class="mt-8 text-sm text-gray-500 font-medium">The error label (A, B, C, D) is underlined above. Select (E) if there is no error.</div>' : ''}
+                    </div>
+                `;
+            });
+            quizContainer.innerHTML += `
+                <button onclick="checkAllAnswers()" class="w-full py-3 mt-12 mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition duration-150 ease-in-out">
+                    Check All Answers & Get Score
+                </button>
+            `;
+            attachEventListeners();
+        }
 
-        function createOptionHtml(qId, letter, text) {
-            return `
-                <div class="quiz-option p-3 rounded-lg border-2 border-gray-300 flex items-center" data-question="${qId}" data-answer="${letter}">
-                    <span class="text-sm font-semibold text-gray-800">${text}</span>
-                </div>
-            `;
-        }
+        function createOptionHtml(qId, letter, text) {
+            return `
+                <div class="quiz-option p-3 rounded-lg border-2 border-gray-300 flex items-center" data-question="${qId}" data-answer="${letter}">
+                    <span class="text-sm font-semibold text-gray-800">${text}</span>
+                </div>
+            `;
+        }
 
-        function attachEventListeners() {
-            document.querySelectorAll('.quiz-option').forEach(option => {
-                option.addEventListener('click', handleOptionClick);
-            });
-            document.getElementById('results-section').classList.add('hidden');
-        }
+        function attachEventListeners() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+            document.getElementById('results-section').classList.add('hidden');
+        }
 
-        function handleOptionClick(event) {
-            const selectedOption = event.currentTarget;
-            const qId = selectedOption.dataset.question;
-            const answerLetter = selectedOption.dataset.answer;
-            const container = selectedOption.closest(`[data-question-id="${qId}"]`);
-            container.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('selected', 'correct', 'incorrect'); });
-            selectedOption.classList.add('selected');
-            userAnswers[qId] = answerLetter;
-        }
+        function handleOptionClick(event) {
+            const selectedOption = event.currentTarget;
+            const qId = selectedOption.dataset.question;
+            const answerLetter = selectedOption.dataset.answer;
+            const container = selectedOption.closest(`[data-question-id="${qId}"]`);
+            container.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('selected', 'correct', 'incorrect'); });
+            selectedOption.classList.add('selected');
+            userAnswers[qId] = answerLetter;
+        }
 
-        function checkAllAnswers() {
-            let correctCount = 0;
-            let totalQuestions = 0;
-            for (const qId in CORRECT_ANSWERS) {
-                totalQuestions++;
-                const correctAnswer = CORRECT_ANSWERS[qId];
-                const userAnswer = userAnswers[qId];
-                const questionCard = document.getElementById(`q-${qId}`);
-                if (!questionCard) continue;
-                const optionsContainer = questionCard.querySelector(`[data-question-id="${qId}"]`);
-                optionsContainer.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('correct', 'incorrect', 'selected'); });
-                if (userAnswer) {
-                    const isCorrect = userAnswer === correctAnswer;
-                    const selectedOption = optionsContainer.querySelector(`[data-answer="${userAnswer}"]`);
-                    if (selectedOption) {
-                        selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
-                        if (isCorrect) correctCount++;
-                    }
-                }
-                if (userAnswers[qId] !== correctAnswer) {
-                    const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
-                    if (correctOption) correctOption.classList.add('correct');
-                }
-            }
-            const scoreDisplay = document.getElementById('score-display');
-            const resultsSection = document.getElementById('results-section');
-            scoreDisplay.textContent = `${correctCount} / ${totalQuestions} (${((correctCount / totalQuestions) * 100).toFixed(1)}%)`;
-            resultsSection.classList.remove('hidden');
-            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        function checkAllAnswers() {
+            let correctCount = 0;
+            let totalQuestions = 0;
+            for (const qId in CORRECT_ANSWERS) {
+                totalQuestions++;
+                const correctAnswer = CORRECT_ANSWERS[qId];
+                const userAnswer = userAnswers[qId];
+                const questionCard = document.getElementById(`q-${qId}`);
+                if (!questionCard) continue;
+                const optionsContainer = questionCard.querySelector(`[data-question-id="${qId}"]`);
+                optionsContainer.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('correct', 'incorrect', 'selected'); });
+                if (userAnswer) {
+                    const isCorrect = userAnswer === correctAnswer;
+                    const selectedOption = optionsContainer.querySelector(`[data-answer="${userAnswer}"]`);
+                    if (selectedOption) {
+                        selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        if (isCorrect) correctCount++;
+                    }
+                }
+                if (userAnswers[qId] !== correctAnswer) {
+                    const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
+                    if (correctOption) correctOption.classList.add('correct');
+                }
+            }
+            const scoreDisplay = document.getElementById('score-display');
+            const resultsSection = document.getElementById('results-section');
+            scoreDisplay.textContent = `${correctCount} / ${totalQuestions} (${((correctCount / totalQuestions) * 100).toFixed(1)}%)`;
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
-        window.onload = renderQuiz;
-    </script>
+        window.onload = renderQuiz;
+    </script>
 </body>
 </html>
