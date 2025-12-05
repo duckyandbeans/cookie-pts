@@ -9,16 +9,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Patrick+Hand&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         
-        /* --- UPDATED: Quote Board Style --- */
+        /* Quote Board Style */
         .chalkboard {
             background: url('quote-bg.PNG') no-repeat center center;
-            /* CHANGED: This ensures the full image stretches to fit the box */
-            background-size: 100% 100%; 
-            color: #ffffff; /* White text */
+            background-size: cover;
+            color: #ffffff; 
             font-family: 'Patrick Hand', cursive;
             border: 8px solid #4a5568;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            /* Added text-shadow so text pops against any background image */
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8); 
         }
 
@@ -73,7 +71,6 @@
             
             <div class="chalkboard rounded-xl p-8 flex flex-col justify-center items-center text-center h-full min-h-[250px] transform rotate-1 hover:rotate-0 transition duration-300 relative overflow-hidden">
                 <div class="absolute inset-0 bg-black/20 z-0"></div>
-                
                 <div class="relative z-10">
                     <p class="text-2xl sm:text-3xl leading-relaxed font-bold">
                         "A great score comes with great obstacles."
@@ -83,8 +80,8 @@
             </div>
 
             <div class="bg-white rounded-2xl shadow-lg p-4 border border-gray-200 transform -rotate-1 hover:rotate-0 transition duration-300">
-                <div class="bg-gray-100 rounded-xl overflow-hidden h-64 flex items-center justify-center mb-3 relative">
-                    <img src="polling.jpeg" alt="Picture of the day" class="w-full h-full object-cover">
+                <div class="bg-gray-100 rounded-xl overflow-hidden mb-3 relative">
+                    <img src="polling.jpeg" alt="Picture of the day" class="w-full h-auto object-contain">
                     <div class="absolute top-2 right-2 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-gray-600 shadow-sm">
                         📸 POTD
                     </div>
@@ -95,7 +92,7 @@
             </div>
         </div>
 
-        <div class="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-r-xl shadow-sm">
+        <div class="bg-white rounded-2xl shadow-lg p-6 border-l-8 border-indigo-600 space-y-6">
             <div class="flex items-start">
                 <span class="text-3xl mr-4">📢</span>
                 <div>
@@ -104,6 +101,18 @@
                         Alright, alright.... it's okay. You have done your best. We will inform you once your scores are out!
                     </p>
                 </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4 border-t border-gray-100">
+                <a href="quiz-x.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-amber-100 text-amber-700 font-bold rounded-xl hover:bg-amber-200 transition duration-200 shadow-sm border border-amber-200">
+                    🌱 X Mock Exam
+                </a>
+                <a href="quiz-xi.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-emerald-100 text-emerald-700 font-bold rounded-xl hover:bg-emerald-200 transition duration-200 shadow-sm border border-emerald-200">
+                    📝 XI Mock Exam
+                </a>
+                <a href="quiz-xii.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-rose-100 text-rose-700 font-bold rounded-xl hover:bg-rose-200 transition duration-200 shadow-sm border border-rose-200">
+                    🎓 XII Mock Exam
+                </a>
             </div>
         </div>
 
@@ -140,14 +149,8 @@
                     </table>
                 </div>
 
-                <p id="lastUpdated" class="text-center text-xs text-gray-400 mt-6">Last updated: 5 December 2025</p>
+                <p id="lastUpdated" class="text-center text-xs text-gray-400 mt-6">Last updated...</p>
             </div>
-        </div>
-
-        <div class="text-center">
-            <a href="index.html" class="text-indigo-600 hover:text-indigo-800 font-semibold text-sm">
-                &larr; Back to Christmas Home
-            </a>
         </div>
 
     </div>
@@ -195,9 +198,8 @@
             
             document.getElementById('studentName').innerText = s.name;
             document.getElementById('studentClass').innerText = cls;
-            // document.getElementById('lastUpdated').innerText = "Last updated: " + allData.lastUpdated;
+            document.getElementById('lastUpdated').innerText = "Last updated: " + allData.lastUpdated;
 
-            // Determine if XII or XI for table structure
             let isXII = cls.startsWith('XII');
 
             // --- BUILD HEADERS ---
@@ -218,10 +220,6 @@
                     <th class="col-alloc">Alloc TP 2</th>
                     <th class="col-alloc">Alloc TP 3</th>
             `;
-
-             if(!isXII) {
-                headersHTML += `<th>Leftover Cookies</th>`;
-            }
             
             headersHTML += `
                     <th>TP 1 (Org)</th>
@@ -242,8 +240,8 @@
 
             if(isXII) {
                 rowHTML += `
-                    <td>${s.ph3 !== undefined ? s.ph3 : 0}</td>
-                    <td>${s.ph4 !== undefined ? s.ph4 : 0}</td>
+                    <td>${s.ph3 || 0}</td>
+                    <td>${s.ph4 || 0}</td>
                 `;
             }
 
@@ -252,10 +250,6 @@
                     <td class="col-alloc">${s.alloc[1]}</td>
                     <td class="col-alloc">${s.alloc[2]}</td>
             `;
-
-             if(!isXII) {
-                 rowHTML += `<td>${s.leftover !== undefined ? s.leftover : 0}</td>`;
-            }
 
             rowHTML += `
                     <td>${s.org[0]}</td>
@@ -268,9 +262,7 @@
             `;
             tbody.innerHTML = rowHTML;
 
-            // Show result
             resultArea.classList.remove('hidden');
-            // Scroll to result
             resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     </script>
