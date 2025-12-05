@@ -306,14 +306,40 @@
         function openMessage() {
             const name = nameInput.value.trim() || "Friend";
             
+            // Isi pesan kaligrafi
             messageContent.innerHTML = `
-                <p>Dearest ${name},</p>
-                <br>
-                <p>As the snow falls (or fireplace crackles!), we send you our warmest thoughts.</p>
-                <p>May your holidays be filled with laughter, love, and grammar!</p>
-                <br>
-                <p>Love,</p>
-                <p>The English Club</p>
+                <div class="text-left sm:text-center space-y-4">
+                    <p class="text-3xl font-bold mb-4">Dearest ${name},</p>
+                    
+                    <p>
+                        As we twirl our way into the end of the year, I just want to say how much I adore each and every one of you. 
+                        You’ve all brought sparkle, sass, curiosity, and so much joy into every meeting. 
+                        Truly—you will always have a place in my heart: glitter, chaos, grammar mistakes, and all.
+                    </p>
+
+                    <p>
+                        This season is the perfect moment to pause, sip something sweet, and reflect on our journey. 
+                        We’ve made mistakes—yes, even the fabulously flawless among us—but that’s how we grow. 
+                        Let’s learn from them, not hide from them.
+                    </p>
+
+                    <p>
+                        And please, my shining stars: don’t carry hate in your heart. People are different—some subtle, 
+                        some dramatic, some fruity, some spicy—and that’s what makes the world interesting. 
+                        Differences aren’t a reason to judge; they’re invitations to understand. 
+                        So let’s focus on what we share, on what brings us together, not what pulls us apart.
+                    </p>
+
+                    <p>
+                        Thank you for making this year vibrant, memorable, and full of love.
+                        Cheers to kindness, growth, and a fabulous 2026!
+                    </p>
+
+                    <div class="mt-8">
+                        <p>Love,</p>
+                        <p class="text-2xl font-bold mt-2">Ms. Grace</p>
+                    </div>
+                </div>
             `;
 
             nameModal.classList.add('hidden');
