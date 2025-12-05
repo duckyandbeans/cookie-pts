@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Club Holiday Special</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- BACKGROUND (Cozy Fireplace) --- */
+        body {
+            background: url('fireplace.gif') no-repeat center center fixed; 
+            background-size: cover;
+            font-family: sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- VIDEOTRON STYLE --- */
+        .videotron-container {
+            background-color: #000;
+            border: 4px solid #333;
+            box-shadow: 0 0 15px rgba(255, 165, 0, 0.6); /* Orange glow for fireplace vibe */
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .neon-text {
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            font-size: 1rem; /* Adjusted for mobile */
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #ff00de,
+                0 0 30px #ff00de,
+                0 0 40px #ff00de;
+            animation: marquee 15s linear infinite;
+        }
+
+        @media (min-width: 768px) {
+            .neon-text { font-size: 1.5rem; }
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .logo-img {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+            z-index: 30;
+            background: #000;
+            border: 2px solid #333;
+        }
+
+        /* --- POSTER AREA --- */
+        .poster-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px; /* Adjusted for the vertical poster */
+            margin: 0 auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #main-poster {
+            width: 100%;
+            height: auto;
+            display: block;
+            position: relative;
+            z-index: 20; /* Poster di ATAS */
+            pointer-events: none; /* PENTING: Agar klik tembus ke wajah di belakang */
+        }
+        
+        #user-face {
+            position: absolute;
+            top: 20%; /* Start higher up for the heart area */
+            left: 50%;
+            width: 150px;
+            cursor: grab;
+            z-index: 10; /* Wajah di BAWAH poster */
+            transform: translate(-50%, -50%);
+        }
+
+        #user-face:active {
+            cursor: grabbing;
+        }
+
+        /* --- BUTTONS --- */
+        .interactive-btn {
+            transition: transform 0.2s, filter 0.2s;
+        }
+        .interactive-btn:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        /* --- MODAL SURAT --- */
+        #message-box {
+            background: url('message.jpg') no-repeat center center;
+            background-size: 100% 100%; /* Stretch to fit */
+            font-family: 'Great Vibes', cursive;
+            color: #3e2723;
+            text-shadow: 0px 0px 2px rgba(255,255,255,0.5);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center py-6 px-4">
+
+    <div class="w-full max-w-5xl flex items-center justify-center gap-0 mb-8">
+        <img src="english club logo.PNG" alt="Logo" class="logo-img rounded-l-lg">
+        
+        <div class="videotron-container flex-grow h-[54px]"> <div class="neon-text w-full text-center">
+                THE ENGLISH CLUB IS EXTENDING A WARM GREETING TO YOU! &nbsp;&nbsp;&nbsp; MERRY CHRISTMAS!
+            </div>
+        </div>
+
+        <img src="english club logo.PNG" alt="Logo" class="logo-img rounded-r-lg">
+    </div>
+
+    <div class="w-full flex flex-col items-center mb-8">
+        
+        <div class="poster-wrapper" id="drag-zone">
+            <img id="user-face" src="" class="hidden" alt="User Face">
+            <img src="funny poster.PNG" id="main-poster" alt="Funny Poster">
+        </div>
+
+        <div class="mt-4 bg-black/60 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center w-full max-w-sm">
+            <label class="cursor-pointer inline-block bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transition mb-3">
+                📸 Insert Your Face
+                <input type="file" id="face-input" accept="image/*" class="hidden">
+            </label>
+            
+            <div class="flex items-center justify-between gap-2 text-white text-xs font-bold">
+                <span>Smaller</span>
+                <input type="range" id="size-slider" min="50" max="400" value="150" class="w-full mx-2 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                <span>Bigger</span>
+            </div>
+            <p class="text-white/70 text-[10px] mt-2">Tip: Drag your photo to fit in the heart!</p>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-8 mb-10">
+        
+        <button id="music-btn" class="interactive-btn relative">
+            <img src="music.jpg" alt="Play Music" class="w-20 h-20 rounded-full border-4 border-white shadow-xl object-cover">
+            <div id="music-status" class="absolute inset-0 flex items-center justify-center bg-black/30 rounded-full text-white text-2xl font-bold hidden">
+                II
+            </div>
+        </button>
+
+        <button onclick="openNameModal()" class="interactive-btn">
+            <img src="mail.png" alt="Open Mail" class="w-24 h-24 object-contain drop-shadow-2xl">
+        </button>
+
+    </div>
+
+    <div id="name-modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center z-50 px-4">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl text-center max-w-sm w-full transform transition-all scale-100">
+            <h3 class="text-xl font-bold text-gray-800 mb-2">You've got mail! 🎄</h3>
+            <p class="mb-4 text-gray-600 text-sm">Please enter your name to open it:</p>
+            <input type="text" id="visitor-name" placeholder="Your Name" class="w-full p-3 border-2 border-pink-200 rounded-xl mb-4 text-center text-lg focus:outline-none focus:border-pink-500">
+            <button onclick="openMessage()" class="w-full bg-pink-500 text-white font-bold py-3 rounded-xl hover:bg-pink-600 shadow-md">Open Letter</button>
+        </div>
+    </div>
+
+    <div id="message-modal-container" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center z-50 p-4">
+        <div id="message-box" class="relative w-full max-w-md aspect-[3/4] p-8 sm:p-12 rounded shadow-2xl flex flex-col items-center justify-center text-center overflow-y-auto">
+            
+            <button onclick="closeMessage()" class="absolute top-2 right-4 text-gray-800 text-4xl hover:text-red-600 font-sans">&times;</button>
+            
+            <div id="message-content" class="mt-4 text-xl sm:text-2xl font-bold">
+                </div>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="christmas-song.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voice-msg">
+        <source src="audio message.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- 1. FACE DRAG & RESIZE LOGIC ---
+        const faceInput = document.getElementById('face-input');
+        const userFace = document.getElementById('user-face');
+        const sizeSlider = document.getElementById('size-slider');
+        const dragZone = document.getElementById('drag-zone');
+
+        // Handle Image Upload
+        faceInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    userFace.src = event.target.result;
+                    userFace.classList.remove('hidden');
+                    // Reset position to center
+                    userFace.style.top = '30%';
+                    userFace.style.left = '50%';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle Resizing
+        sizeSlider.addEventListener('input', function() {
+            userFace.style.width = this.value + 'px';
+        });
+
+        // Handle Dragging
+        let isDragging = false;
+        let startX, startY, initialLeft, initialTop;
+
+        // Because 'pointer-events: none' is on the poster, clicks go through to the face or container
+        // We attach listeners to the container to catch everything
+        dragZone.addEventListener('mousedown', startDrag);
+        dragZone.addEventListener('touchstart', startDrag, {passive: false});
+
+        document.addEventListener('mousemove', doDrag);
+        document.addEventListener('touchmove', doDrag, {passive: false});
+
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+
+        function startDrag(e) {
+            // Allow dragging if we click the face, OR if we click the empty space (container)
+            // We generally want to move the face regardless of where we grab in the area
+            if (userFace.classList.contains('hidden')) return;
+
+            e.preventDefault();
+            isDragging = true;
+            
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+            startX = clientX;
+            startY = clientY;
+
+            const style = window.getComputedStyle(userFace);
+            initialLeft = parseFloat(style.left);
+            initialTop = parseFloat(style.top);
+            
+            userFace.style.cursor = 'grabbing';
+        }
+
+        function doDrag(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+            const dx = clientX - startX;
+            const dy = clientY - startY;
+
+            userFace.style.left = `${initialLeft + dx}px`;
+            userFace.style.top = `${initialTop + dy}px`;
+        }
+
+        function stopDrag() {
+            isDragging = false;
+            userFace.style.cursor = 'grab';
+        }
+
+
+        // --- 2. MUSIC LOGIC ---
+        const musicBtn = document.getElementById('music-btn');
+        const musicStatus = document.getElementById('music-status');
+        const bgMusic = document.getElementById('bg-music');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicStatus.classList.add('hidden');
+            } else {
+                bgMusic.play().catch(e => alert("Please click anywhere on the page first to enable audio!"));
+                musicStatus.classList.remove('hidden');
+            }
+            isPlaying = !isPlaying;
+        });
+
+
+        // --- 3. LETTER LOGIC ---
+        const nameModal = document.getElementById('name-modal');
+        const messageModalContainer = document.getElementById('message-modal-container');
+        const messageContent = document.getElementById('message-content');
+        const voiceMsg = document.getElementById('voice-msg');
+        const nameInput = document.getElementById('visitor-name');
+
+        function openNameModal() {
+            nameModal.classList.remove('hidden');
+        }
+
+        function openMessage() {
+            const name = nameInput.value.trim() || "Friend";
+            
+            messageContent.innerHTML = `
+                <p>Dearest ${name},</p>
+                <br>
+                <p>As the snow falls (or fireplace crackles!), we send you our warmest thoughts.</p>
+                <p>May your holidays be filled with laughter, love, and grammar!</p>
+                <br>
+                <p>Love,</p>
+                <p>The English Club</p>
+            `;
+
+            nameModal.classList.add('hidden');
+            messageModalContainer.classList.remove('hidden');
+            
+            // Pause bg music if playing so voice can be heard
+            if (isPlaying) {
+                bgMusic.pause();
+            }
+
+            // Play Voice Message
+            voiceMsg.currentTime = 0;
+            voiceMsg.play().catch(e => console.log("Audio autoplay blocked"));
+        }
+
+        function closeMessage() {
+            messageModalContainer.classList.add('hidden');
+            voiceMsg.pause();
+            
+            // Resume bg music if it was playing before
+            if (isPlaying) {
+                bgMusic.play();
+            }
+        }
+
+    </script>
+</body>
+</html>
