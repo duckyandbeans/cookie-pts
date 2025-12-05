@@ -106,11 +106,13 @@
         /* --- MODAL SURAT --- */
         #message-box {
             background: url('message.JPG') no-repeat center center;
-            background-size: 100% 100%; /* Stretch to fit */
+            /* Change to cover to ensure it fills the new larger box */
+            background-size: 100% 100%; 
             font-family: 'Great Vibes', cursive;
-            color: #3e2723;
-            text-shadow: 0px 0px 2px rgba(255,255,255,0.5);
-            line-height: 1.6;
+            /* Made text slightly darker for better contrast on the paper */
+            color: #2d1a12; 
+            text-shadow: 0px 0px 1px rgba(255,255,255,0.3);
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -119,7 +121,8 @@
     <div class="w-full max-w-5xl flex items-center justify-center gap-0 mb-8">
         <img src="english club logo.PNG" alt="Logo" class="logo-img rounded-l-lg">
         
-        <div class="videotron-container flex-grow h-[54px]"> <div class="neon-text w-full text-center">
+        <div class="videotron-container flex-grow h-[54px]"> 
+            <div class="neon-text w-full text-center">
                 THE ENGLISH CLUB IS EXTENDING A WARM GREETING TO YOU! &nbsp;&nbsp;&nbsp; MERRY CHRISTMAS!
             </div>
         </div>
@@ -173,12 +176,12 @@
         </div>
     </div>
 
-    <div id="message-modal-container" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center z-50 p-4">
-        <div id="message-box" class="relative w-full max-w-md aspect-[3/4] p-8 sm:p-12 rounded shadow-2xl flex flex-col items-center justify-center text-center overflow-y-auto">
+    <div id="message-modal-container" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center z-50 p-4 overflow-y-auto">
+        <div id="message-box" class="relative w-full max-w-2xl my-8 p-12 sm:px-20 sm:py-24 md:px-28 md:py-32 rounded-lg shadow-2xl flex flex-col items-center text-center overflow-y-auto max-h-[90vh]">
             
-            <button onclick="closeMessage()" class="absolute top-2 right-4 text-gray-800 text-4xl hover:text-red-600 font-sans">&times;</button>
+            <button onclick="closeMessage()" class="absolute top-4 right-6 text-[#2d1a12] text-4xl hover:text-red-700 font-sans transition-colors">&times;</button>
             
-            <div id="message-content" class="mt-4 text-xl sm:text-2xl font-bold">
+            <div id="message-content" class="mt-4 w-full">
                 </div>
         </div>
     </div>
@@ -197,7 +200,6 @@
         const sizeSlider = document.getElementById('size-slider');
         const dragZone = document.getElementById('drag-zone');
 
-        // Handle Image Upload
         faceInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -205,7 +207,6 @@
                 reader.onload = function(event) {
                     userFace.src = event.target.result;
                     userFace.classList.remove('hidden');
-                    // Reset position to center
                     userFace.style.top = '30%';
                     userFace.style.left = '50%';
                 }
@@ -213,57 +214,41 @@
             }
         });
 
-        // Handle Resizing
         sizeSlider.addEventListener('input', function() {
             userFace.style.width = this.value + 'px';
         });
 
-        // Handle Dragging
         let isDragging = false;
         let startX, startY, initialLeft, initialTop;
 
-        // Because 'pointer-events: none' is on the poster, clicks go through to the face or container
-        // We attach listeners to the container to catch everything
         dragZone.addEventListener('mousedown', startDrag);
         dragZone.addEventListener('touchstart', startDrag, {passive: false});
-
         document.addEventListener('mousemove', doDrag);
         document.addEventListener('touchmove', doDrag, {passive: false});
-
         document.addEventListener('mouseup', stopDrag);
         document.addEventListener('touchend', stopDrag);
 
         function startDrag(e) {
-            // Allow dragging if we click the face, OR if we click the empty space (container)
-            // We generally want to move the face regardless of where we grab in the area
             if (userFace.classList.contains('hidden')) return;
-
             e.preventDefault();
             isDragging = true;
-            
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-
             startX = clientX;
             startY = clientY;
-
             const style = window.getComputedStyle(userFace);
             initialLeft = parseFloat(style.left);
             initialTop = parseFloat(style.top);
-            
             userFace.style.cursor = 'grabbing';
         }
 
         function doDrag(e) {
             if (!isDragging) return;
             e.preventDefault();
-
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-
             const dx = clientX - startX;
             const dy = clientY - startY;
-
             userFace.style.left = `${initialLeft + dx}px`;
             userFace.style.top = `${initialTop + dy}px`;
         }
@@ -292,7 +277,7 @@
         });
 
 
-        // --- 3. LETTER LOGIC ---
+        // --- 3. LETTER LOGIC (UPDATED TEXT SIZING) ---
         const nameModal = document.getElementById('name-modal');
         const messageModalContainer = document.getElementById('message-modal-container');
         const messageContent = document.getElementById('message-content');
@@ -306,38 +291,38 @@
         function openMessage() {
             const name = nameInput.value.trim() || "Friend";
             
-            // Isi pesan kaligrafi
+            // Updated font sizes to be slightly smaller to fit better within the safe area
             messageContent.innerHTML = `
-                <div class="text-left sm:text-center space-y-4">
-                    <p class="text-3xl font-bold mb-4">Dearest ${name},</p>
+                <div class="text-center space-y-4 px-2">
+                    <p class="text-2xl sm:text-3xl font-bold mb-4">Dearest ${name},</p>
                     
-                    <p>
+                    <p class="text-lg sm:text-xl">
                         As we twirl our way into the end of the year, I just want to say how much I adore each and every one of you. 
                         You’ve all brought sparkle, sass, curiosity, and so much joy into every meeting. 
                         Truly—you will always have a place in my heart: glitter, chaos, grammar mistakes, and all.
                     </p>
 
-                    <p>
+                    <p class="text-lg sm:text-xl hidden sm:block">
                         This season is the perfect moment to pause, sip something sweet, and reflect on our journey. 
                         We’ve made mistakes—yes, even the fabulously flawless among us—but that’s how we grow. 
                         Let’s learn from them, not hide from them.
                     </p>
 
-                    <p>
+                    <p class="text-lg sm:text-xl">
                         And please, my shining stars: don’t carry hate in your heart. People are different—some subtle, 
                         some dramatic, some fruity, some spicy—and that’s what makes the world interesting. 
                         Differences aren’t a reason to judge; they’re invitations to understand. 
                         So let’s focus on what we share, on what brings us together, not what pulls us apart.
                     </p>
 
-                    <p>
+                    <p class="text-lg sm:text-xl">
                         Thank you for making this year vibrant, memorable, and full of love.
                         Cheers to kindness, growth, and a fabulous 2026!
                     </p>
 
                     <div class="mt-8">
-                        <p>Love,</p>
-                        <p class="text-2xl font-bold mt-2">Ms. Grace</p>
+                        <p class="text-lg sm:text-xl">Love,</p>
+                        <p class="text-xl sm:text-3xl font-bold mt-2">Ms. Grace</p>
                     </div>
                 </div>
             `;
@@ -345,12 +330,10 @@
             nameModal.classList.add('hidden');
             messageModalContainer.classList.remove('hidden');
             
-            // Pause bg music if playing so voice can be heard
             if (isPlaying) {
                 bgMusic.pause();
             }
 
-            // Play Voice Message
             voiceMsg.currentTime = 0;
             voiceMsg.play().catch(e => console.log("Audio autoplay blocked"));
         }
@@ -359,7 +342,6 @@
             messageModalContainer.classList.add('hidden');
             voiceMsg.pause();
             
-            // Resume bg music if it was playing before
             if (isPlaying) {
                 bgMusic.play();
             }
