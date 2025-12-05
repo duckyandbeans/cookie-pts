@@ -11,9 +11,9 @@
         
         /* --- UPDATED: Quote Board Style --- */
         .chalkboard {
-            /* Used to be a solid color, now it's your image */
-            background: url('quote-bg.png') no-repeat center center;
-            background-size: cover;
+            background: url('quote-bg.PNG') no-repeat center center;
+            /* CHANGED: This ensures the full image stretches to fit the box */
+            background-size: 100% 100%; 
             color: #ffffff; /* White text */
             font-family: 'Patrick Hand', cursive;
             border: 8px solid #4a5568;
@@ -140,8 +140,14 @@
                     </table>
                 </div>
 
-                <p id="lastUpdated" class="text-center text-xs text-gray-400 mt-6">Last updated...</p>
+                <p id="lastUpdated" class="text-center text-xs text-gray-400 mt-6">Last updated: 5 December 2025</p>
             </div>
+        </div>
+
+        <div class="text-center">
+            <a href="index.html" class="text-indigo-600 hover:text-indigo-800 font-semibold text-sm">
+                &larr; Back to Christmas Home
+            </a>
         </div>
 
     </div>
@@ -189,7 +195,7 @@
             
             document.getElementById('studentName').innerText = s.name;
             document.getElementById('studentClass').innerText = cls;
-            document.getElementById('lastUpdated').innerText = "Last updated: " + allData.lastUpdated;
+            // document.getElementById('lastUpdated').innerText = "Last updated: " + allData.lastUpdated;
 
             // Determine if XII or XI for table structure
             let isXII = cls.startsWith('XII');
@@ -213,7 +219,9 @@
                     <th class="col-alloc">Alloc TP 3</th>
             `;
 
-            // Leftover removed for XI graders as requested
+             if(!isXII) {
+                headersHTML += `<th>Leftover Cookies</th>`;
+            }
             
             headersHTML += `
                     <th>TP 1 (Org)</th>
@@ -234,8 +242,8 @@
 
             if(isXII) {
                 rowHTML += `
-                    <td>${s.ph3 || 0}</td>
-                    <td>${s.ph4 || 0}</td>
+                    <td>${s.ph3 !== undefined ? s.ph3 : 0}</td>
+                    <td>${s.ph4 !== undefined ? s.ph4 : 0}</td>
                 `;
             }
 
@@ -244,6 +252,10 @@
                     <td class="col-alloc">${s.alloc[1]}</td>
                     <td class="col-alloc">${s.alloc[2]}</td>
             `;
+
+             if(!isXII) {
+                 rowHTML += `<td>${s.leftover !== undefined ? s.leftover : 0}</td>`;
+            }
 
             rowHTML += `
                     <td>${s.org[0]}</td>
