@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orphanage Project Validator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f0fdf4; } /* Greenish bg for charity theme */
+    </style>
+</head>
+<body class="p-4 sm:p-8 min-h-screen flex flex-col items-center justify-center">
+
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
+        
+        <div class="bg-green-600 p-6 text-center">
+            <h1 class="text-2xl font-extrabold text-white">Orphanage Project Validator</h1>
+            <p class="text-green-100 text-sm mt-2">Check if your good deed was recorded!</p>
+        </div>
+
+        <div class="p-6">
+            <a href="index.html" class="text-green-600 hover:text-green-800 text-sm font-bold mb-4 inline-block">&larr; Back to Home</a>
+            
+            <div class="space-y-4">
+                <select id="classSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                    <option value="">Loading Classes...</option>
+                </select>
+                
+                <input type="text" id="idSearch" placeholder="Enter Attendance Number" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+                
+                <button onclick="checkValidation()" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition shadow-md">
+                    Verify My Project
+                </button>
+            </div>
+        </div>
+
+        <div id="resultCard" class="hidden border-t border-gray-100 bg-gray-50 p-6 text-center">
+            <h3 id="studentName" class="text-xl font-bold text-gray-800 mb-2">Student Name</h3>
+            <p id="studentClass" class="text-sm text-gray-500 mb-4">Class</p>
+            
+            <div id="validationBadge" class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-200 mb-4 text-3xl">
+                ?
+            </div>
+            
+            <div id="validationMessage" class="font-bold text-lg">
+                Searching...
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let orphanageData = null;
+
+        // Load database
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('orphanage-db.json')
+                .then(res => res.json())
+                .then(data => {
+                    orphanageData = data;
+                    const select = document.getElementById('classSelect');
+                    select.innerHTML = '<option value="">-- Select Class --</option>';
+                    Object.keys(data.classes).sort().forEach(cls => {
+                        select.innerHTML += `<option value="${cls}">${cls}</option>`;
+                    });
+                })
+                .catch(err => alert("Error: Could not load orphanage-db.json"));
+        });
+
+        function checkValidation() {
+            const cls = document.getElementById('classSelect').value;
+            const id = document.getElementById('idSearch').value.trim();
+            const resultCard = document.getElementById('resultCard');
+            
+            if(!cls || !id) return alert("Please select class and enter number.");
+
+            const student = orphanageData.classes[cls]?.find(s => s.id === id);
+            
+            if(!student) return alert("Student not found.");
+
+            // Show Card
+            resultCard.classList.remove('hidden');
+            document.getElementById('studentName').innerText = student.name;
+            document.getElementById('studentClass').innerText = cls;
+
+            const badge = document.getElementById('validationBadge');
+            const msg = document.getElementById('validationMessage');
+
+            // Logic for messages
+            if (student.points === 20) {
+                badge.className = "inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-4 text-3xl shadow-sm";
+                badge.innerText = "✅";
+                msg.className = "font-bold text-lg text-green-700";
+                msg.innerText = "VALIDATED - Thank you for your good deed!";
+            } else if (student.points === 10) {
+                badge.className = "inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 text-yellow-600 mb-4 text-3xl shadow-sm";
+                badge.innerText = "⚠️";
+                msg.className = "font-bold text-lg text-yellow-700";
+                msg.innerText = "VALIDATED - Thank you for your good deed, but your attitude at the orphanage was ARROGANT and UNACCEPTABLE!!";
+            } else {
+                badge.className = "inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 text-red-600 mb-4 text-3xl shadow-sm";
+                badge.innerText = "❌";
+                msg.className = "font-bold text-lg text-red-700";
+                msg.innerText = "NOT VALIDATED.";
+            }
+        }
+    </script>
+</body>
+</html>
