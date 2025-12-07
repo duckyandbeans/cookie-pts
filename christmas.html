@@ -178,8 +178,6 @@
             
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    // Auto-play was prevented.
-                    // We add a one-time listener to the whole document to start music on first click
                     console.log("Autoplay blocked. Waiting for interaction.");
                     const enableAudio = () => {
                         bgMusic.play();
@@ -256,7 +254,7 @@
             userFace.style.cursor = 'grab';
         }
 
-        // --- 2. LETTER LOGIC ---
+        // --- 2. LETTER & AUDIO LOGIC ---
         const nameModal = document.getElementById('name-modal');
         const messageModalContainer = document.getElementById('message-modal-container');
         const messageContent = document.getElementById('message-content');
@@ -266,20 +264,17 @@
 
         function openNameModal() {
             nameModal.classList.remove('hidden');
-            // Ensure bg music is playing if it wasn't already
+            // Ensure bg music is playing if it wasn't already (user interaction)
             bgMusic.play().catch(() => {}); 
         }
 
         function playVoiceMessage() {
-            // Lower bg music volume slightly while voice plays
-            bgMusic.volume = 0.2;
+            // STOP background music completely
+            bgMusic.pause();
+            
+            // Play voice message
             voiceMsg.currentTime = 0;
             voiceMsg.play();
-            
-            // Restore volume when voice ends
-            voiceMsg.onended = () => {
-                bgMusic.volume = 1.0;
-            };
         }
 
         function openMessage() {
@@ -314,7 +309,7 @@
                     </p>
 
                     <div class="my-6">
-                         <button onclick="playVoiceMessage()" class="bg-[#3e2723] text-white px-4 py-2 rounded-full shadow-lg hover:bg-black transition flex items-center justify-center gap-2 mx-auto font-sans text-sm">
+                         <button onclick="playVoiceMessage()" class="bg-[#3e2723] text-white px-4 py-2 rounded-full shadow-lg hover:bg-black transition flex items-center justify-center gap-2 mx-auto font-sans text-sm animate-pulse">
                             🔊 Play Voice Message
                         </button>
                     </div>
@@ -332,9 +327,13 @@
 
         function closeMessage() {
             messageModalContainer.classList.add('hidden');
+            
+            // Stop voice message if it's still playing
             voiceMsg.pause();
             voiceMsg.currentTime = 0;
-            bgMusic.volume = 1.0; // Restore bg music volume
+            
+            // Resume background music
+            bgMusic.play();
         }
 
     </script>
