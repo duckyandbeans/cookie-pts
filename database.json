@@ -21,14 +21,14 @@
       { "id": "17", "name": "Giselle Lee", "score": 75, "cookie": 0, "bonus": 10, "final": 85 },
       { "id": "18", "name": "Givon", "score": 77.5, "cookie": 0, "bonus": 20, "final": 98 },
       { "id": "19", "name": "Goldy Pacific Sun", "score": 70, "cookie": 0, "bonus": 20, "final": 90 },
-      { "id": "20", "name": "Grace Kelly Ignacia", "score": 47.5, "cookie": 0, "bonus": 20, "final": 70 },
+      { "id": "20", "name": "Grace Kelly Ignacia", "score": 47.5, "cookie": 0, "bonus": 20, "final": 68 },
       { "id": "21", "name": "Idellia Antoneta", "score": 72.5, "cookie": 0, "bonus": 10, "final": 83 },
       { "id": "22", "name": "James Willard Chen", "score": 77.5, "cookie": 0, "bonus": 20, "final": 98 },
       { "id": "23", "name": "Janice Giselle Lim", "score": 75, "cookie": 0, "bonus": 20, "final": 95 },
       { "id": "24", "name": "Javier Chiuman", "score": 75, "cookie": 0, "bonus": 10, "final": 85 },
       { "id": "25", "name": "Jessica Sachi", "score": 70, "cookie": 0, "bonus": 20, "final": 90 },
       { "id": "26", "name": "Jessica Tanji", "score": 67.5, "cookie": 0, "bonus": 20, "final": 88 },
-      { "id": "27", "name": "Jocelyn Princess Yangklyn", "score": 47.5, "cookie": 0, "bonus": 20, "final": 70 },
+      { "id": "27", "name": "Jocelyn Princess Yangklyn", "score": 47.5, "cookie": 0, "bonus": 20, "final": 68 },
       { "id": "28", "name": "Joe Kusanagi", "score": 82.5, "cookie": 0, "bonus": 20, "final": 100 },
       { "id": "29", "name": "Joice Kwan", "score": 80, "cookie": 0, "bonus": 20, "final": 100 },
       { "id": "30", "name": "Jose Ferguson Tjong", "score": 67.5, "cookie": 0, "bonus": 20, "final": 88 },
@@ -48,7 +48,7 @@
       { "id": "44", "name": "Valencia Khosasih", "score": 50, "cookie": 0, "bonus": 20, "final": 70 },
       { "id": "45", "name": "Wendy Salim", "score": 45, "cookie": 0, "bonus": 10, "final": 55 },
       { "id": "46", "name": "Louis Chow", "score": 67.5, "cookie": 0, "bonus": 20, "final": 88 },
-      { "id": "47", "name": "Valerian Lieandro", "score": 67.5, "cookie": 0, "bonus": 0, "final": 70 }
+      { "id": "47", "name": "Valerian Lieandro", "score": 67.5, "cookie": 0, "bonus": 0, "final": 68 }
     ],
     "XI E": [
       { "id": "1", "name": "Angela Sudargo", "score": 82.5, "cookie": 0, "bonus": 20, "final": 100 },
@@ -77,8 +77,7 @@
       { "id": "24", "name": "Justin Adelio Sunvier", "score": 65, "cookie": 0, "bonus": 20, "final": 85 },
       { "id": "25", "name": "Lolyson Deevan", "score": 30, "cookie": 0, "bonus": 20, "final": 50 },
       { "id": "26", "name": "Nicholas Sebastian Tandiono", "score": 80, "cookie": 0, "bonus": 20, "final": 100 },
-      { "id": "27", "name": "Nicole Violetta Tjeong", "score": 80, "cookie": 0, "bonus": 20, "final": 0
-      },
+      { "id": "27", "name": "Nicole Violetta Tjeong", "score": 80, "cookie": 0, "bonus": 20, "final": 100 },
       { "id": "28", "name": "Revalyn", "score": 40, "cookie": 0, "bonus": 20, "final": 60 },
       { "id": "29", "name": "Rogelio Carrick Ang", "score": 42.5, "cookie": 0, "bonus": 20, "final": 63 },
       { "id": "30", "name": "Sava Tania", "score": 65, "cookie": 0, "bonus": 20, "final": 85 },
@@ -264,7 +263,7 @@
       { "id": "25", "name": "Maria Aurelia Novalestrina Sinaga", "score": 52.5, "cookie": 11, "bonus": 0, "final": 75 },
       { "id": "26", "name": "Matthew", "score": 50, "cookie": 7, "bonus": 0, "final": 74 },
       { "id": "27", "name": "Michelle", "score": 67.5, "cookie": 5, "bonus": 0, "final": 72 },
-      { "id": "28", "name": "Mike Lim", "score": 60, "cookie": 4, "bonus": 0, "final": 70 },
+      { "id": "28", "name": "Mike Lim", "score": 60, "cookie": 1, "bonus": 0, "final": 62 },
       { "id": "29", "name": "Mischelle", "score": 47.5, "cookie": 11, "bonus": 0, "final": 75 },
       { "id": "30", "name": "Ovelya Berenice", "score": 82.5, "cookie": 1, "bonus": 0, "final": 85 },
       { "id": "31", "name": "Philip Mustika Angkasa", "score": 65, "cookie": 3, "bonus": 0, "final": 70 },
@@ -277,7 +276,7 @@
       { "id": "38", "name": "Sharlene Harney", "score": 72.5, "cookie": 3, "bonus": 0, "final": 76 },
       { "id": "39", "name": "Steven Tannia", "score": 65, "cookie": 7, "bonus": 0, "final": 74 },
       { "id": "40", "name": "Tifara Amelia", "score": 65, "cookie": 3, "bonus": 0, "final": 70 },
-      { "id": "41", "name": "Tiffany Taniwan", "score": 65, "cookie": 1, "bonus": 0, "final": 70 },
+      { "id": "41", "name": "Tiffany Taniwan", "score": 65, "cookie": 1, "bonus": 0, "final": 67 },
       { "id": "42", "name": "Vebry Yolanda", "score": 72.5, "cookie": 5, "bonus": 0, "final": 78 },
       { "id": "43", "name": "Vincent Colin", "score": 62.5, "cookie": 3, "bonus": 0, "final": 70 },
       { "id": "44", "name": "Erwin Wijaya", "score": 72.5, "cookie": 1, "bonus": 0, "final": 75 }
