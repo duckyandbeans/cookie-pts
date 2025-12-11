@@ -21,14 +21,14 @@
       { "id": "17", "name": "Giselle Lee", "score": 75, "cookie": 0, "bonus": 10, "final": 85 },
       { "id": "18", "name": "Givon", "score": 77.5, "cookie": 0, "bonus": 20, "final": 98 },
       { "id": "19", "name": "Goldy Pacific Sun", "score": 70, "cookie": 0, "bonus": 20, "final": 90 },
-      { "id": "20", "name": "Grace Kelly Ignacia", "score": 47.5, "cookie": 0, "bonus": 20, "final": 68 },
+      { "id": "20", "name": "Grace Kelly Ignacia", "score": 47.5, "cookie": 0, "bonus": 20, "final": 70 },
       { "id": "21", "name": "Idellia Antoneta", "score": 72.5, "cookie": 0, "bonus": 10, "final": 83 },
       { "id": "22", "name": "James Willard Chen", "score": 77.5, "cookie": 0, "bonus": 20, "final": 98 },
       { "id": "23", "name": "Janice Giselle Lim", "score": 75, "cookie": 0, "bonus": 20, "final": 95 },
       { "id": "24", "name": "Javier Chiuman", "score": 75, "cookie": 0, "bonus": 10, "final": 85 },
       { "id": "25", "name": "Jessica Sachi", "score": 70, "cookie": 0, "bonus": 20, "final": 90 },
       { "id": "26", "name": "Jessica Tanji", "score": 67.5, "cookie": 0, "bonus": 20, "final": 88 },
-      { "id": "27", "name": "Jocelyn Princess Yangklyn", "score": 47.5, "cookie": 0, "bonus": 20, "final": 68 },
+      { "id": "27", "name": "Jocelyn Princess Yangklyn", "score": 47.5, "cookie": 0, "bonus": 20, "final": 70 },
       { "id": "28", "name": "Joe Kusanagi", "score": 82.5, "cookie": 0, "bonus": 20, "final": 100 },
       { "id": "29", "name": "Joice Kwan", "score": 80, "cookie": 0, "bonus": 20, "final": 100 },
       { "id": "30", "name": "Jose Ferguson Tjong", "score": 67.5, "cookie": 0, "bonus": 20, "final": 88 },
@@ -48,7 +48,7 @@
       { "id": "44", "name": "Valencia Khosasih", "score": 50, "cookie": 0, "bonus": 20, "final": 70 },
       { "id": "45", "name": "Wendy Salim", "score": 45, "cookie": 0, "bonus": 10, "final": 55 },
       { "id": "46", "name": "Louis Chow", "score": 67.5, "cookie": 0, "bonus": 20, "final": 88 },
-      { "id": "47", "name": "Valerian Lieandro", "score": 67.5, "cookie": 0, "bonus": 0, "final": 68 }
+      { "id": "47", "name": "Valerian Lieandro", "score": 67.5, "cookie": 0, "bonus": 0, "final": 70 }
     ],
     "XI E": [
       { "id": "1", "name": "Angela Sudargo", "score": 82.5, "cookie": 0, "bonus": 20, "final": 100 },
