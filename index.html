@@ -11,7 +11,7 @@
         
         /* Quote Board Style */
         .chalkboard {
-            background: url('quote-bg.png') no-repeat center center;
+            background: url('quote-bg.PNG') no-repeat center center;
             background-size: cover;
             color: #ffffff; 
             font-family: 'Patrick Hand', cursive;
@@ -31,11 +31,11 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
-            min-width: 1000px;
+            font-size: 14px; /* Increased font size for readability */
+            min-width: 600px; /* Reduced min-width as there are fewer columns */
         }
         th, td {
-            padding: 10px 12px;
+            padding: 12px 16px;
             text-align: center;
             border-bottom: 1px solid #eee;
         }
@@ -45,15 +45,16 @@
             font-weight: 700;
             white-space: nowrap;
             text-transform: uppercase;
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: 0.05em;
         }
         tr:last-child td { border-bottom: none; }
         
         /* Highlight Columns */
-        .col-cookie { background-color: #e0f2fe; font-weight: bold; color: #0284c7; }
-        .col-final { background-color: #dcfce7; font-weight: bold; color: #166534; }
-        .col-alloc { background-color: #fff7ed; color: #9a3412; }
+        .col-score { background-color: #f0f9ff; }
+        .col-cookie { background-color: #fff7ed; color: #9a3412; font-weight: 600; }
+        .col-bonus { background-color: #f0fdf4; color: #166534; font-weight: 600; }
+        .col-final { background-color: #e0e7ff; font-weight: 800; color: #3730a3; font-size: 1.1em; }
 
         .mascot-img { width: 100px; height: 100px; object-fit: contain; }
     </style>
@@ -97,7 +98,6 @@
                 <span class="bg-red-100 text-red-600 p-2 rounded-lg mr-3 text-xl">🎥</span>
                 Honorable Shoutout
             </h3>
-            
             <div class="w-full aspect-video mb-4 rounded-xl overflow-hidden shadow-md bg-black">
                 <iframe 
                     class="w-full h-full"
@@ -108,7 +108,6 @@
                     allowfullscreen>
                 </iframe>
             </div>
-            
             <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-500">
                 <p class="text-indigo-900 font-medium italic leading-relaxed">
                     "This is the best planned, best executed, best crowd-response and well edited video. I had goosebumps! Supreme choice in music and editing style. Keep up the good work, you guysss."
@@ -130,6 +129,15 @@
             <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4 border-t border-gray-100">
                 <a href="orphanage.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-teal-100 text-teal-700 font-bold rounded-xl hover:bg-teal-200 transition duration-200 shadow-sm border border-teal-200">
                     🤝 Orphanage Check
+                </a>
+                <a href="quiz-x.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-amber-100 text-amber-700 font-bold rounded-xl hover:bg-amber-200 transition duration-200 shadow-sm border border-amber-200">
+                    🌱 X Mock Exam
+                </a>
+                <a href="quiz-xi.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-emerald-100 text-emerald-700 font-bold rounded-xl hover:bg-emerald-200 transition duration-200 shadow-sm border border-emerald-200">
+                    📝 XI Mock Exam
+                </a>
+                <a href="quiz-xii.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-rose-100 text-rose-700 font-bold rounded-xl hover:bg-rose-200 transition duration-200 shadow-sm border border-rose-200">
+                    🎓 XII Mock Exam
                 </a>
             </div>
         </div>
@@ -161,7 +169,13 @@
                 <div class="table-container">
                     <table id="scoreTable">
                         <thead>
-                            </thead>
+                            <tr>
+                                <th class="col-score">REAL SCORE</th>
+                                <th class="col-cookie">Cookie Pts</th>
+                                <th class="col-bonus">Bonus Points</th>
+                                <th class="col-final">FINAL SCORE</th>
+                            </tr>
+                        </thead>
                         <tbody>
                             </tbody>
                     </table>
@@ -217,71 +231,19 @@
 
         function renderResult(s, cls) {
             const resultArea = document.getElementById('resultArea');
-            const thead = document.querySelector('#scoreTable thead');
             const tbody = document.querySelector('#scoreTable tbody');
             
             document.getElementById('studentName').innerText = s.name;
             document.getElementById('studentClass').innerText = cls;
             document.getElementById('lastUpdated').innerText = "Last updated: " + allData.lastUpdated;
 
-            let isXII = cls.startsWith('XII');
-
-            // --- BUILD HEADERS ---
-            let headersHTML = `
-                <tr>
-                    <th class="col-cookie">Cookie Pts</th>
-            `;
-
-            if(isXII) {
-                headersHTML += `
-                    <th>Cookies PH3</th>
-                    <th>Cookies PH4</th>
-                `;
-            }
-
-            headersHTML += `
-                    <th class="col-alloc">Alloc TP 1</th>
-                    <th class="col-alloc">Alloc TP 2</th>
-                    <th class="col-alloc">Alloc TP 3</th>
-            `;
-
-            headersHTML += `
-                    <th>TP 1 (Org)</th>
-                    <th>TP 2 (Org)</th>
-                    <th>TP 3 (Org)</th>
-                    <th class="col-final">TP 1 Final</th>
-                    <th class="col-final">TP 2 Final</th>
-                    <th class="col-final">TP 3 Final</th>
-                </tr>
-            `;
-            thead.innerHTML = headersHTML;
-
             // --- BUILD ROW ---
             let rowHTML = `
                 <tr>
-                    <td class="col-cookie">${s.cookie_total}</td>
-            `;
-
-            if(isXII) {
-                rowHTML += `
-                    <td>${s.ph3 || 0}</td>
-                    <td>${s.ph4 || 0}</td>
-                `;
-            }
-
-            rowHTML += `
-                    <td class="col-alloc">${s.alloc[0]}</td>
-                    <td class="col-alloc">${s.alloc[1]}</td>
-                    <td class="col-alloc">${s.alloc[2]}</td>
-            `;
-
-            rowHTML += `
-                    <td>${s.org[0]}</td>
-                    <td>${s.org[1]}</td>
-                    <td>${s.org[2]}</td>
-                    <td class="col-final">${s.final[0]}</td>
-                    <td class="col-final">${s.final[1]}</td>
-                    <td class="col-final">${s.final[2]}</td>
+                    <td class="col-score">${s.score}</td>
+                    <td class="col-cookie">${s.cookie}</td>
+                    <td class="col-bonus">${s.bonus}</td>
+                    <td class="col-final">${s.final}</td>
                 </tr>
             `;
             tbody.innerHTML = rowHTML;
