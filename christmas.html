@@ -1,341 +1,447 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Club Holiday Special</title>
+    <title>ESL Student Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Great+Vibes&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        /* --- BACKGROUND --- */
-        body {
-            background: url('fireplace.GIF') no-repeat center center fixed; 
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Patrick+Hand&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        
+        /* Quote Board Style */
+        .chalkboard {
+            background: url('quote-bg.PNG') no-repeat center center;
             background-size: cover;
-            font-family: sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
+            color: #ffffff; 
+            font-family: 'Patrick Hand', cursive;
+            border: 8px solid #4a5568;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8); 
         }
 
-        /* --- VIDEOTRON STYLE --- */
-        .videotron-container {
-            background-color: #000;
-            border: 4px solid #333;
-            box-shadow: 0 0 15px rgba(255, 165, 0, 0.6);
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        
-        .neon-text {
-            font-family: 'Press Start 2P', cursive;
-            color: #fff;
-            font-size: 1rem;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00de, 0 0 30px #ff00de, 0 0 40px #ff00de;
-            animation: marquee 15s linear infinite;
-        }
-
-        @media (min-width: 768px) {
-            .neon-text { font-size: 1.5rem; }
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .logo-img {
-            height: 50px;
-            width: 50px;
-            object-fit: contain;
-            z-index: 30;
-            background: #000;
-            border: 2px solid #333;
-        }
-
-        /* --- POSTER AREA --- */
-        .poster-wrapper {
-            position: relative;
+        /* Table Styles */
+        .table-container {
             width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            border-radius: 10px;
-            overflow: hidden;
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 1200px;
+        }
+        th, td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #444;
+            font-weight: 700;
+            white-space: normal;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            vertical-align: middle;
+        }
+        tr:last-child td { border-bottom: none; }
+        
+        .col-cookie { background-color: #e0f2fe; font-weight: bold; color: #0284c7; }
+        .col-final { background-color: #dcfce7; font-weight: bold; color: #166534; }
+        .col-alloc { background-color: #fff7ed; color: #9a3412; }
+        .col-leftover { background-color: #f3e8ff; color: #6b21a8; font-weight: bold; }
+
+        .mascot-img { width: 100px; height: 100px; object-fit: contain; }
+
+        /* --- NEW ANIMATIONS FOR PRESENT --- */
+        @keyframes fabulous-spin {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            60% { transform: scale(1.1) rotate(740deg); opacity: 1; }
+            100% { transform: scale(1) rotate(720deg); opacity: 1; }
         }
 
-        #main-poster {
-            width: 100%;
-            height: auto;
-            display: block;
-            position: relative;
-            z-index: 20; /* Poster on TOP */
-            pointer-events: none; /* Click-through to face */
+        .animate-reveal {
+            animation: fabulous-spin 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
-        
-        #user-face {
+
+        .sparkle {
             position: absolute;
-            top: 20%;
-            left: 50%;
-            width: 150px;
-            cursor: grab;
-            z-index: 10; /* Face BELOW poster */
-            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle-fly 1s ease-out forwards;
+            z-index: 50;
         }
 
-        #user-face:active { cursor: grabbing; }
-
-        /* --- BUTTONS --- */
-        .interactive-btn { transition: transform 0.2s, filter 0.2s; }
-        .interactive-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
-
-        /* --- MODAL SURAT --- */
-        #message-box {
-            background: url('message.JPG') no-repeat center center;
-            background-size: 100% 100%;
-            font-family: 'Great Vibes', cursive;
-            color: #2d1a12;
-            text-shadow: 0px 0px 1px rgba(255,255,255,0.3);
-            line-height: 1.5;
+        @keyframes sparkle-fly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
     </style>
 </head>
-<body class="flex flex-col items-center py-6 px-4">
+<body class="p-4 sm:p-8 min-h-screen">
 
-    <div class="w-full max-w-5xl flex items-center justify-center gap-0 mb-8">
-        <img src="english club logo.PNG" alt="Logo" class="logo-img rounded-l-lg">
-        <div class="videotron-container flex-grow h-[54px]"> 
-            <div class="neon-text w-full text-center">
-                THE ENGLISH CLUB IS EXTENDING A WARM GREETING TO YOU! &nbsp;&nbsp;&nbsp; MERRY CHRISTMAS!
-            </div>
-        </div>
-        <img src="english club logo.PNG" alt="Logo" class="logo-img rounded-r-lg">
-    </div>
-
-    <div class="w-full flex flex-col items-center mb-8">
-        <div class="poster-wrapper" id="drag-zone">
-            <img id="user-face" src="" class="hidden" alt="User Face">
-            <img src="funny poster.PNG" id="main-poster" alt="Funny Poster">
+    <div class="max-w-7xl mx-auto space-y-8">
+        
+        <div class="text-center mb-6">
+            <h1 class="text-4xl font-extrabold text-indigo-900 tracking-tight">ESL Student Portal</h1>
+            <p class="text-gray-500 mt-2">End of Semester Updates</p>
         </div>
 
-        <div class="mt-4 bg-black/60 backdrop-blur-sm p-4 rounded-xl border border-white/20 text-center w-full max-w-sm">
-            <label class="cursor-pointer inline-block bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transition mb-3">
-                📸 Insert Your Face
-                <input type="file" id="face-input" accept="image/*" class="hidden">
-            </label>
-            <div class="flex items-center justify-between gap-2 text-white text-xs font-bold">
-                <span>Smaller</span>
-                <input type="range" id="size-slider" min="50" max="400" value="150" class="w-full mx-2 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                <span>Bigger</span>
-            </div>
-            <p class="text-white/70 text-[10px] mt-2">Tip: Drag your photo to fit in the heart!</p>
-        </div>
-    </div>
-
-    <div class="flex items-center justify-center gap-8 mb-10">
-        <button onclick="openNameModal()" class="interactive-btn">
-            <img src="mail.png" alt="Open Mail" class="w-28 h-28 object-contain drop-shadow-2xl">
-        </button>
-    </div>
-
-    <div id="name-modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center z-50 px-4">
-        <div class="bg-white p-6 rounded-2xl shadow-2xl text-center max-w-sm w-full transform transition-all scale-100">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">You've got mail! 🎄</h3>
-            <p class="mb-4 text-gray-600 text-sm">Please enter your name to open it:</p>
-            <input type="text" id="visitor-name" placeholder="Your Name" class="w-full p-3 border-2 border-pink-200 rounded-xl mb-4 text-center text-lg focus:outline-none focus:border-pink-500">
-            <button onclick="openMessage()" class="w-full bg-pink-500 text-white font-bold py-3 rounded-xl hover:bg-pink-600 shadow-md">Open Letter</button>
-        </div>
-    </div>
-
-    <div id="message-modal-container" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center z-50 p-4 overflow-y-auto">
-        <div id="message-box" class="relative w-full max-w-2xl my-8 p-12 sm:px-20 sm:py-24 md:px-28 md:py-32 rounded-lg shadow-2xl flex flex-col items-center text-center overflow-y-auto max-h-[90vh]">
+        <div class="flex flex-col items-center justify-center py-6 relative">
             
-            <button onclick="closeMessage()" class="absolute top-4 right-4 bg-white/50 hover:bg-red-500 hover:text-white text-red-800 rounded-full w-10 h-10 flex items-center justify-center text-2xl font-bold transition-all shadow-sm z-50">
-                &times;
-            </button>
-            
-            <div id="message-content" class="mt-4 w-full">
+            <button id="presentBtn" onclick="openPresent()" class="group transform transition hover:scale-110 active:scale-95 duration-200">
+                <div class="text-8xl filter drop-shadow-xl animate-bounce">🎁</div>
+                <div class="mt-2 bg-pink-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-md group-hover:bg-pink-600">
+                    Open Me!
                 </div>
-        </div>
-    </div>
+            </button>
 
-    <audio id="bg-music" loop autoplay>
-        <source src="christmas-song.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="voice-msg">
-        <source src="audio message.mp3" type="audio/mpeg">
-    </audio>
+            <div id="revealArea" class="hidden flex flex-col items-center relative">
+                <div class="relative">
+                    <img src="wow.png" alt="WOW" class="w-64 h-64 object-contain animate-reveal drop-shadow-2xl">
+                    <div id="sparkleContainer" class="absolute inset-0 pointer-events-none flex items-center justify-center"></div>
+                </div>
+                
+                <div class="mt-4 bg-white/80 backdrop-blur px-6 py-2 rounded-full border-2 border-pink-300 shadow-sm animate-fade-in-up">
+                    <p class="text-gray-700 font-bold">
+                        Artist Credit: 
+                        <a href="https://instagram.com/veli_.li" target="_blank" class="text-pink-600 hover:text-pink-800 hover:underline">
+                            @veli_.li ✨
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg p-6 border-t-4 border-purple-500">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">📈 Class Performance (Final Scores)</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="chart-box"><h3 class="text-center font-bold text-gray-600 mb-2">XI D</h3><canvas id="chart-XI D"></canvas></div>
+                <div class="chart-box"><h3 class="text-center font-bold text-gray-600 mb-2">XI E</h3><canvas id="chart-XI E"></canvas></div>
+                <div class="chart-box"><h3 class="text-center font-bold text-gray-600 mb-2">XI H</h3><canvas id="chart-XI H"></canvas></div>
+                <div class="chart-box"><h3 class="text-center font-bold text-gray-600 mb-2">XI I</h3><canvas id="chart-XI I"></canvas></div>
+                <div class="chart-box"><h3 class="text-center font-bold text-gray-600 mb-2">XII H</h3><canvas id="chart-XII H"></canvas></div>
+                <div class="chart-box"><h3 class="text-center font-bold text-gray-600 mb-2">XII I</h3><canvas id="chart-XII I"></canvas></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="chalkboard rounded-xl p-8 flex flex-col justify-center items-center text-center h-full min-h-[250px] transform rotate-1 hover:rotate-0 transition duration-300 relative overflow-hidden">
+                <div class="absolute inset-0 bg-black/20 z-0"></div>
+                <div class="relative z-10">
+                    <p class="text-2xl sm:text-3xl leading-relaxed font-bold">
+                        "A great score comes with great obstacles."
+                    </p>
+                    <p class="mt-4 text-gray-200 text-lg">— Sir Alex, 2025</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-4 border border-gray-200 transform -rotate-1 hover:rotate-0 transition duration-300">
+                <div class="bg-gray-100 rounded-xl overflow-hidden mb-3 relative">
+                    <img src="polling.jpeg" alt="Picture of the day" class="w-full h-auto object-contain">
+                    <div class="absolute top-2 right-2 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-gray-600 shadow-sm">
+                        📸 POTD
+                    </div>
+                </div>
+                <p class="text-center text-gray-700 font-bold italic text-lg">
+                    "Cooked? We are roasted! 😇"
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+            <h3 class="text-xl font-bold text-indigo-900 mb-4 flex items-center">
+                <span class="bg-red-100 text-red-600 p-2 rounded-lg mr-3 text-xl">🎥</span>
+                Honorable Shoutout
+            </h3>
+            <div class="w-full aspect-video mb-4 rounded-xl overflow-hidden shadow-md bg-black">
+                <iframe 
+                    class="w-full h-full"
+                    src="https://www.youtube.com/embed/UmfI03Zx330" 
+                    title="Honorable Shoutout Video"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="bg-indigo-50 rounded-lg p-4 border-l-4 border-indigo-500">
+                <p class="text-indigo-900 font-medium italic leading-relaxed">
+                    "This is the best planned, best executed, best crowd-response and well edited video. I had goosebumps! Supreme choice in music and editing style. Keep up the good work, you guysss."
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6 border-l-8 border-indigo-600 space-y-6">
+            <div class="flex items-start">
+                <span class="text-3xl mr-4">📢</span>
+                <div>
+                    <h3 class="font-bold text-indigo-900 text-lg">Message from Teachers</h3>
+                    <p class="text-indigo-800 mt-1">
+                        Alright, alright.... it's okay. You have done your best. We will inform you once your scores are out!
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4 border-t border-gray-100">
+                <a href="orphanage.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-teal-100 text-teal-700 font-bold rounded-xl hover:bg-teal-200 transition duration-200 shadow-sm border border-teal-200">
+                    🤝 Orphanage Check
+                </a>
+                <a href="quiz-x.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-amber-100 text-amber-700 font-bold rounded-xl hover:bg-amber-200 transition duration-200 shadow-sm border border-amber-200">
+                    🌱 X Mock Exam
+                </a>
+                <a href="quiz-xi.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-emerald-100 text-emerald-700 font-bold rounded-xl hover:bg-emerald-200 transition duration-200 shadow-sm border border-emerald-200">
+                    📝 XI Mock Exam
+                </a>
+                <a href="quiz-xii.html" class="flex-1 sm:flex-none text-center px-5 py-3 bg-rose-100 text-rose-700 font-bold rounded-xl hover:bg-rose-200 transition duration-200 shadow-sm border border-rose-200">
+                    🎓 XII Mock Exam
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 border-t-4 border-indigo-600">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <span class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">📊</span> 
+                Check Your Report Card
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <select id="classSelect" class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50">
+                    <option value="">Loading Classes...</option>
+                </select>
+                <input type="text" id="idSearch" placeholder="Enter Attendance Number" class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-gray-50">
+                <button onclick="handleLogin()" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition shadow-md active:scale-95">
+                    Show My Report
+                </button>
+            </div>
+
+            <div id="resultArea" class="hidden animate-fade-in">
+                <div class="flex flex-col items-center mb-6 border-b pb-6">
+                    <img src="character.PNG" alt="Mascot" class="mascot-img mb-2">
+                    <h3 id="studentName" class="text-2xl font-bold text-gray-800">Student Name</h3>
+                    <p id="studentClass" class="text-gray-500 font-mono bg-gray-100 px-3 py-1 rounded-full text-sm">Class</p>
+                </div>
+
+                <div class="table-container">
+                    <table id="scoreTable">
+                        <thead>
+                            </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+
+                <p id="lastUpdated" class="text-center text-xs text-gray-400 mt-6">Last updated...</p>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="index.html" class="text-indigo-600 hover:text-indigo-800 font-semibold text-sm">
+                &larr; Back to Christmas Home
+            </a>
+        </div>
+
+    </div>
 
     <script>
-        // --- 0. AUDIO AUTO-PLAY HANDLING ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const bgMusic = document.getElementById('bg-music');
-            
-            // Try to play immediately
-            const playPromise = bgMusic.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay blocked. Waiting for interaction.");
-                    const enableAudio = () => {
-                        bgMusic.play();
-                        document.removeEventListener('click', enableAudio);
-                        document.removeEventListener('touchstart', enableAudio);
-                    };
-                    document.addEventListener('click', enableAudio);
-                    document.addEventListener('touchstart', enableAudio);
+        let allData = null;
+        const targetClasses = ['XI D', 'XI E', 'XI H', 'XI I', 'XII H', 'XII I'];
+
+        // --- NEW: SURPRISE PRESENT LOGIC ---
+        function openPresent() {
+            const btn = document.getElementById('presentBtn');
+            const reveal = document.getElementById('revealArea');
+            const container = document.getElementById('sparkleContainer');
+
+            // Hide button, show reveal
+            btn.classList.add('hidden');
+            reveal.classList.remove('hidden');
+            reveal.classList.add('flex');
+
+            // Generate Sparkles
+            for(let i=0; i<30; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                
+                // Randomize color
+                const colors = ['#FFD700', '#FF69B4', '#00BFFF', '#FFF'];
+                sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                // Randomize trajectory variables for CSS
+                const x = (Math.random() - 0.5) * 400; // -200 to 200px
+                const y = (Math.random() - 0.5) * 400; 
+                sparkle.style.setProperty('--tx', `${x}px`);
+                sparkle.style.setProperty('--ty', `${y}px`);
+                
+                // Randomize starting position slightly
+                sparkle.style.left = '50%';
+                sparkle.style.top = '50%';
+
+                container.appendChild(sparkle);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('database.json')
+                .then(res => res.json())
+                .then(data => {
+                    allData = data;
+                    const select = document.getElementById('classSelect');
+                    select.innerHTML = '<option value="">-- Select Class --</option>';
+                    Object.keys(data.classes).sort().forEach(cls => {
+                        select.innerHTML += `<option value="${cls}">${cls}</option>`;
+                    });
+                    generateCharts(data);
+                })
+                .catch(err => alert("Error: Could not load database.json"));
+        });
+
+        function generateCharts(data) {
+            targetClasses.forEach(className => {
+                const students = data.classes[className];
+                if (!students) return;
+
+                let excelled = 0, well = 0, passed = 0, failed = 0;
+                
+                students.forEach(s => {
+                    const score = parseFloat(s.final); // Charts use FINAL score
+                    if (score >= 90) excelled++;
+                    else if (score >= 80) well++;
+                    else if (score >= 70) passed++;
+                    else failed++;
                 });
-            }
-        });
 
-        // --- 1. FACE DRAG & RESIZE LOGIC ---
-        const faceInput = document.getElementById('face-input');
-        const userFace = document.getElementById('user-face');
-        const sizeSlider = document.getElementById('size-slider');
-        const dragZone = document.getElementById('drag-zone');
-
-        faceInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    userFace.src = event.target.result;
-                    userFace.classList.remove('hidden');
-                    userFace.style.top = '30%';
-                    userFace.style.left = '50%';
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        sizeSlider.addEventListener('input', function() {
-            userFace.style.width = this.value + 'px';
-        });
-
-        let isDragging = false;
-        let startX, startY, initialLeft, initialTop;
-
-        dragZone.addEventListener('mousedown', startDrag);
-        dragZone.addEventListener('touchstart', startDrag, {passive: false});
-        document.addEventListener('mousemove', doDrag);
-        document.addEventListener('touchmove', doDrag, {passive: false});
-        document.addEventListener('mouseup', stopDrag);
-        document.addEventListener('touchend', stopDrag);
-
-        function startDrag(e) {
-            if (userFace.classList.contains('hidden')) return;
-            e.preventDefault();
-            isDragging = true;
-            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-            startX = clientX;
-            startY = clientY;
-            const style = window.getComputedStyle(userFace);
-            initialLeft = parseFloat(style.left);
-            initialTop = parseFloat(style.top);
-            userFace.style.cursor = 'grabbing';
+                const ctx = document.getElementById(`chart-${className}`).getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Excelled (90-100)', 'Did Well (80-89)', 'Passed (70-79)', 'Failed (<70)'],
+                        datasets: [{
+                            data: [excelled, well, passed, failed],
+                            backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10 } },
+                            title: { display: false }
+                        }
+                    }
+                });
+            });
         }
 
-        function doDrag(e) {
-            if (!isDragging) return;
-            e.preventDefault();
-            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-            const dx = clientX - startX;
-            const dy = clientY - startY;
-            userFace.style.left = `${initialLeft + dx}px`;
-            userFace.style.top = `${initialTop + dy}px`;
-        }
-
-        function stopDrag() {
-            isDragging = false;
-            userFace.style.cursor = 'grab';
-        }
-
-        // --- 2. LETTER & AUDIO LOGIC ---
-        const nameModal = document.getElementById('name-modal');
-        const messageModalContainer = document.getElementById('message-modal-container');
-        const messageContent = document.getElementById('message-content');
-        const voiceMsg = document.getElementById('voice-msg');
-        const nameInput = document.getElementById('visitor-name');
-        const bgMusic = document.getElementById('bg-music');
-
-        function openNameModal() {
-            nameModal.classList.remove('hidden');
-            // Ensure bg music is playing if it wasn't already (user interaction)
-            bgMusic.play().catch(() => {}); 
-        }
-
-        function playVoiceMessage() {
-            // STOP background music completely
-            bgMusic.pause();
+        function handleLogin() {
+            const cls = document.getElementById('classSelect').value;
+            const id = document.getElementById('idSearch').value.trim();
             
-            // Play voice message
-            voiceMsg.currentTime = 0;
-            voiceMsg.play();
+            if(!cls || !id) {
+                alert("Please select a class and enter your number.");
+                return;
+            }
+
+            const student = allData.classes[cls]?.find(s => s.id === id);
+            
+            if(student) {
+                renderResult(student, cls);
+            } else {
+                alert("Student not found! Please check your class and number.");
+            }
         }
 
-        function openMessage() {
-            const name = nameInput.value.trim() || "Friend";
+        function renderResult(s, cls) {
+            const resultArea = document.getElementById('resultArea');
+            const thead = document.querySelector('#scoreTable thead');
+            const tbody = document.querySelector('#scoreTable tbody');
             
-            messageContent.innerHTML = `
-                <div class="text-center space-y-4 px-2">
-                    <p class="text-2xl sm:text-3xl font-bold mb-4">Dearest ${name},</p>
-                    
-                    <p class="text-lg sm:text-xl">
-                        As we twirl our way into the end of the year, I just want to say how much I adore each and every one of you. 
-                        You’ve all brought sparkle, sass, curiosity, and so much joy into every meeting. 
-                        Truly—you will always have a place in my heart: glitter, chaos, grammar mistakes, and all.
-                    </p>
+            document.getElementById('studentName').innerText = s.name;
+            document.getElementById('studentClass').innerText = cls;
+            document.getElementById('lastUpdated').innerText = "Last updated: " + allData.lastUpdated;
 
-                    <p class="text-lg sm:text-xl hidden sm:block">
-                        This season is the perfect moment to pause, sip something sweet, and reflect on our journey. 
-                        We’ve made mistakes—yes, even the fabulously flawless among us—but that’s how we grow. 
-                        Let’s learn from them, not hide from them.
-                    </p>
+            let isXII = cls.startsWith('XII');
 
-                    <p class="text-lg sm:text-xl">
-                        And please, my shining stars: don’t carry hate in your heart. People are different—some subtle, 
-                        some dramatic, some fruity, some spicy—and that’s what makes the world interesting. 
-                        Differences aren’t a reason to judge; they’re invitations to understand. 
-                        So let’s focus on what we share, on what brings us together, not what pulls us apart.
-                    </p>
-
-                    <p class="text-lg sm:text-xl">
-                        Thank you for making this year vibrant, memorable, and full of love.
-                        Cheers to kindness, growth, and a fabulous 2026!
-                    </p>
-
-                    <div class="my-6">
-                         <button onclick="playVoiceMessage()" class="bg-[#3e2723] text-white px-4 py-2 rounded-full shadow-lg hover:bg-black transition flex items-center justify-center gap-2 mx-auto font-sans text-sm animate-pulse">
-                            🔊 Play Voice Message
-                        </button>
-                    </div>
-
-                    <div class="mt-4">
-                        <p class="text-lg sm:text-xl">Love,</p>
-                        <p class="text-xl sm:text-3xl font-bold mt-2">Ms. Grace</p>
-                    </div>
-                </div>
+            // --- BUILD HEADERS ---
+            let headersHTML = `
+                <tr>
+                    <th class="col-cookie">AMOUNT OF COOKIE PTS</th>
             `;
 
-            nameModal.classList.add('hidden');
-            messageModalContainer.classList.remove('hidden');
-        }
+            if(isXII) {
+                headersHTML += `
+                    <th>Cookies 4 PH3</th>
+                    <th>Cookies 4 PH4</th>
+                `;
+            }
 
-        function closeMessage() {
-            messageModalContainer.classList.add('hidden');
-            
-            // Stop voice message if it's still playing
-            voiceMsg.pause();
-            voiceMsg.currentTime = 0;
-            
-            // Resume background music
-            bgMusic.play();
-        }
+            headersHTML += `
+                    <th class="col-alloc">COOKIE ALLOCATION FOR TP 1</th>
+                    <th class="col-alloc">COOKIE ALLOCATION FOR TP 2</th>
+                    <th class="col-alloc">COOKIE ALLOCATION FOR TP 3</th>
+            `;
 
+            if (!isXII) {
+                headersHTML += `<th class="col-leftover">LEFT OVER COOKIE</th>`;
+            }
+
+            headersHTML += `
+                    <th>TP 1</th>
+                    <th>TP 2</th>
+                    <th>TP 3</th>
+                    <th class="col-final">TP 1 w COOKIES</th>
+                    <th class="col-final">TP 2 w COOKIES</th>
+                    <th class="col-final">TP 3 w COOKIES</th>
+                </tr>
+            `;
+            thead.innerHTML = headersHTML;
+
+            // --- BUILD ROW ---
+            let rowHTML = `
+                <tr>
+                    <td class="col-cookie">${s.cookie_total}</td>
+            `;
+
+            if(isXII) {
+                rowHTML += `
+                    <td>${s.ph3 || 0}</td>
+                    <td>${s.ph4 || 0}</td>
+                `;
+            }
+
+            rowHTML += `
+                    <td class="col-alloc">${s.alloc[0]}</td>
+                    <td class="col-alloc">${s.alloc[1]}</td>
+                    <td class="col-alloc">${s.alloc[2]}</td>
+            `;
+
+            if (!isXII) {
+                rowHTML += `<td class="col-leftover">${s.leftover}</td>`;
+            }
+
+            rowHTML += `
+                    <td>${s.org[0]}</td>
+                    <td>${s.org[1]}</td>
+                    <td>${s.org[2]}</td>
+                    <td class="col-final">${s.final[0]}</td>
+                    <td class="col-final">${s.final[1]}</td>
+                    <td class="col-final">${s.final[2]}</td>
+                </tr>
+            `;
+            tbody.innerHTML = rowHTML;
+
+            resultArea.classList.remove('hidden');
+            resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     </script>
 </body>
 </html>
