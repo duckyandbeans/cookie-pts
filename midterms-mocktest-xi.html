@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XI Grade Midterms Mock Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
+        .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
+        .selected { border-color: #4f46e5; background-color: #e0e7ff; }
+        .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1rem; background-color: #ffffff; margin-bottom: 2rem; }
+        .code-container { background-color: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; font-family: monospace; font-size: 0.875rem; margin-bottom: 1rem; }
+        .error-underline { text-decoration: underline; text-decoration-color: currentColor; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+        .error-part { position: relative; display: inline-block; margin: 0 4px; }
+        .error-label { position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; font-weight: 700; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold mb-6">
+            &larr; Back to Home Menu
+        </a>
+
+        <header class="text-center mb-10 p-6 bg-indigo-600 text-white rounded-xl shadow-lg">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">XI Grade Midterms Mock Test</h1>
+            <p class="text-lg font-light mt-1 opacity-90">Reading Comprehension, Data Literacy, and Passive Voice</p>
+        </header>
+
+        <div id="loading-error" class="text-center text-gray-500">
+            Loading quiz... (If this takes too long, please refresh)
+        </div>
+
+        <main id="quiz-container" class="space-y-8"></main>
+
+        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden fade-in">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
+            <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
+            <p class="text-sm text-gray-500 mt-2">Review your answers using the color-coded feedback above.</p>
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_ANSWERS = {
+            1: 'C', 2: 'C', 3: 'B', 4: 'B', 5: 'C', 6: 'B', 7: 'C', 8: 'C', 9: 'C', 10: 'C',
+            11: 'C', 12: 'A', 13: 'B', 14: 'B', 15: 'B', 16: 'C', 17: 'B', 18: 'B', 19: 'B', 20: 'B',
+            21: 'A', 22: 'E', 23: 'A', 24: 'A', 25: 'A', 26: 'E', 27: 'A', 28: 'A', 29: 'A', 30: 'E',
+            31: 'A', 32: 'D', 33: 'A', 34: 'A', 35: 'C', 36: 'B', 37: 'C', 38: 'A', 39: 'B', 40: 'A'
+        };
+
+        const QUIZ_DATA = [
+            // --- PART 1: READING COMPREHENSION ---
+            { 
+                id: 'passage1', 
+                type: 'reading_passage', 
+                section: '1ST PART: Reading Comprehension',
+                title: 'The Queen of the Mat: The Legacy of Simone Biles', 
+                content: `In the world of gymnastics, few names carry as much weight as Simone Biles. Her journey to a record-breaking collection of World Championship and Olympic medals is more than a sporting achievement; it is a masterclass in well-being and mental fortitude. Even today, Biles is regarded as a role model for athletes across the globe, proving that elite sports require as much mental clarity as physical speed.<br><br>Success did not come by accident. Biles is famous for being exceptionally mindful on the vault and floor. During her legendary routines, her attention span never wavered, even when faced with grueling gravity-defying moves. She possesses an incredible level of emotional regulation, remaining calm when the pressure from the crowd at the Olympic Arena is at its peak. This self-control allows her to surpass opponents who are often physically strong but lack her tactical discipline.<br><br>Her path was not without adversity. In the early 2020s, the weight of a nation’s expectations could have easily crushed her self-esteem. However, her sense of belonging to the team and her fierce determination kept her focused. It is often noted by historians that her comeback was achieved through sheer grit, as she battled both fatigue and younger, hungrier challengers.<br><br>The impact of her career extends far beyond the trophies. Throughout her reign, gymnastics has been transformed into a sport that prioritizes mental health. Her techniques are still studied by young gymnasts today, and her records are unlikely to be broken anytime soon. Biles’ story teaches us that while physical skills are vital, it is self-confidence and resilience that turn a talented player into a timeless icon.`
+            },
+            { id: 1, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `What is the primary purpose of the text?`, options: ['A. To list the specific gymnastics moves Biles invented.', 'B. To argue that Biles is stronger than Rudi Hartono.', 'C. To highlight how mental fortitude and resilience define Biles\' legacy.', 'D. To criticize the pressure placed on young Olympic athletes.', 'E. To provide a chronological timeline of the 2020 Olympics.'] },
+            { id: 2, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `Based on the text, being "mindful" most likely means:`, options: ['A. Being worried about the final score.', 'B. Having a high level of physical strength.', 'C. Being fully present and focused on the current task.', 'D. Remembering all the rules of the competition.', 'E. Listening carefully to the coach’s instructions.'] },
+            { id: 3, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `In the second paragraph, "emotional regulation" refers to the ability to:`, options: ['A. Express anger when a score is too low.', 'B. Manage and respond to high-pressure feelings effectively.', 'C. Ignore the audience entirely during a performance.', 'D. Change one\'s personality to please the judges.', 'E. Calculate the mathematical difficulty of a routine.'] },
+            { id: 4, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `Which of the following is the best synonym for "adversity" as used in the third paragraph?`, options: ['A. Fame', 'B. Hardship', 'C. Confidence', 'D. Victory', 'E. Practice'] },
+            { id: 5, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `Which action mentioned in the text reflects a healthy "self-esteem"?`, options: ['A. Winning a trophy at the Wembley Arena.', 'B. Facing the grueling rallies of a younger opponent.', 'C. Maintaining focus despite the "weight of a nation\'s expectations."', 'D. Being physically stronger than all other challengers.', 'E. Having one\'s techniques studied by historians.'] },
+            { id: 6, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `Why is the passive voice used in the phrase "gymnastics has been transformed"?`, options: ['A. Because the person who transformed the sport is unknown.', 'B. To emphasize the sport itself and the change it underwent.', 'C. Because the author forgot who changed the sport.', 'D. To make the sentence sound more aggressive and fast.', 'E. To show that the change happened by accident.'] },
+            { id: 7, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `The phrase "unlikely to be broken anytime soon" suggests that:`, options: ['A. The records are physically impossible to beat.', 'B. Other gymnasts are not trying hard enough.', 'C. Biles’ achievements are exceptionally high and durable.', 'D. The rules of gymnastics will change next year.', 'E. Biles will return to break her own records again.'] },
+            { id: 8, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `What does the text imply about the relationship between physical and mental skills?`, options: ['A. Physical speed is more important than mental clarity in gymnastics.', 'B. Mental fortitude is the only thing a gymnast needs to win.', 'C. Physical skills are vital, but mental resilience creates a "timeless icon."', 'D. Most athletes lack physical skills but have great discipline.', 'E. Trophies are more important than self-confidence.'] },
+            { id: 9, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `What would a sports psychologist most likely be interested in from this text?`, options: ['A. The specific dimensions of the Olympic Arena mat.', 'B. The exact weight of the medals Biles won.', 'C. The methods Biles used for emotional regulation and focus.', 'D. The history of the Indonesian badminton team.', 'E. The cost of training a 2nd-grade high school gymnast.'] },
+            { id: 10, type: 'multiple_choice', section: '1ST PART: Reading Comprehension', question: `Which best summarizes the "Language Point" (Grammar) of the passage?`, options: ['A. The use of future tense to predict Biles’ next win.', 'B. The use of first-person perspective to show Biles’ inner thoughts.', 'C. The use of passive voice and abstract nouns to discuss legacy and impact.', 'D. The use of slang to appeal to a younger audience.', 'E. The use of imperative verbs to give instructions to athletes.'] },
+
+            // --- PART 2: GRAPH ANALYSIS ---
+            { 
+                id: 'passage2', 
+                type: 'reading_passage', 
+                section: '2ND PART: Analyzing a Graph',
+                title: 'Graph Generation Data', 
+                content: ` <img src="figure.png" alt="Graph">`
+            },
+
+            
+            { id: 11, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `Which statement best describes the overall trend shown in the graph between 2000 and 2019?`, options: ['A. Participation in all groups decreased steadily.', 'B. Participation remained stagnant until 2015.', 'C. There was a general upward trend across all age categories.', 'D. Only the "Kids" group showed any significant movement.', 'E. Participation peaked in 2010 and then fell.'] },
+            { id: 12, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `Which group experienced the largest absolute percentage point increase over the 10-year period (2009–2019)? (Assume 2010 to 2019 based on data points)`, options: ['A. Age 5-12', 'B. Age 13-18', 'C. Age 19+', 'D. The "Teens" and "Adults" groups tied.', 'E. Data for this period is not visible on the graph.'] },
+            { id: 13, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `In the year 2000, what was the relationship between Adults (z) and Teens (y)?`, options: ['A. Adults participated more than Teens.', 'B. Teen participation was double that of Adults.', 'C. There was no participation from either group.', 'D. Teens and Adults had identical participation rates.', 'E. Adults were the most active group.'] },
+            { id: 14, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `Which group showed the most “growth” (steepest slope) between 2015 and 2018?`, options: ['A. Age 5-12', 'B. Age 13-18', 'C. Age 19+', 'D. All groups grew at the exact same rate.', 'E. No growth was recorded in those years.'] },
+            { id: 15, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `What can be inferred about the "Teens (13-18)" from the data provided?`, options: ['A. They are losing interest in gymnastics.', 'B. Their participation accelerated significantly after 2010.', 'C. They only participate because of school requirements.', 'D. They will overtake the "Kids" group by 2025.', 'E. They are the least active group in the graph.'] },
+            { id: 16, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `Comparing 2000 to 2018, the "participation gap" between Kids (a) and Adults (c):`, options: ['A. Narrowed significantly.', 'B. Stayed exactly the same.', 'C. Widened, as Kids grew faster than Adults.', 'D. Disappeared entirely.', 'E. Became irrelevant due to the Teen group.'] },
+            { id: 17, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `If a student used this graph for "The Legacy of Simone," which finding would be most relevant to Adult participation (z)?`, options: ['A. The sharp decline in 2005.', 'B. The fact that Adult participation tripled from 2000 to 2019.', 'C. The high number of kids in 2019.', 'D. The stability of the 13-18 age group.', 'E. The lack of data for people over 50.'] },
+            { id: 18, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `Which of the following is a superlative fact supported by the 2019 data?`, options: ['A. The "Adults" are the most active group.', 'B. The "Kids" group reached its highest recorded percentage.', 'C. The "Teens" group is the slowest growing.', 'D. 2019 had the lowest overall participation.', 'E. 2019 is the only year with a gap.'] },
+            { id: 19, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `A critic argues that "Adults have no interest in gymnastics." How does the graph respond?`, options: ['A. It supports the claim; the line is at 0%.', 'B. It refutes the claim; showing a steady increase in Adult participation.', 'C. It ignores the claim; there is no data for adults.', 'D. It shows that Adults only participated in 2000.', 'E. It proves that Adults only watch but don\'t participate.'] },
+            { id: 20, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `What is a likely "signpost phrase" a lecturer would use when introducing this specific graph?`, options: ['A. "In conclusion, gymnastics is too difficult..."', 'B. "If we turn our attention to the longitudinal data across age brackets..."', 'C. "I would like to tell a story about my childhood..."', 'D. "To ignore the data, let us look at this photo..."', 'E. "Moving away from the topic of sports entirely..."'] },
+
+            // --- PART 3: ERROR ANALYSIS ---
+            { id: 21, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The medals <span data-part="A" class="error-part"><span class="error-underline">was won</span><span class="error-label text-indigo-600">A</span></span> by the team <span data-part="B" class="error-part"><span class="error-underline">last year</span><span class="error-label text-indigo-600">B</span></span> after <span data-part="C" class="error-part"><span class="error-underline">a</span><span class="error-label text-indigo-600">C</span></span> long <span data-part="D" class="error-part"><span class="error-underline">struggle</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'was won', 'B': 'last year', 'C': 'a', 'D': 'struggle', 'E': '(No Error)' } },
+            { id: 22, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The new techniques <span data-part="A" class="error-part"><span class="error-underline">are studied</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">young</span><span class="error-label text-indigo-600">B</span></span> athletes <span data-part="C" class="error-part"><span class="error-underline">every</span><span class="error-label text-indigo-600">C</span></span> single <span data-part="D" class="error-part"><span class="error-underline">day</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'are studied', 'B': 'young', 'C': 'every', 'D': 'day', 'E': '(No Error)' } },
+            { id: 23, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `Records <span data-part="A" class="error-part"><span class="error-underline">is broken</span><span class="error-label text-indigo-600">A</span></span> every <span data-part="B" class="error-part"><span class="error-underline">time</span><span class="error-label text-indigo-600">B</span></span> a <span data-part="C" class="error-part"><span class="error-underline">new</span><span class="error-label text-indigo-600">C</span></span> star <span data-part="D" class="error-part"><span class="error-underline">emerges</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'is broken', 'B': 'time', 'C': 'new', 'D': 'emerges', 'E': '(No Error)' } },
+            { id: 24, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The story of her life <span data-part="A" class="error-part"><span class="error-underline">were written</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">a</span><span class="error-label text-indigo-600">B</span></span> famous <span data-part="C" class="error-part"><span class="error-underline">historian</span><span class="error-label text-indigo-600">C</span></span> in <span data-part="D" class="error-part"><span class="error-underline">2022</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'were written', 'B': 'a', 'C': 'historian', 'D': '2022', 'E': '(No Error)' } },
+            { id: 25, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `Many trophies <span data-part="A" class="error-part"><span class="error-underline">has been collected</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">the</span><span class="error-label text-indigo-600">B</span></span> gymnast <span data-part="C" class="error-part"><span class="error-underline">since</span><span class="error-label text-indigo-600">C</span></span> she <span data-part="D" class="error-part"><span class="error-underline">started</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'has been collected', 'B': 'the', 'C': 'since', 'D': 'started', 'E': '(No Error)' } },
+            { id: 26, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The stadium <span data-part="A" class="error-part"><span class="error-underline">is being prepared</span><span class="error-label text-indigo-600">A</span></span> for <span data-part="B" class="error-part"><span class="error-underline">the</span><span class="error-label text-indigo-600">B</span></span> upcoming <span data-part="C" class="error-part"><span class="error-underline">championship</span><span class="error-label text-indigo-600">C</span></span> right <span data-part="D" class="error-part"><span class="error-underline">now</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'is being prepared', 'B': 'the', 'C': 'championship', 'D': 'now', 'E': '(No Error)' } },
+            { id: 27, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The athlete <span data-part="A" class="error-part"><span class="error-underline">was being praise</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">the</span><span class="error-label text-indigo-600">B</span></span> crowd <span data-part="C" class="error-part"><span class="error-underline">when</span><span class="error-label text-indigo-600">C</span></span> she <span data-part="D" class="error-part"><span class="error-underline">fell</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'was being praise', 'B': 'the', 'C': 'when', 'D': 'fell', 'E': '(No Error)' } },
+            { id: 28, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `Her legacy <span data-part="A" class="error-part"><span class="error-underline">will remembered</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">fans</span><span class="error-label text-indigo-600">B</span></span> for <span data-part="C" class="error-part"><span class="error-underline">many</span><span class="error-label text-indigo-600">C</span></span> decades <span data-part="D" class="error-part"><span class="error-underline">to come</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'will remembered', 'B': 'fans', 'C': 'many', 'D': 'to come', 'E': '(No Error)' } },
+            { id: 29, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The pressure <span data-part="A" class="error-part"><span class="error-underline">have been felt</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">the</span><span class="error-label text-indigo-600">B</span></span> players <span data-part="C" class="error-part"><span class="error-underline">throughout</span><span class="error-label text-indigo-600">C</span></span> the <span data-part="D" class="error-part"><span class="error-underline">match</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'have been felt', 'B': 'the', 'C': 'throughout', 'D': 'match', 'E': '(No Error)' } },
+            { id: 30, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The final score <span data-part="A" class="error-part"><span class="error-underline">was announced</span><span class="error-label text-indigo-600">A</span></span> before <span data-part="B" class="error-part"><span class="error-underline">the</span><span class="error-label text-indigo-600">B</span></span> fans <span data-part="C" class="error-part"><span class="error-underline">had</span><span class="error-label text-indigo-600">C</span></span> left <span data-part="D" class="error-part"><span class="error-underline">the arena</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'was announced', 'B': 'the', 'C': 'had', 'D': 'the arena', 'E': '(No Error)' } },
+            
+            // --- DIFFERENT SENTENCES ERROR ANALYSIS ---
+            { id: 31, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The routine <span data-part="A" class="error-part"><span class="error-underline">was perform</span><span class="error-label text-indigo-600">A</span></span> perfectly <span data-part="B" class="error-part"><span class="error-underline">by</span><span class="error-label text-indigo-600">B</span></span> the <span data-part="C" class="error-part"><span class="error-underline">young</span><span class="error-label text-indigo-600">C</span></span> girl <span data-part="D" class="error-part"><span class="error-underline">yesterday</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'was perform', 'B': 'by', 'C': 'young', 'D': 'yesterday', 'E': '(No Error)' } },
+            { id: 32, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `All expectations <span data-part="A" class="error-part"><span class="error-underline">had been met</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">the</span><span class="error-label text-indigo-600">B</span></span> time the <span data-part="C" class="error-part"><span class="error-underline">event</span><span class="error-label text-indigo-600">C</span></span> <span data-part="D" class="error-part"><span class="error-underline">ends</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'had been met', 'B': 'the', 'C': 'event', 'D': 'ends', 'E': '(No Error)' } },
+            { id: 33, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `Exercises <span data-part="A" class="error-part"><span class="error-underline">are being do</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">the</span><span class="error-label text-indigo-600">B</span></span> students <span data-part="C" class="error-part"><span class="error-underline">at</span><span class="error-label text-indigo-600">C</span></span> the <span data-part="D" class="error-part"><span class="error-underline">moment</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'are being do', 'B': 'the', 'C': 'at', 'D': 'moment', 'E': '(No Error)' } },
+            { id: 34, type: 'error_analysis', section: '3RD PART: Error Analysis & Fill in the Gap', question: `The decision <span data-part="A" class="error-part"><span class="error-underline">was make</span><span class="error-label text-indigo-600">A</span></span> by <span data-part="B" class="error-part"><span class="error-underline">the</span><span class="error-label text-indigo-600">B</span></span> judges <span data-part="C" class="error-part"><span class="error-underline">very</span><span class="error-label text-indigo-600">C</span></span> <span data-part="D" class="error-part"><span class="error-underline">quickly</span><span class="error-label text-indigo-600">D</span></span>.`, options: { 'A': 'was make', 'B': 'the', 'C': 'very', 'D': 'quickly', 'E': '(No Error)' } },
+
+            // --- FILL IN THE GAP ---
+            { id: 35, type: 'multiple_choice', section: '3RD PART: Fill in the Gap', question: `The All-England title ________ by Hartono eight times.`, options: ['A. won', 'B. was win', 'C. was won', 'D. is win', 'E. were won'] },
+            { id: 36, type: 'multiple_choice', section: '3RD PART: Fill in the Gap', question: `Currently, the balance beam ________ by the gymnast.`, options: ['A. is use', 'B. is being used', 'C. was used', 'D. being used', 'E. has used'] },
+            { id: 37, type: 'multiple_choice', section: '3RD PART: Fill in the Gap', question: `By next year, the record ________ by a younger athlete.`, options: ['A. will broken', 'B. is broken', 'C. will be broken', 'D. was broken', 'E. is being broken'] },
+            { id: 38, type: 'multiple_choice', section: '3RD PART: Fill in the Gap', question: `The legendary matches ________ by millions of people in 1974.`, options: ['A. were watched', 'B. was watched', 'C. are watched', 'D. watched', 'E. has been watched'] },
+            { id: 39, type: 'multiple_choice', section: '3RD PART: Fill in the Gap', question: `Mental health ________ more seriously by sports organizations lately.`, options: ['A. is take', 'B. has been taken', 'C. was take', 'D. taken', 'E. is being take'] },
+            { id: 40, type: 'multiple_choice', section: '3RD PART: Fill in the Gap', question: `The crowd's attention ________ by the grueling rally.`, options: ['A. was caught', 'B. were caught', 'C. is catch', 'D. has catch', 'E. was catching'] }
+        ];
+
+        let userAnswers = {};
+        const quizContainer = document.getElementById('quiz-container');
+        const loadingError = document.getElementById('loading-error');
+        let currentSectionTitle = null;
+
+        function renderQuiz() {
+            if(loadingError) loadingError.style.display = 'none';
+            
+            quizContainer.innerHTML = '';
+            
+            QUIZ_DATA.forEach(item => {
+                if (item.section && item.section !== currentSectionTitle) {
+                    currentSectionTitle = item.section;
+                    quizContainer.innerHTML += `<h2 class="text-xl sm:text-2xl font-bold text-indigo-700 mt-10 mb-4 border-b-2 border-indigo-200 pb-2">${currentSectionTitle}</h2>`;
+                }
+
+                if (item.type === 'reading_passage') {
+                    quizContainer.innerHTML += `
+                        <div class="mb-8 p-6 bg-gray-50 rounded-xl shadow-inner">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">${item.title}</h3>
+                            <div class="passage-container text-gray-700 text-sm sm:text-base leading-relaxed">
+                                <p>${item.content}</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const questionNumber = item.id;
+                const questionHtml = item.type === 'error_analysis' 
+                    ? `<p class="font-medium text-gray-800">${questionNumber}. ${item.question}</p>` 
+                    : `<p class="font-medium text-gray-800">${questionNumber}. ${item.question}</p>`;
+                
+                let optionsHtml = '';
+
+                if (item.type === 'error_analysis') {
+                    for (const letter in item.options) { 
+                        optionsHtml += createOptionHtml(questionNumber, letter, `${letter}) ${item.options[letter]}`); 
+                    }
+                } else if (item.type === 'multiple_choice') {
+                    item.options.forEach(optionText => {
+                        const letter = optionText.charAt(0);
+                        const text = optionText.substring(3).trim();
+                        optionsHtml += createOptionHtml(questionNumber, letter, `${letter}. ${text}`);
+                    });
+                }
+
+                quizContainer.innerHTML += `
+                    <div id="q-${questionNumber}" class="bg-white p-5 rounded-xl shadow-md border border-gray-200 fade-in" data-type="${item.type}">
+                        <div class="text-base text-gray-600 mb-6 leading-relaxed">${questionHtml}</div>
+                        <div class="space-y-3 mt-4" data-question-id="${questionNumber}">${optionsHtml}</div>
+                        ${item.type === 'error_analysis' ? '<div class="mt-8 text-sm text-gray-500 font-medium">The error label (A, B, C, D) is underlined above. Select (E) if there is no error.</div>' : ''}
+                    </div>
+                `;
+            });
+
+            quizContainer.innerHTML += `
+                <button onclick="checkAllAnswers()" class="w-full py-3 mt-12 mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition duration-150 ease-in-out">
+                    Check All Answers & Get Score
+                </button>
+            `;
+
+            attachEventListeners();
+        }
+
+        function createOptionHtml(qId, letter, text) {
+            return `
+                <div class="quiz-option p-3 rounded-lg border-2 border-gray-300 flex items-center" data-question="${qId}" data-answer="${letter}">
+                    <span class="text-sm font-semibold text-gray-800">${text}</span>
+                </div>
+            `;
+        }
+
+        function attachEventListeners() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+            document.getElementById('results-section').classList.add('hidden');
+        }
+
+        function handleOptionClick(event) {
+            const selectedOption = event.currentTarget;
+            const qId = selectedOption.dataset.question;
+            const answerLetter = selectedOption.dataset.answer;
+            const container = selectedOption.closest(`[data-question-id="${qId}"]`);
+            const questionCard = document.getElementById(`q-${qId}`);
+            
+            container.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('selected', 'correct', 'incorrect'); });
+            selectedOption.classList.add('selected');
+            userAnswers[qId] = answerLetter;
+
+            // Clear error highlighting styles if an error analysis question
+            if (questionCard.dataset.type === 'error_analysis') {
+                questionCard.querySelectorAll('.error-part').forEach(part => {
+                    part.querySelector('.error-underline').classList.remove('text-red-600', 'text-green-600');
+                    part.querySelector('.error-label').classList.remove('text-red-600', 'text-green-600');
+                    part.querySelector('.error-label').classList.add('text-indigo-600');
+                });
+            }
+        }
+
+        function checkAllAnswers() {
+            let correctCount = 0;
+            let totalQuestions = 0;
+            
+            for (const qId in CORRECT_ANSWERS) {
+                totalQuestions++;
+                const correctAnswer = CORRECT_ANSWERS[qId];
+                const userAnswer = userAnswers[qId];
+                const questionCard = document.getElementById(`q-${qId}`);
+                
+                if (!questionCard) continue;
+                
+                const optionsContainer = questionCard.querySelector(`[data-question-id="${qId}"]`);
+                optionsContainer.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('correct', 'incorrect', 'selected'); });
+                
+                if (userAnswer) {
+                    const isCorrect = userAnswer === correctAnswer;
+                    const selectedOption = optionsContainer.querySelector(`[data-answer="${userAnswer}"]`);
+                    
+                    if (selectedOption) {
+                        selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        if (isCorrect) correctCount++;
+                    }
+
+                    // Handle Error Analysis specific UI feedback
+                    if (questionCard.dataset.type === 'error_analysis') {
+                        questionCard.querySelectorAll('.error-part').forEach(part => {
+                            part.querySelector('.error-underline').classList.remove('text-red-600', 'text-green-600');
+                            part.querySelector('.error-label').classList.remove('text-red-600', 'text-green-600');
+                            part.querySelector('.error-label').classList.add('text-indigo-600');
+                        });
+                        
+                        const correctPart = questionCard.querySelector(`[data-part="${correctAnswer}"] .error-underline`);
+                        const correctLabel = questionCard.querySelector(`[data-part="${correctAnswer}"] .error-label`);
+                        
+                        if (correctPart) {
+                            correctPart.classList.add('text-green-600');
+                            correctLabel.classList.remove('text-indigo-600');
+                            correctLabel.classList.add('text-green-600');
+                        }
+                        
+                        if (!isCorrect && userAnswer !== 'E') {
+                            const incorrectPart = questionCard.querySelector(`[data-part="${userAnswer}"] .error-underline`);
+                            const incorrectLabel = questionCard.querySelector(`[data-part="${userAnswer}"] .error-label`);
+                            if (incorrectPart) {
+                                incorrectPart.classList.add('text-red-600');
+                                incorrectLabel.classList.remove('text-indigo-600');
+                                incorrectLabel.classList.add('text-red-600');
+                            }
+                        }
+                    }
+                }
+                
+                // Show the correct answer if the user got it wrong or skipped
+                if (userAnswers[qId] !== correctAnswer) {
+                    const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
+                    if (correctOption) correctOption.classList.add('correct');
+                }
+            }
+            
+            const scoreDisplay = document.getElementById('score-display');
+            const resultsSection = document.getElementById('results-section');
+            scoreDisplay.textContent = `${correctCount} / ${totalQuestions} (${((correctCount / totalQuestions) * 100).toFixed(1)}%)`;
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>
