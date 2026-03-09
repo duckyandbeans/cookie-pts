@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XII Grade Midterms Mock Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        .quiz-option { transition: all 0.2s; cursor: pointer; word-break: break-word; }
+        .quiz-option:hover:not(.selected):not(.correct):not(.incorrect) { background-color: #eef2ff; }
+        .selected { border-color: #4f46e5; background-color: #e0e7ff; }
+        .correct { background-color: #d1fae5; border-color: #10b981; color: #065f46; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .passage-container { max-height: 400px; overflow-y: auto; border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 1.5rem; background-color: #ffffff; margin-bottom: 2rem; line-height: 1.6; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold mb-6">
+            &larr; Back to Home Menu
+        </a>
+
+        <header class="text-center mb-10 p-6 bg-indigo-600 text-white rounded-xl shadow-lg">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">XII Grade Midterms Mock Test</h1>
+            <p class="text-lg font-light mt-1 opacity-90">Vocabulary, Reading Comprehension, and Advanced Grammar</p>
+        </header>
+
+        <div id="loading-error" class="text-center text-gray-500">
+            Loading quiz... (If this takes too long, please refresh)
+        </div>
+
+        <main id="quiz-container" class="space-y-8"></main>
+
+        <div id="results-section" class="mt-10 p-6 bg-white border-t-4 border-indigo-500 rounded-xl shadow-lg hidden fade-in">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Quiz Results</h2>
+            <p class="text-gray-700">Your current score is: <span id="score-display" class="text-indigo-600 font-extrabold text-xl"></span></p>
+            <p class="text-sm text-gray-500 mt-2">Review your answers using the color-coded feedback above.</p>
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_ANSWERS = {
+            1: 'A', 2: 'B', 3: 'C', 4: 'B', 5: 'B', 6: 'C', 7: 'A', 8: 'C', 9: 'B', 10: 'C',
+            11: 'B', 12: 'A', 13: 'A', 14: 'A', 15: 'B', 16: 'A', 17: 'A', 18: 'B', 19: 'A', 20: 'A',
+            21: 'B', 22: 'C', 23: 'B', 24: 'B', 25: 'C', 26: 'B', 27: 'A', 28: 'B', 29: 'A', 30: 'A',
+            31: 'B', 32: 'A', 33: 'B', 34: 'A', 35: 'A', 36: 'A', 37: 'A', 38: 'B', 39: 'A', 40: 'C'
+        };
+
+        const QUIZ_DATA = [
+            // --- PART 1: VOCABULARY & USAGE ---
+            { id: 1, type: 'multiple_choice', section: 'PART 1: Vocabulary & Usage', question: `Which sentence correctly uses "put down roots"?`, options: ['A. After years of traveling as a digital nomad, Sarah finally decided to put down roots in Bali by buying a house.', 'B. He decided to put down roots of the tree because it was blocking the view of the street.', 'C. The company is putting down roots its new policy to ensure everyone follows the rules.', 'D. You should put down roots your phone and listen to the teacher during the lecture.', 'E. I need to put down roots the bag before my arms start to get tired.'] },
+            { id: 2, type: 'multiple_choice', section: 'PART 1: Vocabulary & Usage', question: `Which sentence correctly uses "uprooted"?`, options: ['A. The chef uprooted the vegetables and put them into the boiling water for the soup.', 'B. Thousands of families were uprooted by the sudden conflict and forced to seek refuge elsewhere.', 'C. I uprooted my computer because it was running too slowly and needed a restart.', 'D. The teacher uprooted the student\'s hand to ask a question about the grammar.', 'E. She uprooted her shoes before entering the house to keep the floor clean.'] },
+            { id: 3, type: 'multiple_choice', section: 'PART 1: Vocabulary & Usage', question: `Which sentence correctly uses "formative years"?`, options: ['A. He spent his formative years working at a bank after he retired at age 65.', 'B. The building\'s formative years were spent under construction by the engineering team.', 'C. Experiences during our formative years, such as early childhood education, shape our adult personalities.', 'D. I have three formative years left until I finish my PhD in quantum physics.', 'E. The formative years of the cake require thirty minutes in a high-temperature oven.'] },
+            { id: 4, type: 'multiple_choice', section: 'PART 1: Vocabulary & Usage', question: `Which sentence correctly uses "settle down"?`, options: ['A. Please settle down the book on the table so I can read the title.', 'B. After a decade of high-intensity city life, they wanted to settle down in a quiet suburban town.', 'C. I will settle down my coffee if it is too hot to drink right now.', 'D. The airplane began to settle down on the runway after a very long flight.', 'E. You need to settle down the volume of the television because it is too loud.'] },
+            { id: 5, type: 'multiple_choice', section: 'PART 1: Vocabulary & Usage', question: `Which sentence correctly uses "cultural identity"?`, options: ['A. He lost his cultural identity card and couldn\'t enter the museum for free.', 'B. Language and traditional food are vital components that help maintain one’s cultural identity abroad.', 'C. The cultural identity of the smartphone is sleek, silver, and very expensive.', 'D. She changed her cultural identity by wearing a different color of dress to the party.', 'E. Our cultural identity is located in the basement of the university library.'] },
+
+            // --- PART 2: READING COMPREHENSION 1 ---
+            { 
+                id: 'passage1', 
+                type: 'reading_passage', 
+                section: 'PART 2: Reading Comprehension 1',
+                title: 'The Evolution of the Conurbation', 
+                content: `Modern urban planning often focuses on the "conurbation"—a region comprising a number of cities, large towns, and other urban areas that, through population growth and physical expansion, have merged to form one continuous industrially and commercially developed area. As populations shift, many individuals find themselves moving from rural areas to these hubs during their formative years. This mass migration often leads to a blending of traditions, where a new, hybrid cultural identity is formed. However, critics argue that the sheer scale of a conurbation can lead to social isolation, making it difficult for residents to truly settle down and feel a sense of belonging.`
+            },
+            { id: 6, type: 'multiple_choice', section: 'PART 2: Reading Comprehension 1', question: `What is the main idea of the text?`, options: ['A. People should avoid moving to cities during their childhood.', 'B. Conurbations provide more industrial jobs than rural villages.', 'C. The physical merging of cities impacts the social and cultural lives of residents.', 'D. Modern architecture is the primary cause of social isolation in urban areas.', 'E. Hybrid cultural identities are superior to traditional rural identities.'] },
+            { id: 7, type: 'multiple_choice', section: 'PART 2: Reading Comprehension 1', question: `Which option best summarizes the text?`, options: ['A. Urban expansion creates large city clusters that influence identity but can hinder social stability.', 'B. Rural migration is the only reason why cities are growing larger in the 21st century.', 'C. Conurbations are strictly commercial zones where no one is allowed to live or settle.', 'D. Cultural identity is lost forever when a person moves to a large industrial city.', 'E. The text provides a guide on how to merge two small towns into one large city.'] },
+            { id: 8, type: 'multiple_choice', section: 'PART 2: Reading Comprehension 1', question: `Who is the intended audience for this text?`, options: ['A. Toddlers learning about city lights.', 'B. Professional athletes looking for new stadiums.', 'C. Students or individuals interested in sociology and urban development.', 'D. Tourists looking for the best hotels in a conurbation.', 'E. Engineers designing high-speed railway systems.'] },
+            { id: 9, type: 'multiple_choice', section: 'PART 2: Reading Comprehension 1', question: `Which detail was mentioned in the text?`, options: ['A. The specific population count of the world\'s largest conurbation.', 'B. The merging of cities through population growth and physical expansion.', 'C. A list of the most popular foods in hybrid cultures.', 'D. The average cost of buying a house in a commercial area.', 'E. The name of the first architect to use the word "conurbation."'] },
+            { id: 10, type: 'multiple_choice', section: 'PART 2: Reading Comprehension 1', question: `What does "conurbation" mean in the text?`, options: ['A. A small, isolated village in the mountains.', 'B. A type of government building found in the capital.', 'C. A continuous urban area formed by the merging of several cities.', 'D. The process of moving from a city to a farm.', 'E. A specialized map used by pilots and sailors.'] },
+
+            // --- PART 3: ADVANCED GRAMMAR ---
+            { id: 11, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Which sentence is grammatically correct? (Conditional)`, options: ['A. If I would have known about the traffic, I will leave earlier.', 'B. If the city expands any further, it will absorb the surrounding villages.', 'C. If people settle down too quickly, they didn\'t experience the world.', 'D. If you uprooted your family, you would have regretted it tomorrow.', 'E. If cultural identity is lost, it was very hard to find again.'] },
+            { id: 12, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Which sentence is grammatically correct? (Conditional)`, options: ['A. Unless we protect our traditions, our cultural identity might disappear.', 'B. Unless the government builds more houses, the conurbation won\'t merged.', 'C. Providing that you will put down roots, you will feel more stable.', 'D. Suppose you are move to a new city, how will you find a job?', 'E. Even if he has stayed in his hometown, he wouldn\'t be happy.'] },
+            { id: 13, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Which sentence is grammatically correct? (Formal Passive)`, options: ['A. It is said that the conurbation is growing at a rate of 2% per year.', 'B. It says that the conurbation is growing at a rate of 2% per year.', 'C. People is said that the conurbation grows every day.', 'D. It has said that urban areas are merging rapidly.', 'E. It is saying that moving to the city is a good idea.'] },
+            { id: 14, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Which sentence is grammatically correct? (Formal Passive)`, options: ['A. The new policy is believed to be effective by the experts.', 'B. The new policy is believe to be effective by the experts.', 'C. It is believed the new policy being effective.', 'D. Experts are believed that the policy is effective.', 'E. The policy has believed to be effective.'] },
+            { id: 15, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Based on: "If we implement stricter laws, pollution will decrease." Which option expresses the same meaning?`, options: ['A. Pollution decreases only if we don\'t have laws.', 'B. Stricter laws are a requirement for the potential decrease in pollution.', 'C. Pollution will decrease unless we implement stricter laws.', 'D. Because we implemented laws, pollution decreased.', 'E. If we didn\'t implement laws, pollution will decrease.'] },
+            { id: 16, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Which Impersonal Passive form sentence is correct?`, options: ['A. There is reported to be a shortage of housing in the city.', 'B. It is reported to be a shortage of housing in the city.', 'C. There are reported that a shortage of housing exists.', 'D. It reports there is a shortage of housing in the city.', 'E. Shortage is reported that there is in the city.'] },
+            { id: 17, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Which sentence is grammatically correct? (Formal Passive: It is said...)`, options: ['A. It is said that technology makes communication easier.', 'B. It is said technology to make communication easier.', 'C. Technology is said that it makes communication easier.', 'D. It says that technology makes communication easier.', 'E. Technology said to make communication easier.'] },
+            { id: 18, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Which sentence is grammatically correct? (Formal Passive: There is...)`, options: ['A. There is thought to be many benefits to remote work.', 'B. There are thought to be many benefits to remote work.', 'C. There is thought that many benefits are to remote work.', 'D. It is thought to be many benefits to remote work.', 'E. There has thought to be many benefits to remote work.'] },
+            { id: 19, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Advanced passive reporting: which sentence is correct?`, options: ['A. The suspect is understood to have left the country before the trial.', 'B. The suspect understands to have left the country before the trial.', 'C. It understands that the suspect left the country.', 'D. The suspect is understanding to leave the country.', 'E. It is understood the suspect to leave the country.'] },
+            { id: 20, type: 'multiple_choice', section: 'PART 3: Advanced Grammar', question: `Based on: "They claim that the artifact is over 2,000 years old." Which option expresses the same meaning?`, options: ['A. The artifact is claimed to be over 2,000 years old.', 'B. It is claim that the artifact is over 2,000 years old.', 'C. The artifact claims to be over 2,000 years old.', 'D. People are claimed that the artifact is old.', 'E. It was claimed the artifact to be old.'] },
+
+            // --- PART 4: READING COMPREHENSION 2 ---
+            { 
+                id: 'passage2', 
+                type: 'reading_passage', 
+                section: 'PART 4: Reading Comprehension 2 (Cryptography)',
+                title: 'The Art of Secrecy', 
+                content: `In our digital age, cryptography has evolved from simple hidden codes to a complex science. At its core, it involves encryption, the process of turning readable information into an unreadable format. Symmetric encryption relies on a single "private key" shared between the sender and receiver. While fast, the challenge lies in securely sharing that key. In contrast, asymmetric encryption uses two keys: a public key for encryption and a private key for decryption. Today, these methods are applied everywhere, from securing banking transactions to protecting private messages on smartphones. Because hackers are always finding new ways to break codes, cryptography remains a constantly developing science.`
+            },
+            { id: 21, type: 'multiple_choice', section: 'PART 4: Reading Comprehension 2 (Cryptography)', question: `What is the main purpose of this text?`, options: ['A. To explain the history of ancient Roman codes.', 'B. To describe the technical differences and importance of modern encryption.', 'C. To persuade people to stop using smartphones for banking.', 'D. To teach the reader how to become a professional hacker.', 'E. To list the prices of different encryption software.'] },
+            { id: 22, type: 'multiple_choice', section: 'PART 4: Reading Comprehension 2 (Cryptography)', question: `Which type of encryption relies on one shared key between sender and receiver?`, options: ['A. Asymmetric encryption', 'B. Public key encryption', 'C. Symmetric encryption', 'D. Digital signatures', 'E. Blockchain encryption'] },
+            { id: 23, type: 'multiple_choice', section: 'PART 4: Reading Comprehension 2 (Cryptography)', question: `What is the main difference between symmetric and asymmetric encryption?`, options: ['A. Symmetric is for banking; asymmetric is for personal use.', 'B. Symmetric uses one key; asymmetric uses two keys.', 'C. Symmetric is slow; asymmetric is much faster.', 'D. Symmetric is a new science; asymmetric is an ancient art.', 'E. There is no difference; they are synonyms.'] },
+            { id: 24, type: 'multiple_choice', section: 'PART 4: Reading Comprehension 2 (Cryptography)', question: `Where is cryptography most commonly applied in today’s digital world?`, options: ['A. In the construction of city conurbations.', 'B. In securing financial transactions and private messaging.', 'C. In the process of moving from rural to urban areas.', 'D. In the printing of daily newspapers.', 'E. In the physical manufacturing of car engines.'] },
+            { id: 25, type: 'multiple_choice', section: 'PART 4: Reading Comprehension 2 (Cryptography)', question: `Why does the text describe cryptography as “a constantly developing science”?`, options: ['A. Because the keys are lost very easily.', 'B. Because it is only taught in high schools.', 'C. Because hackers continuously find new ways to bypass existing security.', 'D. Because it takes hundreds of years to learn.', 'E. Because the government changes the laws every day.'] },
+
+            // --- PART 5: ADVANCED GRAMMAR & NEGATION ---
+            { id: 26, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Negation: Which sentence is correct?`, options: ['A. No one of the students passed the test.', 'B. None of the students passed the test.', 'C. Not one of the students don\'t pass the test.', 'D. Neither of the students didn\'t pass.', 'E. No students passed not the test.'] },
+            { id: 27, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Negation: Which sentence is correct?`, options: ['A. I have no money left in my bank account.', 'B. I don\'t have no money left in my bank account.', 'C. I have not money left in my bank account.', 'D. None money is left in my bank account.', 'E. Neither money is left in my bank account.'] },
+            { id: 28, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Negation: Which sentence is correct?`, options: ['A. Neither the teacher nor the students was happy with the result.', 'B. Neither the teacher nor the students were happy with the result.', 'C. Neither the teacher or the students were happy.', 'D. Not the teacher nor the students were happy.', 'E. Neither teacher nor students wasn\'t happy.'] },
+            { id: 29, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Negation: Which sentence is correct?`, options: ['A. He is not only talented but also hardworking.', 'B. He is no only talented but also hardworking.', 'C. He is none only talented but also hardworking.', 'D. Not only he is talented but also he is hardworking.', 'E. He is neither talented but also hardworking.'] },
+            { id: 30, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Negation: Which sentence is correct?`, options: ['A. None of the information provided was useful.', 'B. No of the information provided was useful.', 'C. Not of the information provided was useful.', 'D. Neither of information provided were useful.', 'E. None information was useful.'] },
+            { id: 31, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Relative Clauses: Which sentence uses correct comma placement?`, options: ['A. My brother who lives in New York is a doctor. (I have only one brother)', 'B. My brother, who lives in New York, is a doctor. (I have only one brother)', 'C. My brother, who lives in New York is a doctor.', 'D. My brother who lives in New York, is a doctor.', 'E. My brother, lives in New York, who is a doctor.'] },
+            { id: 32, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Relative Clauses (WHOM): Which sentence is correct and formal?`, options: ['A. The candidate, whom we interviewed yesterday, was very impressive.', 'B. The candidate who we interviewed yesterday was very impressive.', 'C. The candidate, who we interviewed yesterday, was very impressive.', 'D. The candidate whom we interviewed yesterday, was very impressive.', 'E. The candidate, with who we spoke, was very impressive.'] },
+            { id: 33, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Relative Clauses: Which sentence is correct?`, options: ['A. Paris which is the capital of France is known as the City of Light.', 'B. Paris, which is the capital of France, is known as the City of Light.', 'C. Paris, that is the capital of France, is known as the City of Light.', 'D. Paris which is the capital of France, is known as the City of Light.', 'E. Paris, which is the capital of France is known, as the City of Light.'] },
+            { id: 34, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Relative Clauses: Which sentence is correct and FORMAL?`, options: ['A. The house in which he was born is now a museum.', 'B. The house which he was born in is now a museum.', 'C. The house that he was born in is now a museum.', 'D. The house, in which he was born, is now a museum.', 'E. The house where he was born in is now a museum.'] },
+            { id: 35, type: 'multiple_choice', section: 'PART 5: Advanced Grammar & Negation', question: `Which sentence correctly uses a non-defining clause referring to a whole idea?`, options: ['A. He arrived two hours late, which annoyed everyone.', 'B. He arrived two hours late which annoyed everyone.', 'C. He arrived two hours late, that annoyed everyone.', 'D. He arrived two hours late; which annoyed everyone.', 'E. He arrived two hours late, what annoyed everyone.'] },
+
+            // --- PART 6: LOGICAL ORDERING ---
+            { id: 36, type: 'multiple_choice', section: 'PART 6: Logical Ordering & Scrambled Sentences', question: `Arrange the sentences into the correct logical order.<br><br>1. Digital footprints are the traces people leave behind on the internet.<br>2. This includes social media posts, search history, and online purchases.<br>3. Therefore, it is crucial to manage your privacy settings carefully.<br>4. These traces can be used by companies to track your behavior.<br>5. Once information is online, it is often permanent and hard to delete.`, options: ['A. 1-2-4-5-3', 'B. 1-4-2-3-5', 'C. 2-1-4-5-3', 'D. 5-1-2-4-3', 'E. 1-5-2-4-3'] },
+            { id: 37, type: 'multiple_choice', section: 'PART 6: Logical Ordering & Scrambled Sentences', question: `Arrange the sentences into the correct logical order.<br><br>1. Renewable energy sources like solar and wind are becoming more popular.<br>2. They offer a cleaner alternative to burning fossil fuels.<br>3. However, the initial cost of installing these systems can be quite high.<br>4. Despite the cost, the long-term benefits for the planet are undeniable.<br>5. Many governments are now offering subsidies to encourage their use.`, options: ['A. 1-2-3-5-4', 'B. 1-3-2-5-4', 'C. 2-1-3-4-5', 'D. 5-1-2-3-4', 'E. 1-2-5-3-4'] },
+
+            // --- PART 7: TRUE/FALSE/NOT GIVEN ---
+            { 
+                id: 'passage3', 
+                type: 'reading_passage', 
+                section: 'PART 7: TRUE / FALSE / NOT GIVEN',
+                title: 'Digital Communication', 
+                content: `"While digital platforms have made global communication instantaneous, many sociologists worry about 'digital isolation.' While we can 'chat' with a friend in London from our home in Jakarta, the absence of physical cues—like body language and tone—can lead to misunderstandings. Furthermore, while the internet provides vast learning resources, the prevalence of 'fake news' requires users to have high levels of digital literacy to distinguish fact from fiction."`
+            },
+            { id: 38, type: 'multiple_choice', section: 'PART 7: TRUE / FALSE / NOT GIVEN', question: `Digital platforms have made it slower to communicate globally.`, options: ['A. True', 'B. False', 'C. Not Given'] },
+            { id: 39, type: 'multiple_choice', section: 'PART 7: TRUE / FALSE / NOT GIVEN', question: `Physical cues are missing in most digital text-based conversations.`, options: ['A. True', 'B. False', 'C. Not Given'] },
+            { id: 40, type: 'multiple_choice', section: 'PART 7: TRUE / FALSE / NOT GIVEN', question: `Jakarta has the highest number of digital platform users in the world.`, options: ['A. True', 'B. False', 'C. Not Given'] }
+        ];
+
+        let userAnswers = {};
+        const quizContainer = document.getElementById('quiz-container');
+        const loadingError = document.getElementById('loading-error');
+        let currentSectionTitle = null;
+
+        function renderQuiz() {
+            if(loadingError) loadingError.style.display = 'none';
+            
+            quizContainer.innerHTML = '';
+            
+            QUIZ_DATA.forEach(item => {
+                if (item.section && item.section !== currentSectionTitle) {
+                    currentSectionTitle = item.section;
+                    quizContainer.innerHTML += `<h2 class="text-xl sm:text-2xl font-bold text-indigo-700 mt-10 mb-4 border-b-2 border-indigo-200 pb-2">${currentSectionTitle}</h2>`;
+                }
+
+                if (item.type === 'reading_passage') {
+                    quizContainer.innerHTML += `
+                        <div class="mb-8 p-6 bg-gray-50 rounded-xl shadow-inner">
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">${item.title}</h3>
+                            <div class="passage-container text-gray-700 text-sm sm:text-base">
+                                <p>${item.content}</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const questionNumber = item.id;
+                const questionHtml = `<p class="font-medium text-gray-800">${questionNumber}. ${item.question}</p>`;
+                
+                let optionsHtml = '';
+
+                if (item.type === 'multiple_choice') {
+                    item.options.forEach(optionText => {
+                        const letter = optionText.charAt(0); // A, B, C, D, E
+                        const text = optionText.substring(3).trim();
+                        optionsHtml += createOptionHtml(questionNumber, letter, `${letter}. ${text}`);
+                    });
+                }
+
+                quizContainer.innerHTML += `
+                    <div id="q-${questionNumber}" class="bg-white p-5 rounded-xl shadow-md border border-gray-200 fade-in" data-type="${item.type}">
+                        <div class="text-base text-gray-600 mb-6 leading-relaxed">${questionHtml}</div>
+                        <div class="space-y-3 mt-4" data-question-id="${questionNumber}">${optionsHtml}</div>
+                    </div>
+                `;
+            });
+
+            quizContainer.innerHTML += `
+                <button onclick="checkAllAnswers()" class="w-full py-3 mt-12 mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition duration-150 ease-in-out">
+                    Check All Answers & Get Score
+                </button>
+            `;
+
+            attachEventListeners();
+        }
+
+        function createOptionHtml(qId, letter, text) {
+            return `
+                <div class="quiz-option p-3 rounded-lg border-2 border-gray-300 flex items-center" data-question="${qId}" data-answer="${letter}">
+                    <span class="text-sm font-semibold text-gray-800">${text}</span>
+                </div>
+            `;
+        }
+
+        function attachEventListeners() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+            document.getElementById('results-section').classList.add('hidden');
+        }
+
+        function handleOptionClick(event) {
+            const selectedOption = event.currentTarget;
+            const qId = selectedOption.dataset.question;
+            const answerLetter = selectedOption.dataset.answer;
+            const container = selectedOption.closest(`[data-question-id="${qId}"]`);
+            
+            container.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('selected', 'correct', 'incorrect'); });
+            selectedOption.classList.add('selected');
+            userAnswers[qId] = answerLetter;
+        }
+
+        function checkAllAnswers() {
+            let correctCount = 0;
+            let totalQuestions = 0;
+            
+            for (const qId in CORRECT_ANSWERS) {
+                totalQuestions++;
+                const correctAnswer = CORRECT_ANSWERS[qId];
+                const userAnswer = userAnswers[qId];
+                const questionCard = document.getElementById(`q-${qId}`);
+                
+                if (!questionCard) continue;
+                
+                const optionsContainer = questionCard.querySelector(`[data-question-id="${qId}"]`);
+                optionsContainer.querySelectorAll('.quiz-option').forEach(option => { option.classList.remove('correct', 'incorrect', 'selected'); });
+                
+                if (userAnswer) {
+                    const isCorrect = userAnswer === correctAnswer;
+                    const selectedOption = optionsContainer.querySelector(`[data-answer="${userAnswer}"]`);
+                    
+                    if (selectedOption) {
+                        selectedOption.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        if (isCorrect) correctCount++;
+                    }
+                }
+                
+                if (userAnswers[qId] !== correctAnswer) {
+                    const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
+                    if (correctOption) correctOption.classList.add('correct');
+                }
+            }
+            
+            const scoreDisplay = document.getElementById('score-display');
+            const resultsSection = document.getElementById('results-section');
+            scoreDisplay.textContent = `${correctCount} / ${totalQuestions} (${((correctCount / totalQuestions) * 100).toFixed(1)}%)`;
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>
