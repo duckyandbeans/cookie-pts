@@ -86,34 +86,7 @@
                 content: `
                 
                 <div class="code-container">
-import matplotlib.pyplot as plt
-import pandas as pd
-
-# Data setup
-data = {
-    'Year': [2000, 2005, 2010, 2015, 2018, 2019],
-    'Kids (5-12)': [15, 18, 25, 30, 35, 38],
-    'Teens (13-18)': [10, 12, 15, 22, 28, 30],
-    'Adults (19+)': [5, 5, 6, 8, 12, 15]
-}
-df = pd.DataFrame(data)
-
-# Create Plot
-plt.figure(figsize=(10, 6), dpi=300)
-plt.plot(df['Year'], df['Kids (5-12)'], marker='o', label='Age 5-12 (Group A)', linewidth=2)
-plt.plot(df['Year'], df['Teens (13-18)'], marker='s', label='Age 13-18 (Group B)', linewidth=2)
-plt.plot(df['Year'], df['Adults (19+)'], marker='^', label='Age 19+ (Group C)', linewidth=2)
-
-# Styling
-plt.title('US Gymnastics Participation Rates (%) by Age Group (2000-2019)', fontsize=14)
-plt.xlabel('Year', fontsize=12)
-plt.ylabel('Participation Percentage (%)', fontsize=12)
-plt.legend(title="Age Groups")
-plt.grid(True, linestyle='--', alpha=0.7)
-
-# Save as HD Image
-plt.savefig('gymnastics_trends_hd.png', dpi=300, bbox_inches='tight')
-plt.show()
+                <img src="figure.png" alt="graph">
                 </div>`
             },
             { id: 11, type: 'multiple_choice', section: '2ND PART: Analyzing a Graph', question: `Which statement best describes the overall trend shown in the graph between 2003 and 2019?`, options: ['A. Participation in all groups decreased steadily.', 'B. Participation remained stagnant until 2015.', 'C. There was a general upward trend across all age categories.', 'D. Only the "Kids" group showed any significant movement.', 'E. Participation peaked in 2010 and then fell.'] },
