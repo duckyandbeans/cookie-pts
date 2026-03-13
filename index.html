@@ -3,94 +3,426 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESL Student Portal</title>
+    <title>PH 2 Results Checker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
         body { 
             font-family: 'Inter', sans-serif; 
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            background: linear-gradient(135deg, #f5f3ff 0%, #e0e7ff 100%);
             min-height: 100vh;
         }
-        .menu-card {
-            transition: all 0.3s ease;
-        }
-        .menu-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
-<body class="flex flex-col items-center py-12 px-4 sm:px-8">
+<body class="flex flex-col items-center justify-center p-4">
 
-    <div class="max-w-4xl w-full">
+    <div class="max-w-md w-full glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50 mt-10">
         
-        <div class="text-center mb-12">
-            <div class="inline-block bg-indigo-600 text-white p-4 rounded-full shadow-lg mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                </svg>
-            </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">ESL Student Portal</h1>
-            <p class="text-lg text-gray-600 mt-3">Midterms Preparation & Resources</p>
+        <div class="bg-purple-600 p-8 text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 text-7xl opacity-20">📈</div>
+            <h1 class="text-3xl font-extrabold text-white relative z-10">PH 2 Results</h1>
+            <p class="text-purple-100 mt-2 relative z-10">Check your final scores and cookies</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            <button onclick="checkPassword()" class="menu-card bg-white rounded-2xl p-8 border-l-8 border-amber-400 text-left w-full focus:outline-none">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-4xl">🍪</span>
-                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Locked</span>
+        <div class="p-8">
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Select Your Class</label>
+                    <select id="classSelect" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all text-gray-700 font-medium cursor-pointer">
+                        <option value="">-- Choose Class --</option>
+                    </select>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Cookie Points</h2>
-                <p class="text-gray-500 text-sm">Check your current cookie point balance. Requires the secret password to enter.</p>
-            </button>
-
-            <a href="midterms-mocktest-xi.html" class="menu-card bg-white rounded-2xl p-8 border-l-8 border-emerald-500 block">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-4xl">📝</span>
-                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Grade 11</span>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Attendance Number</label>
+                    <input type="number" id="idSearch" placeholder="e.g., 14" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all text-gray-700 font-medium">
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">XI Mock Test</h2>
-                <p class="text-gray-500 text-sm">Practice your reading comprehension, data literacy, and passive voice skills.</p>
-            </a>
+                
+                <button onclick="handleSearch()" class="w-full bg-purple-600 text-white font-bold text-lg py-4 rounded-xl hover:bg-purple-700 hover:shadow-lg transition-all transform active:scale-95 flex justify-center items-center gap-2 mt-4">
+                    <span>🔍</span> Reveal Score
+                </button>
+            </div>
+        </div>
 
-            <a href="midterms-mocktest-xii.html" class="menu-card bg-white rounded-2xl p-8 border-l-8 border-rose-500 block">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-4xl">🎓</span>
-                    <span class="bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Grade 12</span>
+        <div id="resultArea" class="hidden border-t border-gray-100 bg-gray-50 p-8 text-center animate-fade-in">
+            <p class="text-sm font-semibold text-purple-500 uppercase tracking-wider mb-1" id="studentClass">Class</p>
+            <h3 id="studentName" class="text-2xl font-extrabold text-gray-800 mb-6">Student Name</h3>
+            
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-xs text-gray-500 font-bold uppercase tracking-wide">Mistakes</p>
+                    <p class="text-xl font-black text-red-500 mt-1" id="mistakesDisplay">0</p>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">XII Mock Test</h2>
-                <p class="text-gray-500 text-sm">Test your advanced vocabulary, grammar, and cryptography reading skills.</p>
-            </a>
-
-            <a href="midterms-studyguide.html" class="menu-card bg-white rounded-2xl p-8 border-l-8 border-blue-500 block">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-4xl">📚</span>
-                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Review</span>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-xs text-gray-500 font-bold uppercase tracking-wide">Raw Score</p>
+                    <p class="text-xl font-black text-gray-700 mt-1" id="rawDisplay">0</p>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Study Guide</h2>
-                <p class="text-gray-500 text-sm">View the ultimate checklist and tips for both Grade 11 and Grade 12 midterms.</p>
-            </a>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 col-span-2 flex justify-between items-center px-6">
+                    <p class="text-sm text-gray-500 font-bold uppercase tracking-wide">Cookies Applied</p>
+                    <p class="text-2xl font-black text-amber-500" id="cookieDisplay">+0</p>
+                </div>
+            </div>
 
+            <div class="bg-purple-600 text-white rounded-2xl p-6 shadow-md border border-purple-500 inline-block w-full">
+                <p class="text-sm text-purple-200 font-medium mb-1">Final Score</p>
+                <div id="finalDisplay" class="text-6xl font-black tracking-tight">
+                    100
+                </div>
+            </div>
         </div>
 
     </div>
+    
+    <div class="text-center mt-8 pb-10">
+        <a href="index.html" class="text-purple-600 hover:text-purple-800 font-semibold text-sm transition-colors bg-white/50 px-4 py-2 rounded-full shadow-sm">
+            &larr; Back to Main Menu
+        </a>
+    </div>
 
     <script>
-        function checkPassword() {
-            // Ask the user for the password
-            let pwd = prompt("Enter the secret password to view Cookie Points:");
+        // Database Embedded Directly (Auto-indexed to generate Attendance Numbers)
+        const rawData = {
+            "XI D": [
+                ["Annita", "16", "60", "5", "72"],
+                ["Arshavince Zenji Milano", "25", "37,5", "5", "72"],
+                ["Ashwini Dewan", "16", "60", "4", "72"],
+                ["Carissa Evelynna Susanto", "13", "67,5", "2", "70"],
+                ["Carlin Fayola", "14", "65", "2", "67"],
+                ["Celine Elaine Cen", "9", "77,5", "5", "83"],
+                ["Celine Siera Winnata", "13", "67,5", "2", "70"],
+                ["Derick Ferdinand", "15", "62,5", "2", "65"],
+                ["Ella", "6", "85", "3", "88"],
+                ["Erich Novaro", "21", "47,5", "2", "50"],
+                ["Felix Fernando Ang", "6", "85", "8", "90"],
+                ["Filbert Suciokto", "14", "65", "2", "67"],
+                ["Fiona Yozuki", "14", "65", "3", "70"],
+                ["Fleishia Allyce Ng", "14", "65", "2", "67"],
+                ["Florencia Melanie Nauli", "12", "70", "2", "72"],
+                ["Gabriella Callista Lokman", "17", "57,5", "3", "70"],
+                ["Giselle Lee", "8", "80", "2", "82"],
+                ["Givon", "7", "82,5", "3", "86"],
+                ["Goldy Pacific Sun", "14", "65", "4", "72"],
+                ["Grace Kelly Ignacia", "5", "87,5", "3", "91"],
+                ["Idellia Antoneta", "7", "82,5", "2", "85"],
+                ["James Willard Chen", "8", "80", "2", "82"],
+                ["Janice Giselle Lim", "8", "80", "2", "82"],
+                ["Javier Chiuman", "5", "87,5", "4", "92"],
+                ["Jessica Sachi", "20", "50", "5", "72"],
+                ["Jessica Tanji", "7", "82,5", "3", "86"],
+                ["Jocelyn Princess Yangklyn", "21", "47,5", "2", "50"],
+                ["Joe Kusanagi", "4", "90", "2", "92"],
+                ["Joice Kwan", "10", "75", "4", "79"],
+                ["Jose Ferguson Tjong", "15", "62,5", "3", "70"],
+                ["Justin Kwok", "17", "57,5", "2", "60"],
+                ["Kendrick Wiliston", "24", "40", "2", "42"],
+                ["Kenrick Ciuanta", "13", "67,5", "2", "70"],
+                ["Kusumo Wijaya", "10", "75", "4", "79"],
+                ["Lorenzo Alvaro", "12", "70", "3", "73"],
+                ["Luis Fernando Gober", "13", "67,5", "3", "70"],
+                ["Marcus Hubert Tandyan", "12", "70", "2", "72"],
+                ["Michelle Patricia Susanto", "-", "#VALUE!", "2", "#VALUE!"],
+                ["Nico Wiman", "11", "72,5", "2", "75"],
+                ["Reegan Gunawan", "9", "77,5", "2", "80"],
+                ["Richard Ansle", "15", "62,5", "1", "65"],
+                ["Roschella Teisha Widalkho", "9", "77,5", "2", "80"],
+                ["Stella Keyne", "8", "80", "2", "82"],
+                ["Valencia Khosasih", "10", "75", "3", "78"],
+                ["Wendy Salim", "11", "72,5", "2", "75"],
+                ["Louis Chow", "9", "77,5", "2", "80"],
+                ["Valerian Lieandro", "-", "#VALUE!", "2", "#VALUE!"]
+            ],
+            "XI E": [
+                ["Angela Sudargo", "11", "72,5", "6", "78"],
+                ["Aurellia Fidelya", "16", "60", "6", "73"],
+                ["Beltiana Lie", "7", "82,5", "5", "88"],
+                ["Calvin Khangriawan Tony", "13", "67,5", "8", "75"],
+                ["Cathryna Audree Livi", "13", "67,5", "5", "72"],
+                ["Chen Jian Ping", "36", "10", "5", "72"],
+                ["Cheryl Quinn Mc Cane", "14", "65", "3", "70"],
+                ["Christopher Lionel Richie", "12", "70", "4", "74"],
+                ["Cindy Tanaka", "11", "72,5", "1", "75"],
+                ["Clairine Vanessa", "10", "75", "3", "78"],
+                ["Clara Fiorentina", "9", "77,5", "5", "83"],
+                ["Clarise Vincella Tho", "10", "75", "4", "79"],
+                ["Cynthia Kwan", "17", "57,5", "4", "72"],
+                ["Darren Alexius Wijaya", "6", "85", "6", "90"],
+                ["Ethan Chainito", "4", "90", "5", "95"],
+                ["Eunice Yueen", "10", "75", "5", "80"],
+                ["Evellyn Viorene Khoo", "9", "77,5", "5", "83"],
+                ["Evelyn Serenity Tandy", "11", "72,5", "4", "77"],
+                ["Federico Oswald", "10", "75", "3", "78"],
+                ["Filberth Wu", "10", "75", "4", "79"],
+                ["Hans Goldhy", "14", "65", "6", "73"],
+                ["Joyce Dominique", "8", "80", "6", "85"],
+                ["Joylynn Devanie Conrad", "6", "85", "4", "89"],
+                ["Justin Adelio Sunvier", "18", "55", "5", "72"],
+                ["Lolyson Deevan", "23", "42,5", "4", "72"],
+                ["Nicholas Sebastian Tandiono", "16", "60", "1", "62"],
+                ["Nicole Violetta Tjeong", "15", "62,5", "6", "73"],
+                ["Revalyn", "30", "25", "5", "72"],
+                ["Rogelio Carrick Ang", "22", "45", "5", "72"],
+                ["Sava Tania", "12", "70", "5", "75"],
+                ["Shane Marvin Halim", "14", "65", "6", "73"],
+                ["Shareen Theodora", "15", "62,5", "5", "72"],
+                ["Sherlince Starlene Chandra", "10", "75", "5", "80"],
+                ["Sophie Aurelia Joycelin", "16", "60", "5", "72"],
+                ["Stevany Yulia Pratama", "17", "57,5", "3", "70"],
+                ["Sunrio Adinugroho", "23", "42,5", "5", "72"],
+                ["Sutanto Owen Liem", "8", "80", "5", "85"],
+                ["Thesha Bellina Vicjy", "12", "70", "6", "75"],
+                ["Torres Yang", "12", "70", "3", "73"],
+                ["Valencia Richel Ongso", "15", "62,5", "3", "70"],
+                ["Vallerie Liecardo", "24", "40", "4", "72"],
+                ["Vanessa", "18", "55", "4", "72"],
+                ["Vanessa Lois", "8", "80", "6", "85"],
+                ["Vicenzo Alfredo", "14", "65", "5", "72"],
+                ["Vincent Alvarez Zhuo", "11", "72,5", "5", "78"],
+                ["Vincent Wijaya", "6", "85", "5", "90"],
+                ["Wilbert Lieandy", "18", "55", "9", "75"],
+                ["Winston Hudson Otteo", "12", "70", "4", "74"]
+            ],
+            "XI H": [
+                ["Aurencia Lievianna", "18", "55", "6", "73"],
+                ["Carlyn Tanclyn", "9", "77,5", "4", "82"],
+                ["Clara Auryn Icasia", "8", "80", "4", "84"],
+                ["Fayola Aretha Lai", "9", "77,5", "6", "83"],
+                ["Grace Angeline Wirjawan", "19", "52,5", "4", "72"],
+                ["Javerlyn Queenicia Chandra", "16", "60", "7", "74"],
+                ["Jeankelly Samudra Tjuaja", "11", "72,5", "9", "78"],
+                ["Joice Kellen", "10", "75", "9", "80"],
+                ["Jose Fernando", "7", "82,5", "5", "88"],
+                ["Justine Tania Chandra", "11", "72,5", "5", "78"],
+                ["Karen Julia Haspan", "11", "72,5", "7", "78"],
+                ["Kelsey Valerie Lin", "8", "80", "4", "84"],
+                ["Kynthia Callysta", "11", "72,5", "6", "78"],
+                ["Leonly Geraldine", "9", "77,5", "6", "83"],
+                ["Louis Gabriel", "15", "62,5", "7", "74"],
+                ["Louis Thomson", "14", "65", "4", "72"],
+                ["Madelyn Arcadia Chen", "11", "72,5", "5", "78"],
+                ["Mervin Sutiono", "15", "62,5", "5", "72"],
+                ["Michael Jhonson", "21", "47,5", "9", "75"],
+                ["Michelle", "16", "60", "5", "72"],
+                ["Michelle Margareth Cheong", "11", "72,5", "6", "78"],
+                ["Nicholas Yang", "8", "80", "8", "85"],
+                ["Nicole Zasen Yau", "17", "57,5", "7", "74"],
+                ["Philips Cuanata", "30", "25", "5", "72"],
+                ["Revanko Devalim Sunanto", "19", "52,5", "5", "72"],
+                ["Richard Gani", "17", "57,5", "5", "72"],
+                ["Robin Surya Toka", "21", "47,5", "5", "72"],
+                ["Roschelly Teisha Widalkho", "23", "42,5", "7", "74"],
+                ["Sanny", "22", "45", "6", "73"],
+                ["Sauri Yap Bella", "19", "52,5", "6", "73"],
+                ["Selly Alicia", "25", "37,5", "6", "73"],
+                ["Sharon Valerie Widjaja", "6", "85", "5", "90"],
+                ["Silvia Lim", "13", "67,5", "6", "73"],
+                ["Steven", "19", "52,5", "5", "72"],
+                ["Stevi Yulia Pratam", "24", "40", "6", "73"],
+                ["Tysdeny Tan", "23", "42,5", "6", "73"],
+                ["Valerie Tio", "10", "75", "5", "80"],
+                ["Velin Alicia", "13", "67,5", "6", "73"],
+                ["Vicelia Joanna Lie", "16", "60", "8", "75"],
+                ["Victor Kosasih", "11", "72,5", "5", "78"],
+                ["Whizley Chen", "23", "42,5", "7", "74"],
+                ["William Utama", "18", "55", "5", "72"],
+                ["Willy", "20", "50", "6", "73"],
+                ["Veda Arsa Iwanto", "19", "52,5", "5", "72"]
+            ],
+            "XI I": [
+                ["Carlos Valentino Wenrich", "20", "50", "3", "70"],
+                ["Clareen Cia", "19", "52,5", "4", "72"],
+                ["Edward Kennedy Lim", "11", "72,5", "2", "75"],
+                ["Gricherry Khonata", "12", "70", "2", "72"],
+                ["Hazel Robett Can", "0", "100", "5", "72"],
+                ["Jasmine Winaka", "9", "77,5", "1", "80"],
+                ["Jaycent Fritz Reevesen", "12", "70", "5", "75"],
+                ["Jessica Evangeli Tjiawijaya", "13", "67,5", "4", "72"],
+                ["Joeven", "18", "55", "4", "72"],
+                ["Joevito Jonathan", "20", "50", "6", "73"],
+                ["Jolin Jolicia Ciang", "15", "62,5", "3", "70"],
+                ["Kaetlyn Onglicia", "11", "72,5", "3", "76"],
+                ["Kaylie Rusli", "11", "72,5", "7", "78"],
+                ["Kerich Juin Utama", "15", "62,5", "5", "72"],
+                ["Marcelline Metsuko Humutowo", "23", "42,5", "1", "45"],
+                ["Marvennoto Suvega", "15", "62,5", "3", "70"],
+                ["Michelle Teresia Sutanto", "9", "77,5", "4", "82"],
+                ["Nicholas Valentino", "14", "65", "4", "72"],
+                ["Owen Chiuman", "6", "85", "4", "89"],
+                ["Qrin Tanaka", "12", "70", "4", "74"],
+                ["Rachel Chandler", "9", "77,5", "4", "82"],
+                ["Raymond Filbert Salim", "5", "87,5", "4", "92"],
+                ["Renzzo Cedric Guovandry", "11", "72,5", "2", "75"],
+                ["Richardo Anderson Halim", "13", "67,5", "4", "72"],
+                ["Richardo William", "11", "72,5", "2", "75"],
+                ["Richie Jericho Prince", "18", "55", "6", "73"],
+                ["Richie Prince Ten", "28", "30", "4", "72"],
+                ["Ruyi Sun Moon", "9", "77,5", "1", "80"],
+                ["Ryanna Nicole Leung", "26", "35", "3", "70"],
+                ["Sandra Evelyn Limber", "11", "72,5", "6", "78"],
+                ["Shanty Fidella Fu", "9", "77,5", "3", "81"],
+                ["Sky Lim", "11", "72,5", "4", "77"],
+                ["Sony Fernando Limber", "12", "70", "3", "73"],
+                ["Stancio Wunand", "10", "75", "2", "77"],
+                ["Syerena Tania Susanto", "13", "67,5", "1", "70"],
+                ["Valerina Florensia", "17", "57,5", "5", "72"],
+                ["Vallentino", "10", "75", "5", "80"],
+                ["Victoria Huang", "0", "100", "1", "102"],
+                ["Vincent", "13", "67,5", "3", "70"],
+                ["Vincent Alexander Colin", "13", "67,5", "2", "70"],
+                ["Werly", "7", "82,5", "1", "85"]
+            ],
+            "XII H": [
+                ["Amelia", "15", "62,5", "-1", "62"],
+                ["Austin", "20", "50", "-1", "49"],
+                ["Budianto", "20", "50", "-1", "49"],
+                ["Cherry Carisa Chen", "20", "50", "1", "52"],
+                ["Cherylle Graciela Kholynne", "13", "67,5", "1", "70"],
+                ["Christopher Luckianto Wijaya", "10", "75", "0", "75"],
+                ["Cristella Evelyne Kho", "12", "70", "2", "72"],
+                ["Edbert Hung", "7", "82,5", "2", "85"],
+                ["Elbert Limgrano", "12", "70", "-1", "69"],
+                ["Erick Darren Chang", "11", "72,5", "1", "75"],
+                ["Evelin", "27", "32,5", "-2", "31"],
+                ["Farel Juandi Chang", "6", "85", "2", "87"],
+                ["Felicia Celeste Changeles", "9", "77,5", "0", "78"],
+                ["Felicia Tiana", "6", "85", "4", "89"],
+                ["Gisella Keysa", "18", "55", "0", "55"],
+                ["Gracielle Geffenia", "13", "67,5", "-1", "67"],
+                ["Harel Tuffrano", "8", "80", "3", "83"],
+                ["Janice Wijaya", "11", "72,5", "-1", "72"],
+                ["Jennifer Han", "14", "65", "-1", "64"],
+                ["Jensen", "13", "67,5", "-1", "67"],
+                ["Jeseline Vanella", "11", "72,5", "-1", "72"],
+                ["Jonathan Yang", "13", "67,5", "0", "68"],
+                ["Joselyn Luangga", "10", "75", "0", "75"],
+                ["Joseph Guardiola Lim", "10", "75", "1", "77"],
+                ["Jovico Mackenzie", "9", "77,5", "2", "80"],
+                ["Kenji Hermanto", "5", "87,5", "-2", "86"],
+                ["Leonardo Fujihira", "6", "85", "1", "87"],
+                ["Louis Antonio", "26", "35", "-2", "33"],
+                ["Marcelliano Tjok", "12", "70", "0", "70"],
+                ["Michael Wijaya", "10", "75", "-2", "73"],
+                ["Muhammad Yasin Hartawan Lim", "12", "70", "4", "74"],
+                ["Natasya", "18", "55", "-1", "54"],
+                ["Norine Kosim", "20", "50", "-2", "48"],
+                ["Prilcella Samudra Tjuaja", "17", "57,5", "1", "60"],
+                ["Revand", "5", "87,5", "-1", "87"],
+                ["Richard Tandra", "11", "72,5", "-1", "72"],
+                ["Richie Jaywynn", "13", "67,5", "-1", "67"],
+                ["Ricky Marcelo", "16", "60", "-2", "58"],
+                ["Sherly Rianto", "28", "30", "-1", "29"],
+                ["Thalita", "10", "75", "0", "75"],
+                ["Tifanny Kimberly", "0", "100", "2", "102"],
+                ["Tiffany", "23", "42,5", "-1", "42"],
+                ["Velika Putri Cia", "30", "25", "-1", "24"],
+                ["Virlyoney Lya Taifanny", "11", "72,5", "-1", "72"]
+            ],
+            "XII I": [
+                ["Advent Pakpahan", "11", "72,5", "6", "78"],
+                ["Aldo Anggara", "4", "90", "4", "94"],
+                ["Angelicia", "40", "0", "5", "72"],
+                ["Anggi Alya Nafisah", "28", "30", "3", "70"],
+                ["Anggie Aprilia Devina", "12", "70", "3", "73"],
+                ["Celine Natalia", "18", "55", "5", "72"],
+                ["Christine", "0", "100", "3", "103"],
+                ["Cindy Arthalita Panjaitan", "15", "62,5", "5", "72"],
+                ["Cindy Claudia", "18", "55", "4", "72"],
+                ["Elysia Lie", "14", "65", "4", "72"],
+                ["Evangeline Aurelia", "7", "82,5", "7", "88"],
+                ["Evelyn Galistivica", "16", "60", "9", "75"],
+                ["Febriyan Hujaya", "23", "42,5", "4", "72"],
+                ["Ferdinand Rivaldo Silalahi", "22", "45", "4", "72"],
+                ["Frans Anggrian Lietos", "29", "27,5", "3", "70"],
+                ["Gloria Paulisky Zebua", "10", "75", "4", "79"],
+                ["Gracia Ingrid", "8", "80", "6", "85"],
+                ["Hannah Abigail Makmur", "6", "85", "4", "89"],
+                ["Jason Steward", "14", "65", "3", "70"],
+                ["Jerryco Rionaldo", "10", "75", "10", "80"],
+                ["Jesllyn", "10", "75", "3", "78"],
+                ["Justin Jerrick", "11", "72,5", "3", "76"],
+                ["Karen Chen", "9", "77,5", "8", "83"],
+                ["Keith Ayu Ghea Ramadhani", "13", "67,5", "5", "72"],
+                ["Maria Aurelia Novalestrina Sinaga", "11", "72,5", "8", "78"],
+                ["Matthew", "12", "70", "3", "73"],
+                ["Michelle", "8", "80", "9", "85"],
+                ["Mike Lim", "4", "90", "3", "93"],
+                ["Mischell Oendiana", "15", "62,5", "4", "72"],
+                ["Ovelya Berenice", "16", "60", "3", "70"],
+                ["Philip Mustika Angkasa", "12", "70", "4", "74"],
+                ["Raynathan Jumajar Surbakti", "15", "62,5", "3", "70"],
+                ["Revan", "16", "60", "3", "70"],
+                ["Ricardo Constantine", "20", "50", "4", "72"],
+                ["Richard Wayne Haryanto", "15", "62,5", "3", "70"],
+                ["Robbie Lorenzo", "12", "70", "4", "74"],
+                ["Sakira Zahra Suheri", "21", "47,5", "3", "70"],
+                ["Sharlene Harney", "27", "32,5", "3", "70"],
+                ["Steven Tannia", "26", "35", "3", "70"],
+                ["Tifara Amelia", "12", "70", "3", "73"],
+                ["Tiffany Taniwan", "12", "70", "3", "73"],
+                ["Vebry Yolanda", "8", "80", "3", "83"],
+                ["Vincent Colin", "13", "67,5", "3", "70"],
+                ["Erwin Wijaya", "29", "27,5", "4", "72"]
+            ]
+        };
+
+        // Transform array arrays into structured objects
+        const allData = {};
+        for (const [cls, students] of Object.entries(rawData)) {
+            allData[cls] = students.map((s, index) => ({
+                id: (index + 1).toString(),
+                name: s[0],
+                mistakes: s[1],
+                raw: s[2],
+                cookie: s[3],
+                final: s[4]
+            }));
+        }
+
+        // Populate Dropdown
+        window.addEventListener('DOMContentLoaded', () => {
+            const select = document.getElementById('classSelect');
+            Object.keys(allData).sort().forEach(cls => {
+                select.innerHTML += `<option value="${cls}">${cls}</option>`;
+            });
+        });
+
+        function handleSearch() {
+            const cls = document.getElementById('classSelect').value;
+            const id = document.getElementById('idSearch').value.trim();
+            const resultArea = document.getElementById('resultArea');
             
-            // Check if they entered something and if it matches "brownie" (case-insensitive)
-            if (pwd && pwd.trim().toLowerCase() === "brownie") {
-                // Correct! Send them to the cookie checker page
-                window.location.href = "cookie-checker.html";
-            } else if (pwd !== null) {
-                // Incorrect password (and they didn't hit cancel)
-                alert("❌ Incorrect password. Access Denied.");
+            if(!cls || !id) {
+                alert("Please select a class and enter your attendance number.");
+                return;
+            }
+
+            const student = allData[cls]?.find(s => s.id === id);
+            
+            if(student) {
+                document.getElementById('studentName').innerText = student.name;
+                document.getElementById('studentClass').innerText = cls;
+                
+                // Handle Value errors gracefully
+                let mistakes = student.mistakes === "-" ? "N/A" : student.mistakes;
+                let raw = student.raw === "#VALUE!" ? "N/A" : student.raw;
+                let finalScore = student.final === "#VALUE!" ? "Pending" : student.final;
+                
+                document.getElementById('mistakesDisplay').innerText = mistakes;
+                document.getElementById('rawDisplay').innerText = raw;
+                
+                let cookieStr = student.cookie;
+                document.getElementById('cookieDisplay').innerText = cookieStr.startsWith('-') ? cookieStr : `+${cookieStr}`;
+                document.getElementById('cookieDisplay').className = cookieStr.startsWith('-') ? "text-2xl font-black text-red-500" : "text-2xl font-black text-amber-500";
+
+                document.getElementById('finalDisplay').innerText = finalScore;
+
+                resultArea.classList.remove('hidden');
+            } else {
+                resultArea.classList.add('hidden');
+                alert("Student not found! Please check your class and number.");
             }
         }
     </script>
