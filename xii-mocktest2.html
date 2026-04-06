@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade XII Final Assessment - Practice</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #27ae60;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #334155;
+        }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 950px; margin: 0 auto; background: var(--card); padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); margin-bottom: 30px; padding-bottom: 20px; }
+        h1 { color: var(--primary); margin: 0; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { background: var(--primary); color: white; padding: 12px 20px; border-radius: 6px; font-size: 18px; margin-top: 40px; }
+        .passage { background: #f1f5f9; border-left: 6px solid var(--secondary); padding: 25px; margin: 20px 0; border-radius: 4px; font-size: 16px; }
+        .q-wrapper { margin-bottom: 25px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.3s ease; }
+        .q-wrapper:hover { border-color: var(--secondary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .q-text { font-weight: 600; font-size: 16px; margin-bottom: 15px; display: block; color: #1e293b; }
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 15px; }
+        .opt { background: #fff; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+        .btn-reveal { background: var(--secondary); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; }
+        .btn-reveal:hover { background: var(--primary); }
+        .ans-box { display: none; margin-top: 15px; padding: 12px; background: #dcfce7; color: #166534; border-radius: 6px; font-weight: 700; border-left: 4px solid var(--accent); }
+        .toolbar { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px; }
+        .btn-tool { padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; background: #64748b; color: white; }
+        @media print { .btn-reveal, .toolbar, .ans-box { display: none !important; } .container { box-shadow: none; width: 100%; padding: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>ASESMEN SEKOLAH SMA SWASTA CINTA BUDAYA</h1>
+        <p><strong>Mata Pelajaran:</strong> Bahasa Inggris | <strong>Kelas:</strong> XII MIA/IIS</p>
+        <p><strong>Practice Assessment</strong> | 2025/2026</p>
+    </div>
+
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        type: "section",
+        title: "I. Tenses (Ongoing, Finished, and Narrative)",
+        passage: "<strong>Situation:</strong> Two friends, Maya and Ben, are discussing their post-graduation plans.<br><br>Maya: Hi Ben, what have you been up to? <br>Ben: (1) I __________ to several design firms this week. I'm hoping for a call soon.<br>Maya: (2) I __________ three rejection letters so far, but I'm staying positive.<br>Ben: My cousin (3) __________ a similar path last year and eventually found a great job.<br>Maya: (4) She __________ a portfolio before that? I heard her work is incredible.",
+        questions: [
+            {q: "1. Fill in blank (1):", opts: ["A. apply", "B. have been applying", "C. applied", "D. was applying", "E. applies"], a: "B (Present Perfect Continuous for recent ongoing activity)"},
+            {q: "2. Fill in blank (2):", opts: ["A. receive", "B. was receiving", "C. have received", "D. receiving", "E. received"], a: "C (Present Perfect for accumulated results)"},
+            {q: "3. Fill in blank (3):", opts: ["A. follows", "B. following", "C. followed", "D. has followed", "E. was followed"], a: "C (Past Simple for a finished action last year)"},
+            {q: "4. Fill in blank (4):", opts: ["A. Has she created", "B. Had she created", "C. Does she create", "D. Was she created", "E. Is she creating"], a: "B (Past Perfect for an action before another past action)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "II. Pronoun and Demonstrative References",
+        questions: [
+            {q: "5. Mental health awareness is crucial for teenagers. (5) ___ helps them navigate the pressures of modern life.", opts: ["A. They", "B. It", "C. We", "D. These", "E. There"], a: "B (It - referring to awareness)"},
+            {q: "6. Many students feel anxious about exams; (6) ___ emotion is a natural response to stress.", opts: ["A. those", "B. these", "C. that", "D. they", "E. it"], a: "C (That - referring specifically to the anxiety mentioned)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "III. Modal Verbs (Advice, Obligation, and Prohibition)",
+        questions: [
+            {q: "7. You ___ double-check your grammar before submitting the final draft.", opts: ["A. mustn't", "B. shouldn't", "C. should", "D. might", "E. could have"], a: "C (Should - advice)"},
+            {q: "8. Students ___ bring any electronic devices into the examination hall; it's against the rules.", opts: ["A. shouldn't", "B. mustn't", "C. don't have to", "D. might not", "E. shouldn't have"], a: "B (Mustn't - prohibition)"},
+            {q: "9. If you are feeling unwell, you ___ go to the school clinic immediately.", opts: ["A. must", "B. can", "C. may", "D. ought to", "E. used to"], a: "D (Ought to - recommendation)"},
+            {q: "10. In some cultures, you ___ remove your shoes before entering someone's home.", opts: ["A. might", "B. have to", "C. should have", "D. mustn't", "E. could"], a: "B (Have to - social obligation)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "IV. Used To and Be Used To",
+        questions: [
+            {q: "11. When I was younger, I ___ play football every Sunday afternoon.", opts: ["A. am used to", "B. used to", "C. get used to", "D. use to", "E. was used to"], a: "B (Used to - past habit)"},
+            {q: "12. Moving to London was hard, but I am finally ___ the cold weather.", opts: ["A. used to", "B. use to", "C. used to getting", "D. getting used to", "E. used"], a: "D (Getting used to - process of becoming accustomed)"},
+            {q: "13. Did you ___ work at the library before you joined the bank?", opts: ["A. used to", "B. use to", "C. using to", "D. get used to", "E. was used to"], a: "B (Use to - question form)"},
+            {q: "14. Modern workers ___ using digital tools for every task they perform.", opts: ["A. used to", "B. are used to", "C. use to", "D. were used to", "E. gets used to"], a: "B (Are used to - present state of familiarity)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "V. Verb Patterns (Gerunds and Infinitives)",
+        questions: [
+            {q: "15. I am looking forward to ___ my grandparents during the summer break.", opts: ["A. visit", "B. visiting", "C. to visit", "D. visited", "E. visits"], a: "B (Visiting - 'look forward to' + gerund)"},
+            {q: "16. The manager suggested ___ the meeting until everyone could attend.", opts: ["A. postpone", "B. to postpone", "C. postponing", "D. postponed", "E. postpones"], a: "C (Postponing - 'suggest' + gerund)"},
+            {q: "17. He promised ___ his room before his mother returned from work.", opts: ["A. clean", "B. to clean", "C. cleaning", "D. cleaned", "E. cleans"], a: "B (To clean - 'promise' + infinitive)"},
+            {q: "18. We should consider ___ a new strategy to improve our sales numbers.", opts: ["A. adopt", "B. to adopt", "C. adopting", "D. adopted", "E. adopts"], a: "C (Adopting - 'consider' + gerund)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "VI. Vocabulary in Context (Scientific and Academic)",
+        questions: [
+            {q: "19. The telescope was designed to ___ distant galaxies that are invisible to the naked eye.", opts: ["A. hide", "B. observe", "C. create", "D. destroy", "E. ignore"], a: "B (Observe)"},
+            {q: "20. Scientists must ___ their hypotheses through rigorous experimentation.", opts: ["A. doubt", "B. validate", "C. forget", "D. guess", "E. fake"], a: "B (Validate)"},
+            {q: "21. The ___ of the experiment was unexpected, leading to a new discovery.", opts: ["A. cause", "B. outcome", "C. start", "D. reason", "E. method"], a: "B (Outcome)"},
+            {q: "22. Deforestation has a significant ___ on the local climate and biodiversity.", opts: ["A. purpose", "B. impact", "C. history", "D. cost", "E. benefit"], a: "B (Impact)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "VII. Reading Comprehension: The Industrial Shift",
+        passage: "During the mid-20th century, the role of technology in everyday life shifted significantly. As automation entered the workforce, many manual labor jobs were replaced by machines. This transition, while efficient, caused widespread concern among the working class. The government attempted to mitigate this by offering vocational training for new technical roles. While some embraced the change, others struggled to adapt to the fast-paced digital era, highlighting the gap between different generations of workers.",
+        questions: [
+            {q: "23. What is the main idea of the text?", opts: ["A. Technology is always beneficial.", "B. The transition to automation caused social challenges.", "C. Manual labor is better than machines.", "D. Vocational training is free for everyone.", "E. History repeats itself."], a: "B"},
+            {q: "24. Why did the working class feel concerned?", opts: ["A. Lack of food", "B. Job replacement by automation", "C. High taxes", "D. New laws", "E. Lack of machines"], a: "B"},
+            {q: "25. How did the government respond to the transition?", opts: ["A. By banning machines", "B. By offering vocational training", "C. By increasing wages", "D. By ignoring the problem", "E. By closing factories"], a: "B"},
+            {q: "26. What does 'mitigate' mean in the context of the passage?", opts: ["A. To make worse", "B. To lessen or reduce", "C. To ignore", "D. To celebrate", "E. To speed up"], a: "B"},
+            {q: "27. Who is the target audience for this educational text?", opts: ["A. Small children", "B. Factory machines", "C. Students and historians", "D. Professional athletes", "E. Fashion designers"], a: "C"}
+        ]
+    },
+    {
+        type: "section",
+        title: "VIII. Interpersonal Conversation",
+        questions: [
+            {q: "28. Alice: I can't find my keys anywhere! \n Mark: ___", opts: ["A. Keys are metal.", "B. Have you checked the pocket of your coat?", "C. I don't have keys.", "D. Goodbye.", "E. The door is locked."], a: "B"},
+            {q: "29. Sarah: I'm feeling very stressed about the presentation. \n Tom: ___", opts: ["A. It's on Tuesday.", "B. You've prepared well; I'm sure you'll do great.", "C. Stress is bad for you.", "D. Don't look at me.", "E. Why are you here?"], a: "B"},
+            {q: "30. Customer: Is this shirt available in a larger size? \n Assistant: ___", opts: ["A. I like this color.", "B. Let me check the stockroom for you.", "C. You are tall.", "D. No, it is small.", "E. The shop closes at five."], a: "B"},
+            {q: "31. Peter: Would you like to join us for dinner tonight? \n Jane: ___", opts: ["A. I ate yesterday.", "B. I'd love to, but I have to finish my essay.", "C. Dinner is expensive.", "D. Yes, you are.", "E. No, I am a student."], a: "B"}
+        ]
+    },
+    {
+        type: "section",
+        title: "IX. Short Functional Texts: Notices",
+        questions: [
+            {q: "32. A sign in a park says 'Please keep off the grass'. This is a:", opts: ["A. Suggestion", "B. Prohibition/Rule", "C. Advertisement", "D. News report", "E. Invitation"], a: "B"},
+            {q: "33. Where would you most likely see a sign saying 'Lifejacket under your seat'?", opts: ["A. On a bus", "B. On an airplane", "C. In a library", "D. At a restaurant", "E. In a garden"], a: "B"},
+            {q: "34. A notice saying 'Out of Order' on a vending machine means:", opts: ["A. The machine is new", "B. The machine is not working", "C. You must pay more", "D. The machine is full", "E. Come back tomorrow"], a: "B"},
+            {q: "35. A label saying 'Keep refrigerated' is for:", opts: ["A. Clothes", "B. Food and medicine", "C. Books", "D. Furniture", "E. Electronic tools"], a: "B"}
+        ]
+    },
+    {
+        type: "section",
+        title: "X. Reading Comprehension: Descriptive (Coastal Life)",
+        passage: "Living by the coast offers a unique lifestyle. Residents often wake up to the sound of crashing waves and the salty scent of the ocean breeze. While tourism provides a boost to the local economy during the summer, the winters are often quiet and isolated. Local fishermen rely on the tides for their daily catch, a tradition that has remained unchanged for generations despite the rise of modern industrial fishing vessels.",
+        questions: [
+            {q: "36. What is a characteristic of coastal life in winter?", opts: ["A. Crowded beaches", "B. Quiet and isolated", "C. High tourism", "D. Warm weather", "E. Industrial growth"], a: "B"},
+            {q: "37. How do local fishermen determine their working hours?", opts: ["A. By the clock", "B. By the tides", "C. By the tourists", "D. By the radio", "E. By the sun"], a: "B"},
+            {q: "38. What does 'boost' mean in 'boost to the local economy'?", opts: ["A. Damage", "B. Increase or help", "C. Change", "D. Stop", "E. Steal"], a: "B"},
+            {q: "39. The writer suggests that modern industrial fishing...", opts: ["A. Has replaced all traditions", "B. Exists alongside traditional methods", "C. Is banned in coastal towns", "D. Is better than traditional methods", "E. Is controlled by the tides"], a: "B"},
+            {q: "40. What would be the most suitable title for this passage?", opts: ["A. Modern Fishing Technology", "B. The Rhythms of Coastal Living", "C. Why Winter is Bad", "D. The History of the Ocean", "E. How to be a Fisherman"], a: "B"}
+        ]
+    },
+    {
+        type: "section",
+        title: "XI. Articles and Determiners",
+        questions: [
+            {q: "41. My brother is (41) ___ honest man who always tells the truth.", opts: ["A. a", "B. an", "C. the", "D. -", "E. some"], a: "B"},
+            {q: "42. (42) ___ Amazon is the largest river by discharge volume in the world.", opts: ["A. A", "B. An", "C. The", "D. -", "E. Any"], a: "C"},
+            {q: "43. We are going to have (43) ___ lunch at that new Italian place.", opts: ["A. a", "B. an", "C. the", "D. -", "E. every"], a: "D (No article for meals)"},
+            {q: "44. I need to buy (44) ___ new umbrella before it starts raining.", opts: ["A. a", "B. an", "C. the", "D. -", "E. some"], a: "A"}
+        ]
+    },
+    {
+        type: "section",
+        title: "XII. General Academic Vocabulary",
+        questions: [
+            {q: "45. To 'analyze' something means to ___.", opts: ["A. ignore it", "B. examine it in detail", "C. build it", "D. sell it", "E. forget it"], a: "B"},
+            {q: "46. If a task is 'mandatory', you ___ do it.", opts: ["A. can", "B. must", "C. shouldn't", "D. might", "E. used to"], a: "B"},
+            {q: "47. A 'significant' change is one that is ___.", opts: ["A. small", "B. important or large", "C. invisible", "D. bad", "E. old"], a: "B"},
+            {q: "48. What is the synonym of 'abundant'?", opts: ["A. Scarse", "B. Plentiful", "C. Tiny", "D. Expensive", "E. Heavy"], a: "B"},
+            {q: "49. An 'innovation' refers to a ___.", opts: ["A. new idea or method", "B. old tradition", "C. mistake", "D. natural disaster", "E. person"], a: "A"},
+            {q: "50. To 'collaborate' means to ___.", opts: ["A. work alone", "B. work together", "C. fight", "D. sleep", "E. compete"], a: "B"}
+        ]
+    }
+];
+
+const container = document.getElementById('quiz-container');
+
+quizData.forEach(section => {
+    let sectionHtml = `<h2>${section.title}</h2>`;
+    if (section.passage) {
+        sectionHtml += `<div class="passage">${section.passage}</div>`;
+    }
+    
+    section.questions.forEach((item, index) => {
+        const uniqueId = 'ans-' + Math.random().toString(36).substr(2, 9);
+        sectionHtml += `
+            <div class="q-wrapper">
+                <span class="q-text">${item.q}</span>
+                <div class="options-grid">
+                    ${item.opts.map(o => `<div class="opt">${o}</div>`).join('')}
+                </div>
+                <button class="btn-reveal" onclick="toggleAns('${uniqueId}')">Reveal Answer</button>
+                <div id="${uniqueId}" class="ans-box">
+                    Correct Answer: ${item.a}
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML += sectionHtml;
+});
+
+function toggleAns(id) {
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Test 2 - Grade XII English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5; /* Indigo */
+            --secondary: #10B981; /* Emerald */
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-color: #1E293B;
+            --correct-bg: #ECFDF5;
+            --correct-border: #059669;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: var(--primary);
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
+        }
+
+        .header h1 { margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.5px; }
+        .header p { margin: 10px 0 0 0; font-size: 16px; opacity: 0.9; }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+            margin-top: 50px;
+            font-weight: 700;
+            font-size: 22px;
+        }
+
+        .passage-box {
+            background-color: #EEF2FF;
+            border-left: 5px solid var(--primary);
+            padding: 22px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 15px;
+            color: #334155;
+            line-height: 1.8;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #E2E8F0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .options li {
+            background: #F8FAFC;
+            margin-bottom: 10px;
+            padding: 12px 18px;
+            border-radius: 6px;
+            border: 1px solid #CBD5E1;
+            font-size: 15px;
+        }
+
+        .btn-reveal {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-reveal:hover {
+            background-color: #059669;
+        }
+
+        .answer-box {
+            display: none;
+            margin-top: 18px;
+            padding: 15px 20px;
+            background-color: var(--correct-bg);
+            border-left: 4px solid var(--correct-border);
+            border-radius: 6px;
+            font-weight: 600;
+            color: #065F46;
+            font-size: 15px;
+        }
+
+        .answer-box.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #64748B;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Mock Test 2: Final Assessment</h1>
+        <p>English | Grade XII | Alternative Practice Edition</p>
+    </div>
+
+    <div class="container">
+
+        <h2 class="section-title">I. Tenses in Context</h2>
+        <div class="passage-box">
+            <strong>Read the dialogue to answer questions 1-4:</strong><br><br>
+            <strong>Nina:</strong> Are you excited for the school trip to Japan?<br>
+            <strong>Leo:</strong> Definitely! 1. I __________ my passport renewal form last Tuesday.<br>
+            <strong>Nina:</strong> Good. 2. __________ your flight tickets yet? The prices are going up.<br>
+            <strong>Leo:</strong> Yes, my dad handled it. He 3. __________ to Tokyo several times before we were even born, so he knows the best airlines.<br>
+            <strong>Nina:</strong> Awesome. By this time next month, we 4. __________ sushi in Shibuya!
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">1. Choose the correct verb for blank (1):</div>
+            <ul class="options">
+                <li>A. have submitted</li>
+                <li>B. submitted</li>
+                <li>C. am submitting</li>
+                <li>D. had submitted</li>
+                <li>E. submit</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q1')">Show Answer</button>
+            <div id="q1" class="answer-box">Answer: B. submitted (Past Simple - indicates a completed action with a specific past time "last Tuesday").</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">2. Choose the correct verb for blank (2):</div>
+            <ul class="options">
+                <li>A. Do you book</li>
+                <li>B. Did you book</li>
+                <li>C. Have you booked</li>
+                <li>D. Are you booking</li>
+                <li>E. Will you book</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q2')">Show Answer</button>
+            <div id="q2" class="answer-box">Answer: C. Have you booked (Present Perfect - asking about a recently completed action relevant to the present "yet").</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">3. Choose the correct verb for blank (3):</div>
+            <ul class="options">
+                <li>A. has traveled</li>
+                <li>B. travels</li>
+                <li>C. traveled</li>
+                <li>D. had traveled</li>
+                <li>E. was traveling</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q3')">Show Answer</button>
+            <div id="q3" class="answer-box">Answer: D. had traveled (Past Perfect - an action that happened before another point in the past "before we were born").</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">4. Choose the correct verb for blank (4):</div>
+            <ul class="options">
+                <li>A. will have eaten</li>
+                <li>B. are eating</li>
+                <li>C. eat</li>
+                <li>D. will be eating</li>
+                <li>E. have eaten</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q4')">Show Answer</button>
+            <div id="q4" class="answer-box">Answer: D. will be eating (Future Continuous - an ongoing action at a specific time in the future).</div>
+        </div>
+
+        <h2 class="section-title">II. Pronoun & Reference</h2>
+        <div class="passage-box">
+            Adopting a rescue dog requires a lot of patience. 5. _______ can be a highly rewarding experience, but it also takes time for the animal to adjust. Animal behaviorists suggest that understanding 6. _______ transition period is vital for a happy home.
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">5. Fill in blank (5):</div>
+            <ul class="options">
+                <li>A. They</li>
+                <li>B. We</li>
+                <li>C. It</li>
+                <li>D. This</li>
+                <li>E. That</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q5')">Show Answer</button>
+            <div id="q5" class="answer-box">Answer: C. It (Refers back to the singular gerund phrase "Adopting a rescue dog").</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">6. Fill in blank (6):</div>
+            <ul class="options">
+                <li>A. those</li>
+                <li>B. these</li>
+                <li>C. that</li>
+                <li>D. this</li>
+                <li>E. there</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q6')">Show Answer</button>
+            <div id="q6" class="answer-box">Answer: D. this (Demonstrative pronoun indicating the singular "transition period" just described).</div>
+        </div>
+
+        <h2 class="section-title">III. Modal Verbs</h2>
+        <div class="question-card">
+            <div class="question-text">7. To ensure everyone's safety in the chemistry lab, students ___ wear protective goggles at all times.</div>
+            <ul class="options">
+                <li>A. might</li>
+                <li>B. should</li>
+                <li>C. shouldn't</li>
+                <li>D. mustn't</li>
+                <li>E. can</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q7')">Show Answer</button>
+            <div id="q7" class="answer-box">Answer: B. should (Expresses strong advice or a rule. *Must* is also acceptable if present, but *should* is the best fit here).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">8. Passengers ___ unfasten their seatbelts while the airplane is experiencing turbulence.</div>
+            <ul class="options">
+                <li>A. don't have to</li>
+                <li>B. mustn't</li>
+                <li>C. should</li>
+                <li>D. might not</li>
+                <li>E. ought to</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q8')">Show Answer</button>
+            <div id="q8" class="answer-box">Answer: B. mustn't (Expresses a strict prohibition).</div>
+        </div>
+
+        <h2 class="section-title">IV. Used To / Be Used To</h2>
+        <div class="passage-box">
+            The way we navigate cities has shifted drastically. Thirty years ago, drivers 9. _______ physical maps to find their way around. Today, however, most drivers 10. _______ GPS navigation systems for almost every journey.
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">9. Fill in blank (9):</div>
+            <ul class="options">
+                <li>A. are used to reading</li>
+                <li>B. used to read</li>
+                <li>C. used to reading</li>
+                <li>D. use to read</li>
+                <li>E. were used to read</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q9')">Show Answer</button>
+            <div id="q9" class="answer-box">Answer: B. used to read (Past habit that is no longer standard).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">10. Fill in blank (10):</div>
+            <ul class="options">
+                <li>A. are used to trusting</li>
+                <li>B. used to trust</li>
+                <li>C. used to trusting</li>
+                <li>D. are used to trust</li>
+                <li>E. use to trusting</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q10')">Show Answer</button>
+            <div id="q10" class="answer-box">Answer: A. are used to trusting (Describes a current habit or state of being accustomed to something).</div>
+        </div>
+
+        <h2 class="section-title">V. Verb Patterns (Gerunds & Infinitives)</h2>
+        <div class="question-card">
+            <div class="question-text">11. After watching the Olympics, Maria decided ___ a local gymnastics club.</div>
+            <ul class="options">
+                <li>A. join</li>
+                <li>B. to join</li>
+                <li>C. joining</li>
+                <li>D. joined</li>
+                <li>E. joins</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q11')">Show Answer</button>
+            <div id="q11" class="answer-box">Answer: B. to join (The verb 'decide' is followed by a to-infinitive).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">12. Although the routines were hard, she started ___ extra hours on the weekends to improve.</div>
+            <ul class="options">
+                <li>A. train</li>
+                <li>B. to training</li>
+                <li>C. training</li>
+                <li>D. trained</li>
+                <li>E. trains</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q12')">Show Answer</button>
+            <div id="q12" class="answer-box">Answer: C. training (The verb 'start' can be followed by a gerund).</div>
+        </div>
+
+        <h2 class="section-title">VI. Academic Vocabulary (Astronomy/Geology)</h2>
+        <div class="passage-box">
+            The Mars Rover, Perseverance, 13. _______ advanced instruments to analyze the Martian soil. It uses specialized cameras to 14. _______ the exact location of ancient river deltas. Because the atmospheric 15. _______ is entirely different from Earth, the rover must be built to withstand extreme conditions. It is designed to 16. _______ high-resolution data back to NASA daily. Scientists use this data to perform critical 17. _______ regarding past microbial life.
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">13. Fill in blank (13):</div>
+            <ul class="options">
+                <li>A. avoids</li>
+                <li>B. breaks</li>
+                <li>C. utilizes</li>
+                <li>D. ignores</li>
+                <li>E. stops</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q13')">Show Answer</button>
+            <div id="q13" class="answer-box">Answer: C. utilizes (Academic term for 'uses').</div>
+        </div>
+        
+        <div class="question-card">
+            <div class="question-text">14. Fill in blank (14):</div>
+            <ul class="options">
+                <li>A. guess</li>
+                <li>B. pinpoint</li>
+                <li>C. lose</li>
+                <li>D. cover</li>
+                <li>E. erase</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q14')">Show Answer</button>
+            <div id="q14" class="answer-box">Answer: B. pinpoint (To locate with extreme precision).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">15. Fill in blank (15):</div>
+            <ul class="options">
+                <li>A. elevation</li>
+                <li>B. composition</li>
+                <li>C. altitude</li>
+                <li>D. darkness</li>
+                <li>E. distance</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q15')">Show Answer</button>
+            <div id="q15" class="answer-box">Answer: B. composition (Refers to what the atmosphere is made of; altitude/elevation don't fit the context of 'different from Earth' as well as composition does here).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">16. Fill in blank (16):</div>
+            <ul class="options">
+                <li>A. provide</li>
+                <li>B. consume</li>
+                <li>C. transmit</li>
+                <li>D. hide</li>
+                <li>E. reject</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q16')">Show Answer</button>
+            <div id="q16" class="answer-box">Answer: C. transmit (To send data/signals).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">17. Fill in blank (17):</div>
+            <ul class="options">
+                <li>A. holidays</li>
+                <li>B. vehicles</li>
+                <li>C. experiments</li>
+                <li>D. failures</li>
+                <li>E. rumors</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q17')">Show Answer</button>
+            <div id="q17" class="answer-box">Answer: C. experiments (Scientific tests/analyses).</div>
+        </div>
+
+        <h2 class="section-title">VII. Reading Comprehension (Historical Recount)</h2>
+        <div class="passage-box">
+            The Industrial Revolution, beginning in the late 18th century, marked a massive transition from agrarian, handcraft economies to industry and machine manufacturing. As large factories sprang up across Britain, factory owners sought cheap labor to maximize their profits. Consequently, thousands of children were recruited from orphanages and poor families. These children were highly valued because their small hands could easily reach into tight spaces between operating machines to fix broken threads or clear jams. However, this came at a severe cost. Children worked gruelling 12 to 14-hour shifts in dangerous, unventilated buildings. It wasn't until the Factory Acts of the 1830s that the government finally intervened, setting age limits and reducing work hours, which eventually paved the way for modern labor laws.
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">18. What is the main idea of the text?</div>
+            <ul class="options">
+                <li>A. The Industrial Revolution completely destroyed Britain's economy.</li>
+                <li>B. Children were the primary inventors of factory machines.</li>
+                <li>C. The Industrial Revolution caused a harsh shift in labor, notably exploiting children before laws intervened.</li>
+                <li>D. The Factory Acts were created to increase the working hours of adults.</li>
+                <li>E. Farming remained the most important industry throughout the 18th century.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q18')">Show Answer</button>
+            <div id="q18" class="answer-box">Answer: C (Captures the core theme: industrial shift, child labor exploitation, and eventual legal reform).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">19. According to the text, why were children specifically valued by factory owners?</div>
+            <ul class="options">
+                <li>A. They had better engineering degrees than adults.</li>
+                <li>B. Their small hands allowed them to fix machines in tight spaces.</li>
+                <li>C. They were stronger and could lift heavier materials.</li>
+                <li>D. They demanded higher wages which improved the economy.</li>
+                <li>E. They brought their own tools to the factories.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q19')">Show Answer</button>
+            <div id="q19" class="answer-box">Answer: B (Directly stated in the text regarding their physical size).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">20. What action did the government take in the 1830s?</div>
+            <ul class="options">
+                <li>A. They built more orphanages for the workers.</li>
+                <li>B. They banned all machines in British factories.</li>
+                <li>C. They set age limits and reduced working hours for children.</li>
+                <li>D. They forced children to work 14-hour shifts.</li>
+                <li>E. They replaced child workers with advanced robots.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q20')">Show Answer</button>
+            <div id="q20" class="answer-box">Answer: C (Through the Factory Acts, they intervened to protect children).</div>
+        </div>
+
+        <h2 class="section-title">VIII. Interpersonal Conversation (Suggestions)</h2>
+        <div class="question-card">
+            <div class="question-text">21. Lucas: "My laptop keeps freezing every time I open my video editing software."<br>Mia: "_________"</div>
+            <ul class="options">
+                <li>A. If I were you, I'd check if the software needs an update or clear your cache.</li>
+                <li>B. You must have broken the screen.</li>
+                <li>C. I don't know how to edit videos either.</li>
+                <li>D. The battery is completely full.</li>
+                <li>E. You shouldn't have bought a new camera.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q21')">Show Answer</button>
+            <div id="q21" class="answer-box">Answer: A (Appropriate, logical suggestion for a tech issue).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">22. Ryan: "I'm having a lot of trouble understanding this calculus assignment."<br>Chloe: "_________"</div>
+            <ul class="options">
+                <li>A. Math is my favorite subject.</li>
+                <li>B. Why don't you ask Mr. Davis for some extra help after class?</li>
+                <li>C. The calculator is on the desk.</li>
+                <li>D. I am very tired today.</li>
+                <li>E. You should skip the exam.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q22')">Show Answer</button>
+            <div id="q22" class="answer-box">Answer: B (Giving a constructive academic suggestion).</div>
+        </div>
+
+        <h2 class="section-title">IX. Short Functional Texts (Notices & Ads)</h2>
+        <div class="passage-box" style="text-align: center; font-weight: bold; font-size: 18px; border-left: none; border-top: 5px solid #EF4444;">
+            NOTICE<br>AUTHORIZED IT PERSONNEL ONLY. <br>DO NOT TOUCH SERVER RACKS.
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">23. Who is the primary target audience for this notice?</div>
+            <ul class="options">
+                <li>A. Customers looking to buy computers.</li>
+                <li>B. Restaurant chefs.</li>
+                <li>C. Regular office staff and unauthorized visitors.</li>
+                <li>D. The IT department manager.</li>
+                <li>E. Janitors cleaning the bathrooms.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q23')">Show Answer</button>
+            <div id="q23" class="answer-box">Answer: C (It is warning unauthorized people to stay away).</div>
+        </div>
+
+        <div class="passage-box" style="text-align: center; font-weight: bold; font-size: 18px; border-left: none; border-top: 5px solid var(--primary);">
+            PLEASE MAINTAIN SILENCE IN THE STUDY HALL.<br>NO FOOD OR BEVERAGES ALLOWED.
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">24. What is forbidden according to this notice?</div>
+            <ul class="options">
+                <li>A. Reading books.</li>
+                <li>B. Eating, drinking, and making noise.</li>
+                <li>C. Using laptops and computers.</li>
+                <li>D. Sitting in the chairs.</li>
+                <li>E. Entering the room without an ID.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q24')">Show Answer</button>
+            <div id="q24" class="answer-box">Answer: B (Directly addresses noise and food/drink).</div>
+        </div>
+
+        <h2 class="section-title">X. Reading Comprehension (Descriptive/Recount)</h2>
+        <div class="passage-box">
+            Scuba diving is vastly different from snorkeling. While snorkeling keeps you on the surface of the water, scuba diving allows you to explore the depths of the ocean using a heavy tank of compressed air strapped to your back. Last summer, I took my first certification course in Bali. Before jumping in, the instructor made sure we understood how to use the regulator, which is the mouthpiece that delivers air. We also had to wear a tight neoprene wetsuit. Even in tropical waters, your body loses heat quickly, and the wetsuit acts as a crucial layer of insulation. As I descended into the coral reef, I felt a wave of anxiety, but it was quickly replaced by awe. Gliding alongside sea turtles and colorful schools of fish in complete silence was the most magical experience of my life. I am already saving up for my next dive trip.
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">25. What distinguishes scuba diving from snorkeling according to the text?</div>
+            <ul class="options">
+                <li>A. Scuba diving requires you to hold your breath.</li>
+                <li>B. Scuba diving uses a tank of compressed air to go deep underwater.</li>
+                <li>C. Snorkeling is only done in cold water.</li>
+                <li>D. Scuba diving doesn't require any gear.</li>
+                <li>E. Snorkeling uses a regulator mouthpiece.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q25')">Show Answer</button>
+            <div id="q25" class="answer-box">Answer: B (Uses compressed air to explore depths).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">26. Why did the writer have to wear a neoprene wetsuit?</div>
+            <ul class="options">
+                <li>A. To protect against shark attacks.</li>
+                <li>B. Because it makes the diver swim much faster.</li>
+                <li>C. To provide insulation and prevent the body from losing heat quickly.</li>
+                <li>D. To help the heavy air tank float.</li>
+                <li>E. Because it is required by Bali law.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q26')">Show Answer</button>
+            <div id="q26" class="answer-box">Answer: C (Acts as a crucial layer of insulation).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">27. How did the writer's emotions change during the dive?</div>
+            <ul class="options">
+                <li>A. From excitement to extreme boredom.</li>
+                <li>B. From anxiety to awe and amazement.</li>
+                <li>C. From anger to sadness.</li>
+                <li>D. They remained completely calm the entire time.</li>
+                <li>E. From happiness to terror.</li>
+            </ul>
+            <button class="btn-reveal" onclick="toggleAnswer('q27')">Show Answer</button>
+            <div id="q27" class="answer-box">Answer: B ("felt a wave of anxiety, but it was quickly replaced by awe").</div>
+        </div>
+
+        <h2 class="section-title">XI. Mixed Grammar, Dialogues, and Vocabulary</h2>
+        
+        <script>
+            // Generating questions 28-50 dynamically to ensure complete code delivery
+            const questions = [
+                {q: "28. 'I can't lift this box.' The best offer of help is:", opts: ["You should go to the gym.", "I'll help you lift it.", "It looks very heavy.", "Why is it so big?", "I can't either."], ans: "B (I'll help you lift it.)"},
+                {q: "29. If it ____ raining, we would have gone to the beach.", opts: ["wasn't", "hasn't been", "hadn't been", "weren't", "isn't"], ans: "C (hadn't been - 3rd Conditional)"},
+                {q: "30. The bridge ____ built by the Romans centuries ago.", opts: ["is", "was", "has been", "had", "will be"], ans: "B (was - Passive voice past tense)"},
+                {q: "31. What is a synonym for 'crucial'?", opts: ["Minor", "Essential", "Optional", "Ignored", "Heavy"], ans: "B (Essential)"},
+                {q: "32. Notice: 'NO PARKING IN FRONT OF GATES'. This means you ___ park here.", opts: ["should", "must", "mustn't", "can", "don't have to"], ans: "C (mustn't)"},
+                {q: "33. Since moving to London, he is used to ____ the subway every day.", opts: ["take", "took", "taken", "taking", "takes"], ans: "D (taking - 'Be used to' + gerund)"},
+                {q: "34. She admitted ____ the mistake on the report.", opts: ["to make", "make", "made", "making", "makes"], ans: "D (making - 'admit' is followed by gerund)"},
+                {q: "35. I promised ____ my mother as soon as I landed.", opts: ["call", "to call", "calling", "called", "calls"], ans: "B (to call - 'promise' is followed by infinitive)"},
+                {q: "36. The scientist ____ research was published won an award.", opts: ["who", "whom", "whose", "which", "that"], ans: "C (whose - indicates possession)"},
+                {q: "37. He denied ____ anything about the missing documents.", opts: ["know", "knew", "knowing", "known", "to know"], ans: "C (knowing - 'deny' is followed by gerund)"},
+                {q: "38. You ____ apologize to her; she's very upset.", opts: ["had better", "would rather", "used to", "don't have to", "can't"], ans: "A (had better - strong advice)"},
+                {q: "39. By 8 PM tonight, they ____ finished dinner.", opts: ["will have", "have", "had", "would have", "are having"], ans: "A (will have - Future Perfect)"},
+                {q: "40. Despite ____ injured, the athlete finished the race.", opts: ["be", "is", "being", "been", "was"], ans: "C (being)"},
+                {q: "41. 'That' in a paragraph usually functions as a ____.", opts: ["Verb", "Noun", "Demonstrative Reference", "Adverb", "Preposition"], ans: "C (Demonstrative Reference)"},
+                {q: "42. 'I wish I ____ more time to study.'", opts: ["have", "has", "had", "will have", "am having"], ans: "C (had - Unreal present)"},
+                {q: "43. The machine operates ____.", opts: ["silent", "silence", "silently", "more silent", "most silent"], ans: "C (silently - Adverb modifying verb)"},
+                {q: "44. We saw ____ beautiful bird in the tree.", opts: ["a", "an", "the", "some", "any"], ans: "A (a - indefinite singular noun, consonant sound)"},
+                {q: "45. He is responsible ____ managing the team.", opts: ["in", "for", "at", "with", "about"], ans: "B (for - 'responsible for' preposition collocation)"},
+                {q: "46. If you ____ hard, you will pass the exam.", opts: ["study", "studied", "had studied", "have studied", "will study"], ans: "A (study - 1st Conditional)"},
+                {q: "47. Dialog: A: 'I feel dizzy.' B: '____.'", opts: ["You should sit down and drink water.", "Let's go running.", "I am very healthy.", "The weather is hot.", "Why don't you spin around?"], ans: "A (Logical suggestion for dizziness)"},
+                {q: "48. 'The proposal was rejected.' The active voice is:", opts: ["They rejected the proposal.", "The proposal rejects.", "The proposal is rejecting.", "They are rejecting the proposal.", "The proposal will be rejected."], ans: "A (They rejected the proposal.)"},
+                {q: "49. I am not accustomed ____ in such cold weather.", opts: ["to working", "to work", "work", "worked", "working"], ans: "A (to working - 'accustomed to' + gerund)"},
+                {q: "50. Ad text: 'Get 50% off on all items!' What is the purpose of this text?", opts: ["To inform about a store closure.", "To attract customers to buy products at a discount.", "To complain about prices.", "To hire new employees.", "To apologize for bad service."], ans: "B (To attract customers)"}
+            ];
+
+            document.write('<div id="dynamic-questions">');
+            questions.forEach((item, index) => {
+                let qNum = index + 28;
+                document.write(`
+                <div class="question-card">
+                    <div class="question-text">${item.q}</div>
+                    <ul class="options">
+                        <li>A. ${item.opts[0]}</li>
+                        <li>B. ${item.opts[1]}</li>
+                        <li>C. ${item.opts[2]}</li>
+                        <li>D. ${item.opts[3]}</li>
+                        <li>E. ${item.opts[4]}</li>
+                    </ul>
+                    <button class="btn-reveal" onclick="toggleAnswer('q${qNum}')">Show Answer</button>
+                    <div id="q${qNum}" class="answer-box">Answer: ${item.ans}</div>
+                </div>`);
+            });
+            document.write('</div>');
+        </script>
+
+    </div>
+
+    <div class="footer">
+        &copy; 2026 Interactive English Practice System | Prepared for Grade XII
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var answerBox = document.getElementById(id);
+            var button = answerBox.previousElementSibling;
+            
+            if (answerBox.classList.contains('show')) {
+                answerBox.classList.remove('show');
+                button.textContent = 'Show Answer';
+            } else {
+                answerBox.classList.add('show');
+                button.textContent = 'Hide Answer';
+            }
+        }
+    </script>
+</body>
+</html>
