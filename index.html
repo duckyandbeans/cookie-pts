@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESL Student Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
         body { 
             font-family: 'Inter', sans-serif; 
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
         }
         .menu-card {
@@ -21,118 +19,107 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+        .disabled-card {
+            filter: grayscale(100%);
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body class="flex flex-col items-center py-12 px-4 sm:px-8">
 
     <div class="max-w-6xl w-full">
         
-        <div class="text-center mb-12">
+        <div class="text-center mb-16">
+            <div class="inline-block bg-indigo-600 text-white p-4 rounded-full shadow-lg mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                </svg>
+            </div>
             <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">ESL Student Portal</h1>
-            <p class="text-lg text-gray-600 mt-3">Midterms Preparation & Resources</p>
+            <p class="text-lg text-gray-600 mt-3">Midterms Preparation & Assessment Hub</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-
-            <button onclick="checkPassword()" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-amber-400 text-left w-full focus:outline-none h-full">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide">Locked</span>
-                </div>
-                <h2 class="text-xl font-bold text-gray-800 mb-1">Cookie Points</h2>
-                <p class="text-gray-500 text-xs">Check current cookie point balance.</p>
-            </button>
-            
-            <a href="ph2-result.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-purple-500 block h-full">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide">Results</span>
-                </div>
-                <h2 class="text-xl font-bold text-gray-800 mb-1">PH 2 Results</h2>
-                <p class="text-gray-500 text-xs">Check daily assessment scores and applied cookies.</p>
-            </a>
-
-            <a href="midterms-studyguide.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-blue-500 block h-full">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide">Review</span>
-                </div>
-                <h2 class="text-xl font-bold text-gray-800 mb-1">Study Guide</h2>
-                <p class="text-gray-500 text-xs">View the ultimate checklist for the midterms.</p>
-            </a>
-
-            <a href="midterms-mocktest-xi.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-emerald-500 block h-full md:col-span-1 lg:col-span-1">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide">Grade 11</span>
-                </div>
-                <h2 class="text-xl font-bold text-gray-800 mb-1">XI Mock Test</h2>
-                <p class="text-gray-500 text-xs">Practice reading comprehension and passive voice.</p>
-            </a>
-
-            <a href="midterms-mocktest-xii.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-rose-500 block h-full md:col-span-2 lg:col-span-2">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="bg-rose-100 text-rose-800 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide">Grade 12</span>
-                </div>
-                <h2 class="text-xl font-bold text-gray-800 mb-1">XII Mock Test</h2>
-                <p class="text-gray-500 text-xs">Test advanced vocabulary, grammar, and cryptography skills.</p>
-            </a>
-
-        </div>
-
-        <div class="w-full bg-white rounded-2xl p-8 shadow-lg border-t-4 border-indigo-600 mb-16">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900">PH 2 Leaderboard</h2>
-                <p class="text-gray-600 mt-2">Rankings based on raw score data</p>
+        <div class="mb-16">
+            <div class="flex items-center gap-3 mb-6 border-b-2 border-rose-200 pb-2">
+                <span class="text-3xl">🎓</span>
+                <h2 class="text-2xl font-extrabold text-rose-900 uppercase tracking-wide">Grade 12 (XII) Section</h2>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold text-indigo-900 mb-4 border-b-2 border-indigo-100 pb-2">Average Raw Score</h3>
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="p-3 border-b font-semibold text-gray-600">Rank</th>
-                                <th class="p-3 border-b font-semibold text-gray-600">Class</th>
-                                <th class="p-3 border-b font-semibold text-gray-600">Avg Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-indigo-50"><td class="p-3 border-b font-bold text-indigo-900">1st</td><td class="p-3 border-b font-bold text-indigo-900">XI D</td><td class="p-3 border-b font-bold text-indigo-900">69.4</td></tr>
-                            <tr><td class="p-3 border-b">2nd</td><td class="p-3 border-b">XI E</td><td class="p-3 border-b">67.3</td></tr>
-                            <tr><td class="p-3 border-b">3rd</td><td class="p-3 border-b">XII H</td><td class="p-3 border-b">65.6</td></tr>
-                            <tr><td class="p-3 border-b">4th</td><td class="p-3 border-b">XI I</td><td class="p-3 border-b">65.5</td></tr>
-                            <tr><td class="p-3 border-b">5th</td><td class="p-3 border-b">XI H</td><td class="p-3 border-b">62.0</td></tr>
-                            <tr><td class="p-3 border-b">6th</td><td class="p-3 border-b">XII I</td><td class="p-3 border-b">61.7</td></tr>
-                        </tbody>
-                    </table>
-                </div>
 
-                <div>
-                    <h3 class="text-xl font-bold text-indigo-900 mb-4 border-b-2 border-indigo-100 pb-2">Pass Rate (Score &ge; 70)</h3>
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="p-3 border-b font-semibold text-gray-600">Rank</th>
-                                <th class="p-3 border-b font-semibold text-gray-600">Class</th>
-                                <th class="p-3 border-b font-semibold text-gray-600">Pass Rate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-emerald-50"><td class="p-3 border-b font-bold text-emerald-900">1st</td><td class="p-3 border-b font-bold text-emerald-900">XI E</td><td class="p-3 border-b font-bold text-emerald-900">52.1%</td></tr>
-                            <tr><td class="p-3 border-b">2nd</td><td class="p-3 border-b">XI I</td><td class="p-3 border-b">51.2%</td></tr>
-                            <tr><td class="p-3 border-b">3rd</td><td class="p-3 border-b">XII H</td><td class="p-3 border-b">50.0%</td></tr>
-                            <tr><td class="p-3 border-b">4th</td><td class="p-3 border-b">XII I</td><td class="p-3 border-b">47.7%</td></tr>
-                            <tr><td class="p-3 border-b">5th</td><td class="p-3 border-b">XI D</td><td class="p-3 border-b">46.7%</td></tr>
-                            <tr><td class="p-3 border-b">6th</td><td class="p-3 border-b">XI H</td><td class="p-3 border-b">38.6%</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <a href="midterms-studyguide.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-blue-500 block h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">📚</span>
+                        <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Review</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Kisi-Kisi</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed">View the ultimate study guide and checklist for your upcoming exams.</p>
+                </a>
+
+                <a href="xii-mocktest1.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-rose-400 block h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">📝</span>
+                        <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Test 1</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Mock Test 1</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed">Practice your foundational skills and vocabulary.</p>
+                </a>
+
+                <a href="xii-mocktest2.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-rose-500 block h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">📝</span>
+                        <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Test 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Mock Test 2</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed">Challenge yourself with reading comprehension exercises.</p>
+                </a>
+
+                <a href="xii-mocktest3.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-rose-600 block h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">📝</span>
+                        <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Test 3</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Mock Test 3</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed">Master advanced grammar and complex sentence structures.</p>
+                </a>
+
             </div>
         </div>
 
-        <div class="w-full">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900">PH 2 Raw Score Distribution</h2>
+
+        <div>
+            <div class="flex items-center gap-3 mb-6 border-b-2 border-emerald-200 pb-2">
+                <span class="text-3xl">🌱</span>
+                <h2 class="text-2xl font-extrabold text-emerald-900 uppercase tracking-wide">Grade 11 (XI) Section</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
+
+                <button onclick="checkPassword()" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-amber-400 text-left w-full focus:outline-none h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-3xl">🍪</span>
+                        <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Locked</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">Cookie Points</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed">Search your current cookie point balance. Requires the secret password to enter.</p>
+                </button>
+
+                <div class="disabled-card bg-slate-100 rounded-2xl p-6 border-l-8 border-slate-400 text-left w-full h-full relative overflow-hidden">
+                    <div class="absolute inset-0 bg-slate-200/50 z-10 flex items-center justify-center backdrop-blur-[1px]">
+                        <span class="bg-slate-800 text-white font-black px-4 py-2 rounded shadow-lg tracking-widest uppercase rotate-[-5deg]">Coming Soon</span>
+                    </div>
+                    <div class="relative z-0">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-3xl">🎙️</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">Debate Score Checker</h3>
+                        <p class="text-gray-500 text-xs leading-relaxed">View your final debate performance and adjudicator notes.</p>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -140,110 +127,18 @@
 
     <script>
         function checkPassword() {
+            // Ask the user for the password
             let pwd = prompt("Enter the secret password to view Cookie Points:");
+            
+            // Check if they entered something and if it matches "brownie" (case-insensitive)
             if (pwd && pwd.trim().toLowerCase() === "brownie") {
+                // Correct! Send them to the cookie checker page
                 window.location.href = "cookie-checker.html";
+            } else if (pwd !== null) {
+                // Incorrect password
+                alert("❌ Incorrect password. Access Denied.");
             }
         }
-
-        Chart.register(ChartDataLabels);
-
-        const classScores = {
-            "XI D": [60, 38, 60, 68, 65, 78, 68, 63, 85, 48, 85, 65, 65, 65, 70, 58, 80, 83, 65, 88, 83, 80, 80, 88, 50, 83, 48, 90, 75, 63, 58, 40, 68, 75, 70, 68, 70, 73, 78, 63, 78, 80, 75, 73, 78],
-            "XI E": [73, 60, 83, 68, 68, 63, 65, 70, 73, 75, 78, 75, 58, 85, 90, 75, 78, 73, 75, 75, 65, 80, 85, 55, 43, 60, 63, 25, 45, 70, 65, 63, 75, 60, 58, 43, 80, 70, 70, 63, 40, 55, 80, 65, 73, 85, 55, 70],
-            "XI H": [55, 78, 80, 78, 53, 60, 73, 75, 83, 73, 73, 80, 73, 78, 63, 65, 73, 63, 48, 60, 73, 80, 58, 25, 53, 58, 48, 43, 45, 53, 38, 85, 68, 53, 40, 43, 75, 68, 60, 73, 43, 55, 50, 53],
-            "XI I": [50, 53, 73, 70, 0, 78, 70, 68, 55, 50, 63, 73, 73, 63, 43, 63, 78, 65, 85, 70, 78, 88, 73, 68, 73, 55, 30, 78, 35, 73, 78, 73, 70, 75, 68, 58, 75, 100, 68, 68, 83],
-            "XII H": [63, 50, 50, 50, 68, 75, 70, 83, 70, 73, 33, 85, 78, 85, 55, 68, 80, 73, 65, 68, 73, 68, 75, 75, 78, 88, 85, 35, 70, 75, 70, 55, 50, 58, 88, 73, 68, 60, 30, 75, 63, 43, 25, 73],
-            "XII I": [73, 90, 0, 30, 70, 55, 100, 63, 55, 65, 83, 60, 43, 45, 28, 75, 80, 85, 65, 75, 75, 73, 78, 68, 73, 70, 80, 90, 63, 60, 70, 63, 60, 50, 63, 70, 48, 33, 35, 70, 70, 80, 68, 28]
-        };
-
-        const scoreBins = [
-            { label: '0', min: 0, max: 0, color: '#f1f5f9' },
-            { label: '1-34', min: 1, max: 34, color: '#bae6fd' },
-            { label: '35-49', min: 35, max: 49, color: '#7dd3fc' },
-            { label: '50-59', min: 50, max: 59, color: '#38bdf8' },
-            { label: '60-69', min: 60, max: 69, color: '#0ea5e9' },
-            { label: '70-78', min: 70, max: 78, color: '#0284c7' },
-            { label: '79-88', min: 79, max: 88, color: '#4f46e5' },
-            { label: '89-95', min: 89, max: 95, color: '#6d28d9' },
-            { label: '96-100', min: 96, max: 100, color: '#4c1d95' }
-        ];
-
-        const chartGrid = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.gap-6:last-of-type');
-
-        Object.keys(classScores).forEach((className, index) => {
-            const scores = classScores[className];
-            const dataCounts = new Array(scoreBins.length).fill(0);
-
-            scores.forEach(score => {
-                for (let i = 0; i < scoreBins.length; i++) {
-                    if (score >= scoreBins[i].min && score <= scoreBins[i].max) {
-                        dataCounts[i]++;
-                        break;
-                    }
-                }
-            });
-
-            const canvasId = `chart-${index}`;
-            const cardHTML = `
-                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 flex flex-col items-center">
-                    <h3 class="text-xl font-bold text-indigo-900 mb-4 border-b-2 border-indigo-100 pb-2 w-full text-center">Class ${className}</h3>
-                    <div class="relative w-full h-64">
-                        <canvas id="${canvasId}"></canvas>
-                    </div>
-                </div>
-            `;
-            chartGrid.innerHTML += cardHTML;
-
-            setTimeout(() => {
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: scoreBins.map(b => b.label),
-                        datasets: [{
-                            data: dataCounts,
-                            backgroundColor: scoreBins.map(b => b.color),
-                            borderWidth: 1,
-                            borderColor: '#ffffff'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'right',
-                                labels: { boxWidth: 12, font: { size: 10 } }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.label || '';
-                                        if (label) label += ': ';
-                                        if (context.parsed !== null) {
-                                            let percentage = ((context.parsed / scores.length) * 100).toFixed(1) + '%';
-                                            label += `${context.parsed} students (${percentage})`;
-                                        }
-                                        return label;
-                                    }
-                                }
-                            },
-                            datalabels: {
-                                formatter: (value, ctx) => {
-                                    if (value === 0) return '';
-                                    return ((value / scores.length) * 100).toFixed(0) + '%';
-                                },
-                                color: '#fff',
-                                font: { weight: 'bold', size: 11 },
-                                textStrokeColor: '#000',
-                                textStrokeWidth: 2
-                            }
-                        }
-                    }
-                });
-            }, 100);
-        });
     </script>
 </body>
 </html>
