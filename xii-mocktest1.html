@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade XII Final Assessment - Practice</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #27ae60;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #334155;
+        }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 950px; margin: 0 auto; background: var(--card); padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); margin-bottom: 30px; padding-bottom: 20px; }
+        h1 { color: var(--primary); margin: 0; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { background: var(--primary); color: white; padding: 12px 20px; border-radius: 6px; font-size: 18px; margin-top: 40px; }
+        .passage { background: #f1f5f9; border-left: 6px solid var(--secondary); padding: 25px; margin: 20px 0; border-radius: 4px; font-size: 16px; }
+        .q-wrapper { margin-bottom: 25px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.3s ease; }
+        .q-wrapper:hover { border-color: var(--secondary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .q-text { font-weight: 600; font-size: 16px; margin-bottom: 15px; display: block; color: #1e293b; }
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 15px; }
+        .opt { background: #fff; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+        .btn-reveal { background: var(--secondary); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; }
+        .btn-reveal:hover { background: var(--primary); }
+        .ans-box { display: none; margin-top: 15px; padding: 12px; background: #dcfce7; color: #166534; border-radius: 6px; font-weight: 700; border-left: 4px solid var(--accent); }
+        .toolbar { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px; }
+        .btn-tool { padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; background: #64748b; color: white; }
+        @media print { .btn-reveal, .toolbar, .ans-box { display: none !important; } .container { box-shadow: none; width: 100%; padding: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>ASESMEN SEKOLAH SMA SWASTA CINTA BUDAYA</h1>
+        <p><strong>Mata Pelajaran:</strong> Bahasa Inggris | <strong>Kelas:</strong> XII MIA/IIS</p>
+        <p><strong>Practice Assessment</strong> | 2025/2026</p>
+    </div>
+
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        type: "section",
+        title: "I. Tenses (Ongoing, Finished, and Narrative)",
+        passage: "<strong>Situation:</strong> Two friends, Maya and Ben, are discussing their post-graduation plans.<br><br>Maya: Hi Ben, what have you been up to? <br>Ben: (1) I __________ to several design firms this week. I'm hoping for a call soon.<br>Maya: (2) I __________ three rejection letters so far, but I'm staying positive.<br>Ben: My cousin (3) __________ a similar path last year and eventually found a great job.<br>Maya: (4) She __________ a portfolio before that? I heard her work is incredible.",
+        questions: [
+            {q: "1. Fill in blank (1):", opts: ["A. apply", "B. have been applying", "C. applied", "D. was applying", "E. applies"], a: "B (Present Perfect Continuous for recent ongoing activity)"},
+            {q: "2. Fill in blank (2):", opts: ["A. receive", "B. was receiving", "C. have received", "D. receiving", "E. received"], a: "C (Present Perfect for accumulated results)"},
+            {q: "3. Fill in blank (3):", opts: ["A. follows", "B. following", "C. followed", "D. has followed", "E. was followed"], a: "C (Past Simple for a finished action last year)"},
+            {q: "4. Fill in blank (4):", opts: ["A. Has she created", "B. Had she created", "C. Does she create", "D. Was she created", "E. Is she creating"], a: "B (Past Perfect for an action before another past action)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "II. Pronoun and Demonstrative References",
+        questions: [
+            {q: "5. Mental health awareness is crucial for teenagers. (5) ___ helps them navigate the pressures of modern life.", opts: ["A. They", "B. It", "C. We", "D. These", "E. There"], a: "B (It - referring to awareness)"},
+            {q: "6. Many students feel anxious about exams; (6) ___ emotion is a natural response to stress.", opts: ["A. those", "B. these", "C. that", "D. they", "E. it"], a: "C (That - referring specifically to the anxiety mentioned)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "III. Modal Verbs (Advice, Obligation, and Prohibition)",
+        questions: [
+            {q: "7. You ___ double-check your grammar before submitting the final draft.", opts: ["A. mustn't", "B. shouldn't", "C. should", "D. might", "E. could have"], a: "C (Should - advice)"},
+            {q: "8. Students ___ bring any electronic devices into the examination hall; it's against the rules.", opts: ["A. shouldn't", "B. mustn't", "C. don't have to", "D. might not", "E. shouldn't have"], a: "B (Mustn't - prohibition)"},
+            {q: "9. If you are feeling unwell, you ___ go to the school clinic immediately.", opts: ["A. must", "B. can", "C. may", "D. ought to", "E. used to"], a: "D (Ought to - recommendation)"},
+            {q: "10. In some cultures, you ___ remove your shoes before entering someone's home.", opts: ["A. might", "B. have to", "C. should have", "D. mustn't", "E. could"], a: "B (Have to - social obligation)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "IV. Used To and Be Used To",
+        questions: [
+            {q: "11. When I was younger, I ___ play football every Sunday afternoon.", opts: ["A. am used to", "B. used to", "C. get used to", "D. use to", "E. was used to"], a: "B (Used to - past habit)"},
+            {q: "12. Moving to London was hard, but I am finally ___ the cold weather.", opts: ["A. used to", "B. use to", "C. used to getting", "D. getting used to", "E. used"], a: "D (Getting used to - process of becoming accustomed)"},
+            {q: "13. Did you ___ work at the library before you joined the bank?", opts: ["A. used to", "B. use to", "C. using to", "D. get used to", "E. was used to"], a: "B (Use to - question form)"},
+            {q: "14. Modern workers ___ using digital tools for every task they perform.", opts: ["A. used to", "B. are used to", "C. use to", "D. were used to", "E. gets used to"], a: "B (Are used to - present state of familiarity)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "V. Verb Patterns (Gerunds and Infinitives)",
+        questions: [
+            {q: "15. I am looking forward to ___ my grandparents during the summer break.", opts: ["A. visit", "B. visiting", "C. to visit", "D. visited", "E. visits"], a: "B (Visiting - 'look forward to' + gerund)"},
+            {q: "16. The manager suggested ___ the meeting until everyone could attend.", opts: ["A. postpone", "B. to postpone", "C. postponing", "D. postponed", "E. postpones"], a: "C (Postponing - 'suggest' + gerund)"},
+            {q: "17. He promised ___ his room before his mother returned from work.", opts: ["A. clean", "B. to clean", "C. cleaning", "D. cleaned", "E. cleans"], a: "B (To clean - 'promise' + infinitive)"},
+            {q: "18. We should consider ___ a new strategy to improve our sales numbers.", opts: ["A. adopt", "B. to adopt", "C. adopting", "D. adopted", "E. adopts"], a: "C (Adopting - 'consider' + gerund)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "VI. Vocabulary in Context (Scientific and Academic)",
+        questions: [
+            {q: "19. The telescope was designed to ___ distant galaxies that are invisible to the naked eye.", opts: ["A. hide", "B. observe", "C. create", "D. destroy", "E. ignore"], a: "B (Observe)"},
+            {q: "20. Scientists must ___ their hypotheses through rigorous experimentation.", opts: ["A. doubt", "B. validate", "C. forget", "D. guess", "E. fake"], a: "B (Validate)"},
+            {q: "21. The ___ of the experiment was unexpected, leading to a new discovery.", opts: ["A. cause", "B. outcome", "C. start", "D. reason", "E. method"], a: "B (Outcome)"},
+            {q: "22. Deforestation has a significant ___ on the local climate and biodiversity.", opts: ["A. purpose", "B. impact", "C. history", "D. cost", "E. benefit"], a: "B (Impact)"}
+        ]
+    },
+    {
+        type: "section",
+        title: "VII. Reading Comprehension: The Industrial Shift",
+        passage: "During the mid-20th century, the role of technology in everyday life shifted significantly. As automation entered the workforce, many manual labor jobs were replaced by machines. This transition, while efficient, caused widespread concern among the working class. The government attempted to mitigate this by offering vocational training for new technical roles. While some embraced the change, others struggled to adapt to the fast-paced digital era, highlighting the gap between different generations of workers.",
+        questions: [
+            {q: "23. What is the main idea of the text?", opts: ["A. Technology is always beneficial.", "B. The transition to automation caused social challenges.", "C. Manual labor is better than machines.", "D. Vocational training is free for everyone.", "E. History repeats itself."], a: "B"},
+            {q: "24. Why did the working class feel concerned?", opts: ["A. Lack of food", "B. Job replacement by automation", "C. High taxes", "D. New laws", "E. Lack of machines"], a: "B"},
+            {q: "25. How did the government respond to the transition?", opts: ["A. By banning machines", "B. By offering vocational training", "C. By increasing wages", "D. By ignoring the problem", "E. By closing factories"], a: "B"},
+            {q: "26. What does 'mitigate' mean in the context of the passage?", opts: ["A. To make worse", "B. To lessen or reduce", "C. To ignore", "D. To celebrate", "E. To speed up"], a: "B"},
+            {q: "27. Who is the target audience for this educational text?", opts: ["A. Small children", "B. Factory machines", "C. Students and historians", "D. Professional athletes", "E. Fashion designers"], a: "C"}
+        ]
+    },
+    {
+        type: "section",
+        title: "VIII. Interpersonal Conversation",
+        questions: [
+            {q: "28. Alice: I can't find my keys anywhere! \n Mark: ___", opts: ["A. Keys are metal.", "B. Have you checked the pocket of your coat?", "C. I don't have keys.", "D. Goodbye.", "E. The door is locked."], a: "B"},
+            {q: "29. Sarah: I'm feeling very stressed about the presentation. \n Tom: ___", opts: ["A. It's on Tuesday.", "B. You've prepared well; I'm sure you'll do great.", "C. Stress is bad for you.", "D. Don't look at me.", "E. Why are you here?"], a: "B"},
+            {q: "30. Customer: Is this shirt available in a larger size? \n Assistant: ___", opts: ["A. I like this color.", "B. Let me check the stockroom for you.", "C. You are tall.", "D. No, it is small.", "E. The shop closes at five."], a: "B"},
+            {q: "31. Peter: Would you like to join us for dinner tonight? \n Jane: ___", opts: ["A. I ate yesterday.", "B. I'd love to, but I have to finish my essay.", "C. Dinner is expensive.", "D. Yes, you are.", "E. No, I am a student."], a: "B"}
+        ]
+    },
+    {
+        type: "section",
+        title: "IX. Short Functional Texts: Notices",
+        questions: [
+            {q: "32. A sign in a park says 'Please keep off the grass'. This is a:", opts: ["A. Suggestion", "B. Prohibition/Rule", "C. Advertisement", "D. News report", "E. Invitation"], a: "B"},
+            {q: "33. Where would you most likely see a sign saying 'Lifejacket under your seat'?", opts: ["A. On a bus", "B. On an airplane", "C. In a library", "D. At a restaurant", "E. In a garden"], a: "B"},
+            {q: "34. A notice saying 'Out of Order' on a vending machine means:", opts: ["A. The machine is new", "B. The machine is not working", "C. You must pay more", "D. The machine is full", "E. Come back tomorrow"], a: "B"},
+            {q: "35. A label saying 'Keep refrigerated' is for:", opts: ["A. Clothes", "B. Food and medicine", "C. Books", "D. Furniture", "E. Electronic tools"], a: "B"}
+        ]
+    },
+    {
+        type: "section",
+        title: "X. Reading Comprehension: Descriptive (Coastal Life)",
+        passage: "Living by the coast offers a unique lifestyle. Residents often wake up to the sound of crashing waves and the salty scent of the ocean breeze. While tourism provides a boost to the local economy during the summer, the winters are often quiet and isolated. Local fishermen rely on the tides for their daily catch, a tradition that has remained unchanged for generations despite the rise of modern industrial fishing vessels.",
+        questions: [
+            {q: "36. What is a characteristic of coastal life in winter?", opts: ["A. Crowded beaches", "B. Quiet and isolated", "C. High tourism", "D. Warm weather", "E. Industrial growth"], a: "B"},
+            {q: "37. How do local fishermen determine their working hours?", opts: ["A. By the clock", "B. By the tides", "C. By the tourists", "D. By the radio", "E. By the sun"], a: "B"},
+            {q: "38. What does 'boost' mean in 'boost to the local economy'?", opts: ["A. Damage", "B. Increase or help", "C. Change", "D. Stop", "E. Steal"], a: "B"},
+            {q: "39. The writer suggests that modern industrial fishing...", opts: ["A. Has replaced all traditions", "B. Exists alongside traditional methods", "C. Is banned in coastal towns", "D. Is better than traditional methods", "E. Is controlled by the tides"], a: "B"},
+            {q: "40. What would be the most suitable title for this passage?", opts: ["A. Modern Fishing Technology", "B. The Rhythms of Coastal Living", "C. Why Winter is Bad", "D. The History of the Ocean", "E. How to be a Fisherman"], a: "B"}
+        ]
+    },
+    {
+        type: "section",
+        title: "XI. Articles and Determiners",
+        questions: [
+            {q: "41. My brother is (41) ___ honest man who always tells the truth.", opts: ["A. a", "B. an", "C. the", "D. -", "E. some"], a: "B"},
+            {q: "42. (42) ___ Amazon is the largest river by discharge volume in the world.", opts: ["A. A", "B. An", "C. The", "D. -", "E. Any"], a: "C"},
+            {q: "43. We are going to have (43) ___ lunch at that new Italian place.", opts: ["A. a", "B. an", "C. the", "D. -", "E. every"], a: "D (No article for meals)"},
+            {q: "44. I need to buy (44) ___ new umbrella before it starts raining.", opts: ["A. a", "B. an", "C. the", "D. -", "E. some"], a: "A"}
+        ]
+    },
+    {
+        type: "section",
+        title: "XII. General Academic Vocabulary",
+        questions: [
+            {q: "45. To 'analyze' something means to ___.", opts: ["A. ignore it", "B. examine it in detail", "C. build it", "D. sell it", "E. forget it"], a: "B"},
+            {q: "46. If a task is 'mandatory', you ___ do it.", opts: ["A. can", "B. must", "C. shouldn't", "D. might", "E. used to"], a: "B"},
+            {q: "47. A 'significant' change is one that is ___.", opts: ["A. small", "B. important or large", "C. invisible", "D. bad", "E. old"], a: "B"},
+            {q: "48. What is the synonym of 'abundant'?", opts: ["A. Scarse", "B. Plentiful", "C. Tiny", "D. Expensive", "E. Heavy"], a: "B"},
+            {q: "49. An 'innovation' refers to a ___.", opts: ["A. new idea or method", "B. old tradition", "C. mistake", "D. natural disaster", "E. person"], a: "A"},
+            {q: "50. To 'collaborate' means to ___.", opts: ["A. work alone", "B. work together", "C. fight", "D. sleep", "E. compete"], a: "B"}
+        ]
+    }
+];
+
+const container = document.getElementById('quiz-container');
+
+quizData.forEach(section => {
+    let sectionHtml = `<h2>${section.title}</h2>`;
+    if (section.passage) {
+        sectionHtml += `<div class="passage">${section.passage}</div>`;
+    }
+    
+    section.questions.forEach((item, index) => {
+        const uniqueId = 'ans-' + Math.random().toString(36).substr(2, 9);
+        sectionHtml += `
+            <div class="q-wrapper">
+                <span class="q-text">${item.q}</span>
+                <div class="options-grid">
+                    ${item.opts.map(o => `<div class="opt">${o}</div>`).join('')}
+                </div>
+                <button class="btn-reveal" onclick="toggleAns('${uniqueId}')">Reveal Answer</button>
+                <div id="${uniqueId}" class="ans-box">
+                    Correct Answer: ${item.a}
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML += sectionHtml;
+});
+
+function toggleAns(id) {
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+</script>
+
+</body>
+</html>
