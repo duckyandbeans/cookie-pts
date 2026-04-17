@@ -5,58 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The "Proper British" Script Generator</title>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f9; padding: 20px; color: #222; }
-        .container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 10px solid #00247d; }
-        h1 { text-align: center; color: #cf142b; margin-bottom: 10px; }
+        :root { --uk-blue: #00247d; --uk-red: #cf142b; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f9; padding: 20px; color: #222; margin: 0; }
+        .container { max-width: 800px; margin: 20px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 10px solid var(--uk-blue); position: relative; }
+        h1 { text-align: center; color: var(--uk-red); margin-bottom: 10px; }
+        
         .notice { background: #ffeb3b; padding: 15px; border-radius: 5px; text-align: center; font-weight: bold; margin-bottom: 20px; border: 2px dashed #000; }
-        .setup-section { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd; }
-        .input-group { margin-bottom: 10px; }
-        input { padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px; }
-        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; transition: 0.2s; }
-        .btn-blue { background: #00247d; color: white; }
+        
+        .setup-section { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; text-align: center; }
+        .input-group { margin: 10px 0; }
+        input { padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+        
+        button { padding: 12px 24px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; transition: 0.2s; font-size: 16px; margin: 5px; }
+        .btn-blue { background: var(--uk-blue); color: white; }
         .btn-green { background: #28a745; color: white; display: none; }
-        button:hover { opacity: 0.8; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        
         #scriptArea { margin-top: 20px; display: none; }
-        .script-line { margin-bottom: 12px; padding: 10px; border-bottom: 1px solid #eee; }
-        .name-label { font-weight: bold; color: #cf142b; text-transform: uppercase; margin-right: 10px; }
-        .slang { color: #00247d; font-weight: bold; text-decoration: underline; }
-        .theme-header { background: #eee; padding: 10px; border-radius: 5px; font-weight: bold; margin-bottom: 15px; text-align: center; }
+        .script-line { margin-bottom: 15px; padding: 12px; border-bottom: 1px solid #eee; font-size: 1.1em; }
+        .name-label { font-weight: bold; color: var(--uk-red); text-transform: uppercase; margin-right: 10px; }
+        
+        /* Slang Styling */
+        .slang { color: var(--uk-blue); font-weight: bold; text-decoration: underline wavy var(--uk-red); cursor: help; }
+        
+        .theme-header { background: #eee; padding: 15px; border-radius: 5px; font-weight: bold; margin-bottom: 20px; text-align: center; font-size: 1.2em; }
+
+        /* Modal / Meaning Box */
+        #meaningBox {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); /* Dims the background */
+            z-index: 1000;
+            text-align: center;
+            min-width: 250px;
+        }
+        #meaningBox h2 { margin-top: 0; color: var(--uk-blue); }
+        #meaningBox p { font-size: 1.2em; margin-bottom: 0; }
+        .close-hint { margin-top: 20px; font-size: 0.8em; color: #666; font-style: italic; }
     </style>
 </head>
-<body>
+<body onclick="closeModal(event)">
 
-<div class="container">
+<div class="container" onclick="event.stopPropagation()">
     <h1>🇬🇧 British Banter Builder</h1>
     
     <div class="notice">
-        🇬🇧 CHEEKY NOTICE: You MUST use a thick British accent. <br>
-        If you sound like you're from London or Manchester, you're doing it right!
+        🇬🇧 CHEEKY NOTICE: Put on your best British accent! <br>
+        (Click any blue slang word to see what it means)
     </div>
 
     <div class="setup-section" id="setup">
-        <h3>Step 1: How many in the team?</h3>
+        <h3>Step 1: Team Size</h3>
         <button class="btn-blue" onclick="showInputs(2)">2 People</button>
         <button class="btn-blue" onclick="showInputs(3)">3 People</button>
 
         <div id="nameInputs" style="margin-top: 20px; display: none;">
-            <h4>Step 2: Enter Student Names</h4>
+            <h4>Step 2: Student Names</h4>
             <div id="inputContainer"></div>
-            <button class="btn-green" id="genBtn" onclick="generateScript()">Generate Script for the Team</button>
+            <button class="btn-green" id="genBtn" onclick="generateScript()">Generate Team Script</button>
         </div>
     </div>
 
     <div id="scriptArea">
         <div class="theme-header" id="themeDisplay"></div>
         <div id="lines"></div>
-        <button class="btn-blue" style="margin-top: 20px; width: 100%;" onclick="generateScript()">🔀 Reshuffle This Scene</button>
+        <button class="btn-blue" style="margin-top: 20px; width: 100%;" onclick="generateScript()">🔀 Reshuffle Scene & Topics</button>
     </div>
+</div>
+
+<div id="meaningBox">
+    <h2 id="modalTitle">Slang Word</h2>
+    <p id="modalDesc">Definition goes here...</p>
+    <div class="close-hint">(Click anywhere to close)</div>
 </div>
 
 <script>
     let teamSize = 0;
+
+    // Dictionary of slang meanings
+    const slangLibrary = {
+        "knackered": "Extremely tired or exhausted.",
+        "bloody": "A common swear word used to emphasize something (can be mild).",
+        "rubbish": "Something that is low quality, or literally trash.",
+        "innit": "Short for 'isn't it?', used at the end of almost any sentence.",
+        "cheers": "Thank you, or a toast when drinking.",
+        "mate": "A friend or a casual way to address anyone.",
+        "gutted": "Extremely disappointed or sad.",
+        "dodgy": "Suspicious, unreliable, or low quality.",
+        "daft": "Silly, foolish, or slightly stupid.",
+        "proper": "Very, or 'genuinely'. e.g., That was proper good.",
+        "bevvy": "A drink (usually alcoholic, like a beer).",
+        "chuffed": "Very pleased or happy about something.",
+        "quid": "One British Pound (£1).",
+        "nosh": "Food or a meal.",
+        "bloke": "A man.",
+        "wicked": "Cool, great, or impressive.",
+        "leg it": "To run away very quickly.",
+        "muppet": "An idiot or a silly person.",
+        "zonked": "Completely exhausted or asleep.",
+        "skint": "Having no money.",
+        "porkies": "Lies (short for 'porky pies').",
+        "taking the biscuit": "Doing something very annoying or unfair.",
+        "fancy": "To want something or find someone attractive.",
+        "minging": "Gross, disgusting, or smelly.",
+        "trolleyed": "Very drunk.",
+        "barmy": "Crazy or insane.",
+        "bob's your uncle": "There you have it! (Used when something is simple).",
+        "full of beans": "Having lots of energy.",
+        "rank": "Disgusting or foul-smelling.",
+        "tosser": "An insulting term for a person you don't like."
+    };
+
     const themes = [
         { title: "Waiting in the Rain for a Bus", words: ["knackered", "bloody", "rubbish", "innit", "cheers", "mate", "gutted", "dodgy", "daft", "proper"] },
-        { title: "At the Local Pub (The Winchester)", words: ["bevvy", "chuffed", "quid", "nosh", "bloke", "wicked", "leg it", "muppet", "zonked", "skint"] },
+        { title: "At the Local Pub", words: ["bevvy", "chuffed", "quid", "nosh", "bloke", "wicked", "leg it", "muppet", "zonked", "skint"] },
         { title: "A Disastrous Trip to London", words: ["porkies", "taking the biscuit", "fancy", "minging", "trolleyed", "barmy", "bob's your uncle", "full of beans", "rank", "tosser"] }
     ];
 
@@ -76,55 +144,60 @@
     function showInputs(size) {
         teamSize = size;
         const container = document.getElementById('inputContainer');
-        const genBtn = document.getElementById('genBtn');
         container.innerHTML = '';
         for(let i=1; i<=size; i++) {
-            container.innerHTML += `<div class="input-group">Student ${i}: <input type="text" id="name${i}" placeholder="Name"></div>`;
+            container.innerHTML += `<div class="input-group">Student ${i}: <input type="text" id="name${i}" placeholder="Enter Name"></div>`;
         }
         document.getElementById('nameInputs').style.display = 'block';
-        genBtn.style.display = 'inline-block';
+        document.getElementById('genBtn').style.display = 'inline-block';
     }
 
     function generateScript() {
         const names = [];
         for(let i=1; i<=teamSize; i++) {
-            const n = document.getElementById('name'+i).value || "Student " + i;
-            names.push(n);
+            names.push(document.getElementById('name'+i).value || "Student " + i);
         }
 
-        const scriptArea = document.getElementById('scriptArea');
-        const linesDiv = document.getElementById('lines');
         const theme = themes[Math.floor(Math.random() * themes.length)];
-        
-        document.getElementById('themeDisplay').innerText = "THEME: " + theme.title;
+        document.getElementById('themeDisplay').innerText = "CURRENT THEME: " + theme.title;
+        const linesDiv = document.getElementById('lines');
         linesDiv.innerHTML = '';
-        scriptArea.style.display = 'block';
-        document.getElementById('setup').style.display = 'none';
 
-        // Create 10 lines per person
         let allLines = [];
         names.forEach(name => {
             for(let j=0; j<10; j++) {
                 let text = templates[j % templates.length];
-                // Insert slang
                 theme.words.forEach((word, index) => {
-                    text = text.replace(`{w${index}}`, `<span class="slang">${word}</span>`);
+                    const wordSpan = `<span class="slang" onclick="showMeaning('${word}', event)">${word}</span>`;
+                    text = text.replace(`{w${index}}`, wordSpan);
                 });
                 allLines.push({owner: name, content: text});
             }
         });
 
-        // Shuffle the order of lines so it's a back-and-forth conversation
-        allLines = allLines.sort(() => Math.random() - 0.5);
+        allLines.sort(() => Math.random() - 0.5);
 
         allLines.forEach(item => {
             linesDiv.innerHTML += `
                 <div class="script-line">
-                    <span class="name-label">${item.owner}:</span> 
-                    <span>${item.content}</span>
-                </div>
-            `;
+                    <span class="name-label">${item.owner}:</span> <span>${item.content}</span>
+                </div>`;
         });
+
+        document.getElementById('setup').style.display = 'none';
+        document.getElementById('scriptArea').style.display = 'block';
+    }
+
+    function showMeaning(word, event) {
+        event.stopPropagation(); // Prevents the body click from instantly closing it
+        const modal = document.getElementById('meaningBox');
+        document.getElementById('modalTitle').innerText = word.toUpperCase();
+        document.getElementById('modalDesc').innerText = slangLibrary[word.toLowerCase()] || "Meaning not found.";
+        modal.style.display = 'block';
+    }
+
+    function closeModal(event) {
+        document.getElementById('meaningBox').style.display = 'none';
     }
 </script>
 
