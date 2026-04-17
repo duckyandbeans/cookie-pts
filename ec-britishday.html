@@ -3,163 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The "Proper British" Dialogue Generator</title>
+    <title>The "Proper British" Script Generator</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-top: 8px solid #00247d; /* Union Jack Blue */
-        }
-        h1 { color: #cf142b; text-align: center; }
-        .notice {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            transition: 0.3s;
-            background: #00247d;
-            color: white;
-        }
-        button:hover { background: #001a57; }
-        .reshuffle { background: #28a745; }
-        .reshuffle:hover { background: #218838; }
-        
-        #dialogueBox {
-            margin-top: 20px;
-            padding: 20px;
-            border-left: 5px solid #cf142b;
-            background: #fafafa;
-        }
-        .line { margin-bottom: 15px; }
-        .character-name { font-weight: bold; color: #00247d; }
-        .theme-tag {
-            display: inline-block;
-            background: #eee;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f9; padding: 20px; color: #222; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 10px solid #00247d; }
+        h1 { text-align: center; color: #cf142b; margin-bottom: 10px; }
+        .notice { background: #ffeb3b; padding: 15px; border-radius: 5px; text-align: center; font-weight: bold; margin-bottom: 20px; border: 2px dashed #000; }
+        .setup-section { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd; }
+        .input-group { margin-bottom: 10px; }
+        input { padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; transition: 0.2s; }
+        .btn-blue { background: #00247d; color: white; }
+        .btn-green { background: #28a745; color: white; display: none; }
+        button:hover { opacity: 0.8; }
+        #scriptArea { margin-top: 20px; display: none; }
+        .script-line { margin-bottom: 12px; padding: 10px; border-bottom: 1px solid #eee; }
+        .name-label { font-weight: bold; color: #cf142b; text-transform: uppercase; margin-right: 10px; }
+        .slang { color: #00247d; font-weight: bold; text-decoration: underline; }
+        .theme-header { background: #eee; padding: 10px; border-radius: 5px; font-weight: bold; margin-bottom: 15px; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🇬🇧 The British Slang Generator</h1>
+    <h1>🇬🇧 British Banter Builder</h1>
     
     <div class="notice">
-        ⚠️ ATTENTION STUDENTS: You must perform these lines using your best (or worst) British accent. Don't be "codswallop," give it some "welly"!
+        🇬🇧 CHEEKY NOTICE: You MUST use a thick British accent. <br>
+        If you sound like you're from London or Manchester, you're doing it right!
     </div>
 
-    <div class="controls">
-        <button onclick="setTeamSize(2)">2 People Team</button>
-        <button onclick="setTeamSize(3)">3 People Team</button>
-        <button class="reshuffle" onclick="generateDialogue()">Reshuffle Dialogue 🎲</button>
+    <div class="setup-section" id="setup">
+        <h3>Step 1: How many in the team?</h3>
+        <button class="btn-blue" onclick="showInputs(2)">2 People</button>
+        <button class="btn-blue" onclick="showInputs(3)">3 People</button>
+
+        <div id="nameInputs" style="margin-top: 20px; display: none;">
+            <h4>Step 2: Enter Student Names</h4>
+            <div id="inputContainer"></div>
+            <button class="btn-green" id="genBtn" onclick="generateScript()">Generate Script for the Team</button>
+        </div>
     </div>
 
-    <div id="dialogueBox">
-        <p style="text-align:center;">Select team size to start the "banter"...</p>
+    <div id="scriptArea">
+        <div class="theme-header" id="themeDisplay"></div>
+        <div id="lines"></div>
+        <button class="btn-blue" style="margin-top: 20px; width: 100%;" onclick="generateScript()">🔀 Reshuffle This Scene</button>
     </div>
 </div>
 
 <script>
-    let currentTeamSize = 2;
+    let teamSize = 0;
+    const themes = [
+        { title: "Waiting in the Rain for a Bus", words: ["knackered", "bloody", "rubbish", "innit", "cheers", "mate", "gutted", "dodgy", "daft", "proper"] },
+        { title: "At the Local Pub (The Winchester)", words: ["bevvy", "chuffed", "quid", "nosh", "bloke", "wicked", "leg it", "muppet", "zonked", "skint"] },
+        { title: "A Disastrous Trip to London", words: ["porkies", "taking the biscuit", "fancy", "minging", "trolleyed", "barmy", "bob's your uncle", "full of beans", "rank", "tosser"] }
+    ];
 
-    const slangDict = {
-        themes: [
-            { title: "The Ruined Picnic", words: ["gutted", "knackered", "chuffed", "rubbish", "innit", "minging", "dodgy", "quid", "mate", "fancy"] },
-            { title: "Waiting for the Bus", words: ["cheers", "bloody", "daft", "skint", "nosh", "proper", "tosser", "bob's your uncle", "full of beans", "porkies"] },
-            { title: "At the Local Chippy", words: ["bevvy", "chips", "scrummy", "bloke", "bird", "wicked", "leg it", "muppet", "taking the biscuit", "zonked"] }
-        ],
-        templates: [
-            "Listen mate, I'm absolutely {w1} because the weather is {w2}.",
-            "Stop telling {porkies}, that's {w3} and you know it!",
-            "I'm {w4} to bits with this new phone, cost me fifty {quid}.",
-            "Don't be {w5}, just {w6} and we'll get there on time.",
-            "That's {w7}! I wouldn't touch it with a bargepole, {innit}?",
-            "Are you {w8}? You look like a total {muppet} doing that.",
-            "Fancy some {nosh}? I'm {w9} and need a proper {bevvy}.",
-            "Well, {w10}, we've managed to finish the project!",
-            "I'm feeling {w1} today, let's go for a {w2} walk.",
-            "That's {w3} taking the biscuit, honestly."
-        ]
-    };
+    const templates = [
+        "Oi, I'm absolutely {w0} after that walk.",
+        "Stop telling {w1}, you didn't see a ghost in the Tube!",
+        "That sandwich was {w2}, I'm not even joking.",
+        "It's going to rain again, {w3}?",
+        "Give it some welly, {w4}! We're late!",
+        "I'm {w5} to bits with this result, absolutely brilliant.",
+        "That's a {w6} price for a coffee, five {w7}?!",
+        "Don't be {w8}, it's just a bit of wind.",
+        "Well, {w9}, we've finally made it.",
+        "I'm feeling {w5} today, let's get a {w0} snack."
+    ];
 
-    function setTeamSize(size) {
-        currentTeamSize = size;
-        generateDialogue();
+    function showInputs(size) {
+        teamSize = size;
+        const container = document.getElementById('inputContainer');
+        const genBtn = document.getElementById('genBtn');
+        container.innerHTML = '';
+        for(let i=1; i<=size; i++) {
+            container.innerHTML += `<div class="input-group">Student ${i}: <input type="text" id="name${i}" placeholder="Name"></div>`;
+        }
+        document.getElementById('nameInputs').style.display = 'block';
+        genBtn.style.display = 'inline-block';
     }
 
-    function generateDialogue() {
-        const box = document.getElementById('dialogueBox');
-        const theme = slangDict.themes[Math.floor(Math.random() * slangDict.themes.length)];
-        box.innerHTML = `<span class="theme-tag">Theme: ${theme.title}</span>`;
+    function generateScript() {
+        const names = [];
+        for(let i=1; i<=teamSize; i++) {
+            const n = document.getElementById('name'+i).value || "Student " + i;
+            names.push(n);
+        }
 
-        let characters = ["Character A", "Character B"];
-        if (currentTeamSize === 3) characters.push("Character C");
-
-        let dialogueLines = [];
+        const scriptArea = document.getElementById('scriptArea');
+        const linesDiv = document.getElementById('lines');
+        const theme = themes[Math.floor(Math.random() * themes.length)];
         
-        // Generate 10 lines for EACH character
-        characters.forEach(char => {
-            for (let i = 0; i < 10; i++) {
-                let text = slangDict.templates[i % slangDict.templates.length];
-                // Replace placeholders with theme-specific slang
-                theme.words.forEach((word, index) => {
-                    text = text.replace(`{w${index+1}}`, `<strong>${word}</strong>`);
-                });
-                // Generic fallbacks
-                text = text.replace("{porkies}", "<strong>porkies</strong>")
-                           .replace("{innit}", "<strong>innit</strong>")
-                           .replace("{quid}", "<strong>quid</strong>")
-                           .replace("{muppet}", "<strong>muppet</strong>")
-                           .replace("{nosh}", "<strong>nosh</strong>")
-                           .replace("{bevvy}", "<strong>bevvy</strong>");
+        document.getElementById('themeDisplay').innerText = "THEME: " + theme.title;
+        linesDiv.innerHTML = '';
+        scriptArea.style.display = 'block';
+        document.getElementById('setup').style.display = 'none';
 
-                dialogueLines.push({ name: char, line: text });
+        // Create 10 lines per person
+        let allLines = [];
+        names.forEach(name => {
+            for(let j=0; j<10; j++) {
+                let text = templates[j % templates.length];
+                // Insert slang
+                theme.words.forEach((word, index) => {
+                    text = text.replace(`{w${index}}`, `<span class="slang">${word}</span>`);
+                });
+                allLines.push({owner: name, content: text});
             }
         });
 
-        // Shuffle the combined lines so it's a conversation
-        for (let i = dialogueLines.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [dialogueLines[i], dialogueLines[j]] = [dialogueLines[j], dialogueLines[i]];
-        }
+        // Shuffle the order of lines so it's a back-and-forth conversation
+        allLines = allLines.sort(() => Math.random() - 0.5);
 
-        dialogueLines.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'line';
-            div.innerHTML = `<span class="character-name">${item.name}:</span> ${item.line}`;
-            box.appendChild(div);
+        allLines.forEach(item => {
+            linesDiv.innerHTML += `
+                <div class="script-line">
+                    <span class="name-label">${item.owner}:</span> 
+                    <span>${item.content}</span>
+                </div>
+            `;
         });
     }
 </script>
