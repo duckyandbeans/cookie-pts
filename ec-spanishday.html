@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanglish Stories</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ff9a9e;
+            background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #ff4e50;
+            text-shadow: 2px 2px #fff;
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .dialogue-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-bottom: 5px solid #ff4e50;
+        }
+
+        h2 {
+            color: #fc913a;
+            border-bottom: 2px dashed #f9d423;
+            padding-bottom: 5px;
+        }
+
+        .line {
+            margin: 12px 0;
+            line-height: 1.6;
+        }
+
+        .character {
+            font-weight: bold;
+            color: #444;
+        }
+
+        .spanish-word {
+            color: #d100d1;
+            cursor: pointer;
+            text-decoration: underline wavy #ffeb3b;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .spanish-word:hover {
+            transform: scale(1.1) rotate(-2deg);
+            color: #ff4e50;
+        }
+
+        .instruction {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>¡Hola! 👋</h1>
+    <p class="instruction">Click on the <b>bold words</b> to see what they mean in English!</p>
+
+    <div class="container">
+        <div class="dialogue-card">
+            <h2>The Kitchen Commotion</h2>
+            <div class="line"><span class="character">Elena:</span> Mateo, please get your feet off the table, <b class="spanish-word" onclick="translateWord('Please')">por favor</b>.</div>
+            <div class="line"><span class="character">Mateo:</span> Sorry, <b class="spanish-word" onclick="translateWord('Grandmother')">Abuela</b>, I’m just trying to finish this level before dinner.</div>
+            <div class="line"><span class="character">Elena:</span> I don't care about the game; I need you to set the table because the <b class="spanish-word" onclick="translateWord('Chicken with rice')">arroz con pollo</b> is almost ready.</div>
+            <div class="line"><span class="character">Mateo:</span> It smells amazing—did you put extra <b class="spanish-word" onclick="translateWord('Pepper')">pimiento</b> in it this time?</div>
+            <div class="line"><span class="character">Elena:</span> <b class="spanish-word" onclick="translateWord('Of course / Clearly yes')">Claro que sí</b>, I know it’s your favorite, so stop being <b class="spanish-word" onclick="translateWord('Lazy')">flojo</b> and help me with the plates.</div>
+        </div>
+
+        <div class="dialogue-card">
+            <h2>Planning the Night Out</h2>
+            <div class="line"><span class="character">Sofia:</span> Are we still going to that new club tonight, or are you feeling <b class="spanish-word" onclick="translateWord('Tired')">cansado</b>?</div>
+            <div class="line"><span class="character">Carlos:</span> I'm a little tired, but <b class="spanish-word" onclick="translateWord('No problem')">no hay problema</b>, I’ll just grab a double espresso.</div>
+            <div class="line"><span class="character">Sofia:</span> Good, because I already bought the tickets and they were <b class="spanish-word" onclick="translateWord('Very expensive')">muy caro</b>, so you can't flake on me.</div>
+            <div class="line"><span class="character">Carlos:</span> Don't worry, <b class="spanish-word" onclick="translateWord('Girl / Friend')">chica</b>, I’ll be ready by eight, just make sure you bring a jacket because it's cold.</div>
+            <div class="line"><span class="character">Sofia:</span> It’s fine, I’ll just bring my <b class="spanish-word" onclick="translateWord('Sweater')">suéter</b> and we can take an Uber so we don't have to walk.</div>
+        </div>
+
+        <div class="dialogue-card">
+            <h2>The Lost Keys</h2>
+            <div class="line"><span class="character">Julian:</span> Hey, have you seen my <b class="spanish-word" onclick="translateWord('Keys')">llaves</b>
