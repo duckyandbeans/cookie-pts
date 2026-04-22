@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Placement Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .student-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .student-info input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background-color: #2ecc71;
+        }
+        
+        /* Results Section Styling */
+        #results-container {
+            display: none;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .result-card {
+            background: #fff;
+            border: 2px solid #2c3e50;
+            padding: 40px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        .result-card h2 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 20px 0;
+        }
+        .cefr-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e67e22;
+            margin-bottom: 10px;
+        }
+        .screenshot-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .screenshot-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Assessment Test</h1>
+        
+        <div class="student-info">
+            <input type="text" id="student-name" placeholder="Full Name" required>
+            <input type="text" id="student-class" placeholder="Class (Optional)">
+        </div>
+
+        <form id="quiz-form">
+            <div id="questions-container"></div>
+            <button type="button" class="submit-btn" onclick="calculateScore()">Submit Answers</button>
+        </form>
+
+        <div id="results-container">
+            <div id="result-card" class="result-card">
+                <h2>Placement Test Results</h2>
+                <h3 id="display-name"></h3>
+                <div class="score-display">Score: <span id="score-number">0</span>/100</div>
+                <div class="cefr-display">Estimated Level: <span id="cefr-level"></span></div>
+                <p style="color: #7f8c8d; font-size: 14px;">CEFR Headway Placement</p>
+            </div>
+            <br>
+            <button class="screenshot-btn" onclick="downloadScreenshot()">📸 Download Score Card</button>
+        </div>
+    </div>
+
+    <script>
+        // Full Answer Key based on the uploaded image (1 to 100)
+        const answerKey = [
+            'a', 'b', 'c', 'd', 'd', 'b', 'a', 'c', 'b', 'd', // 1-10
+            'd', 'c', 'a', 'b', 'a', 'd', 'c', 'c', 'a', 'b', // 11-20
+            'c', 'c', 'd', 'c', 'd', 'd', 'b', 'a', 'a', 'c', // 21-30
+            'b', 'b', 'a', 'd', 'c', 'b', 'b', 'c', 'b', 'd', // 31-40
+            'd', 'a', 'c', 'b', 'b', 'a', 'a', 'c', 'b', 'd', // 41-50
+            'a', 'd', 'c', 'c', 'a', 'd', 'a', 'd', 'a', 'b', // 51-60
+            'c', 'd', 'a', 'd', 'b', 'c', 'd', 'a', 'c', 'c', // 61-70
+            'b', 'd', 'a', 'a', 'd', 'b', 'b', 'd', 'a', 'c', // 71-80
+            'a', 'b', 'b', 'd', 'c', 'a', 'a', 'a', 'b', 'b', // 81-90
+            'a', 'c', 'd', 'b', 'c', 'd', 'b', 'd', 'c', 'c'  // 91-100
+        ];
+
+        // Question Data Array
+        // Add the rest of the questions here following the exact same format
+const quizData = [
+    { q: "1 Pete _______ a teacher.", options: { a: "isn't", b: "not", c: "aren't", d: "am not" } },
+    { q: "2 Bill _______ two brothers.", options: { a: "have", b: "has", c: "is", d: "are" } },
+    { q: "3 A: _______ Italian food?\n   B: Yes, I do.", options: { a: "Are you like", b: "Likes", c: "Do you like", d: "You're like" } },
+    { q: "4 A: Was Shakespeare a painter?\n   B: No, he _______.", options: { a: "weren't", b: "didn't", c: "isn't", d: "wasn't" } },
+    { q: "5 _______ up early yesterday morning?", options: { a: "Got", b: "Did you", c: "You get", d: "Did you get" } },
+    { q: "6 Michael _______ to work yesterday.", options: { a: "not go", b: "didn't go", c: "didn't", d: "wasn't" } },
+    { q: "7 Can you _______ French?", options: { a: "speak", b: "to speak", c: "speaks", d: "spoke" } },
+    { q: "8 A: Good night.\n   B: _______.", options: { a: "That's great. Thank you.", b: "No, I don't know.", c: "You too. Sleep well.", d: "Hello. How are you?" } },
+    { q: "9 A: How do you spell 'friend'?\n   B: _______", options: { a: "It's Miguel.", b: "F-R-I-E-N-D.", c: "My surname is Jackson.", d: "Yes, he is." } },
+    { q: "10 A: How much is the camera?\n    B: _______", options: { a: "It's on page thirty.", b: "It's from Spain.", c: "It's about six months old.", d: "It's fifty pounds." } },
+    { q: "11 A: Excuse me. How do I get to the bus station?\n    B: _______", options: { a: "In Oxford Street.", b: "Yes, that's right.", c: "It's about ten minutes.", d: "Go out of the school and turn right." } },
+    { q: "12 A: What time were you born?\n    B: _______", options: { a: "My birthday's in August.", b: "On the third of March.", c: "At six o'clock in the morning.", d: "In 1999." } },
+    { q: "13 A: _______\n    B: I have a headache, that's all.", options: { a: "What's the matter?", b: "Can I have a coffee, please?", c: "Thanks for everything.", d: "Here's a present for you." } },
+    { q: "14 A: What's your job?\n    B: I'm _______.", options: { a: "married", b: "a doctor", c: "from Italy", d: "Paul Johnson" } },
+    { q: "15 John isn't Alice's _______. They aren't married.", options: { a: "husband", b: "wife", c: "father", d: "mother" } },
+    { q: "16 What do they speak in _______?", options: { a: "Spanish", b: "Portuguese", c: "American", d: "Brazil" } },
+    { q: "17 Your car keys are in the _______.", options: { a: "lamp", b: "armchair", c: "drawer", d: "sofa" } },
+    { q: "18 We _______ a painting for €500.", options: { a: "were", b: "said", c: "bought", d: "heard" } },
+    { q: "19 Do you play _______?", options: { a: "ice hockey", b: "the cinema", c: "holidays", d: "sailing" } },
+    { q: "20 David and Angela are _______.", options: { a: "brother and sister", b: "married", c: "doctors", d: "bank managers" } },
+    { q: "21 Angela is Susan's _______.", options: { a: "sister", b: "father", c: "mother", d: "brother" } },
+    { q: "22 Robert isn't _______.", options: { a: "a student", b: "a child", c: "a doctor", d: "Susan's brother" } },
+    { q: "23 David, Angela, Robert and Susan went to the park _______.", options: { a: "at night", b: "in the evening", c: "in the afternoon", d: "in the morning" } },
+    { q: "24 David _______ breakfast.", options: { a: "didn't enjoy", b: "bought", c: "cooked", d: "didn't have" } },
+    { q: "25 They had _______.", options: { a: "a holiday", b: "a lot of housework", c: "a horrible day", d: "a good time" } },
+    { q: "26 They _______ in Hong Kong in 2010.", options: { a: "isn't", b: "aren't", c: "wasn't", d: "weren't" } },
+    { q: "27 _______ swim when I was five years old.", options: { a: "I can", b: "I could", c: "I", d: "I was" } },
+    { q: "28 I _______ to my brother right now.", options: { a: "'m talking", b: "talk", c: "talking", d: "talked" } },
+    { q: "29 _______ to stay home and watch TV.", options: { a: "I'm going", b: "I going", c: "Going", d: "Am going" } },
+    { q: "30 Helena has never _______ to Australia.", options: { a: "went", b: "go", c: "been", d: "goes" } },
+    { q: "31 We _______ invite Tomas to the party.", options: { a: "haven't", b: "won't", c: "not", d: "aren't" } },
+    { q: "32 A: _______\n    B: Sure. Good idea.", options: { a: "What does 'bilingual' mean?", b: "Can I open a window? It's hot in here.", c: "I like your jumper.", d: "Excuse me! Can you help me?" } },
+    { q: "33 A: There's an Internet café in Park Lane, next to the bank.\n    B: _______", options: { a: "Is that near here?", b: "Just two minutes, that's all.", c: "Do you need some money?", d: "Go straight ahead." } },
+    { q: "34 A: _______\n    B: No, it isn't.", options: { a: "Can I speak to Emma, please?", b: "What's the address?", c: "Can I take a message?", d: "Is that Emma?" } },
+    { q: "35 A: _______\n    B: Yes, please. It's delicious.", options: { a: "Could you pass the salt, please?", b: "How would you like your coffee?", c: "Would you like some more rice?", d: "Is there any more salad left?" } },
+    { q: "36 A: What about this jacket?\n    B: _______", options: { a: "Credit card's fine.", b: "No, it isn't the right blue.", c: "How do you want to pay?", d: "Can I help you?" } },
+    { q: "37 A: _______\n    B: Well, we could go swimming.", options: { a: "How are you feeling today?", b: "What shall we do this afternoon?", c: "OK. I'll get my swimming costume.", d: "It's too cold to go swimming." } },
+    { q: "38 A: How do you find living in New York?\n    B: _______", options: { a: "No, I missed it.", b: "Thank you. I'm glad you like it.", c: "I'm enjoying it a lot.", d: "I'm very well, thanks." } },
+    { q: "39 I don't like preparing food, but I like _______ in restaurants.", options: { a: "cooking", b: "eating", c: "going", d: "using" } },
+    { q: "40 The plates are in the _______.", options: { a: "cups", b: "fridge", c: "cooker", d: "cupboard" } },
+    { q: "41 Can you _______ this from German to English?", options: { a: "speak", b: "make", c: "think", d: "translate" } },
+    { q: "42 She speaks _______ Spanish.", options: { a: "fluent", b: "hard", c: "well", d: "very" } },
+    { q: "43 It's a lovely day. It's _______. Let's go to the beach.", options: { a: "cool and cloudy", b: "cold and foggy", c: "sunny and warm", d: "wet and windy" } },
+    { q: "44 My father is a nurse. He works in a _______.", options: { a: "cinema", b: "hospital", c: "factory", d: "shop" } },
+    { q: "45 Rachel talks about _______.", options: { a: "her plans for the future", b: "her favourite season", c: "what she did last month", d: "her favourite food" } },
+    { q: "46 Rachel talks about her _______.", options: { a: "leisure activities", b: "working life", c: "school days", d: "parents and grandparents" } },
+    { q: "47 Rachel _______ when she was a very little girl.", options: { a: "learned to swim", b: "didn't like swimming", c: "lived in the city", d: "rarely went to the beach" } },
+    { q: "48 Rachel's brother _______ surfing.", options: { a: "is learning", b: "has never been", c: "has done a lot of", d: "is going to try" } },
+    { q: "49 Rachel _______ surfing.", options: { a: "has never been", b: "isn't good at", c: "has won awards for", d: "hates" } },
+    { q: "50 Rachel's brother is _______ surfer than his classmates.", options: { a: "an older", b: "a safer", c: "a worse", d: "a better" } },
+    { q: "51 I'm thinking _______ to Japan next year.", options: { a: "of going", b: "I go", c: "goes", d: "going" } },
+    { q: "52 One day, I hope _______ China.", options: { a: "will visit", b: "visit", c: "visiting", d: "to visit" } },
+    { q: "53 If I _______ travelling, I'll send you lots of postcards.", options: { a: "'ll go", b: "went", c: "go", d: "'ll" } },
+    { q: "54 In the future, cities on Mars _______.", options: { a: "are being built", b: "can build", c: "will be built", d: "are building" } },
+    { q: "55 All of the sandwiches _______.", options: { a: "were eaten", b: "are eating", c: "were eating", d: "have eaten" } },
+    { q: "56 There was no money in the office when I arrived at work. All of it _______ by burglars.", options: { a: "has been stolen", b: "had been stealing", c: "had stolen", d: "had been stolen" } },
+    { q: "57 A: _______\n    B: £8 for an adult, £4.50 for children under 12.", options: { a: "How much is it to get in?", b: "I gave you a £10 note, not a £5 note.", c: "How much is a litre of petrol?", d: "It's cheaper if you buy a family ticket." } },
+    { q: "58 A: _______\n    B: Cheer up! You've got me. I'm always here for you.", options: { a: "I passed my exam.", b: "I'm getting married next week.", c: "I'm going on holiday to Australia tomorrow.", d: "I don't think I have many friends." } },
+    { q: "59 A: What are your symptoms?\n    B: _______", options: { a: "I've got a temperature and I feel awful.", b: "Just take it easy for a while.", c: "I've got food poisoning.", d: "Drink plenty of liquids." } },
+    { q: "60 A: Hello? Hello?\n    B: _______", options: { a: "I'm not sure. Can I get back to you later?", b: "Sorry, we were cut off.", c: "OK. Speak to you soon.", d: "Oh, and can you give me Dean's number?" } },
+    { q: "61 A: Mike and Jo are such nice people.\n    B: _______", options: { a: "I know. There were so many problems.", b: "Yes, I don't know how they live in it.", c: "You're right. We had so much fun with them.", d: "That's true. I don't know where it's all gone." } },
+    { q: "62 A: I'll give you a lift into town if you like.\n    B: _______", options: { a: "I'm sorry, it's not working today.", b: "I've got enough already thanks.", c: "Go ahead. It's very hot in here.", d: "That would be great." } },
+    { q: "63 I didn't have much time, so I did my homework _______.", options: { a: "quickly", b: "lazily", c: "peacefully", d: "tragically" } },
+    { q: "64 I haven't got any _______. Is there a chemist's near here?", options: { a: "envelopes", b: "doughnuts", c: "stamps", d: "deodorant" } },
+    { q: "65 We were _______ during the film. It wasn't interesting at all.", options: { a: "shocked", b: "bored", c: "annoyed", d: "depressed" } },
+    { q: "66 I'm _______ a lot of training for my new job.", options: { a: "spending", b: "studying", c: "doing", d: "working" } },
+    { q: "67 Henry wants to study at Oxford University, but he also wants to study at Cambridge University. He can't _______ up his mind.", options: { a: "get", b: "go", c: "take", d: "make" } },
+    { q: "68 I _______ my job because the hours were too long.", options: { a: "gave up", b: "took off", c: "put away", d: "went back" } },
+    { q: "69 My brother really _______ my father.", options: { a: "picks up", b: "gets on", c: "takes after", d: "looks up" } },
+    { q: "70 Greg _______.", options: { a: "would like to leave Manchester", b: "hopes to continue studying for another year", c: "hasn't finished his course yet", d: "wasn't studying last year" } },
+    { q: "71 Greg _______ Business.", options: { a: "would like to study", b: "is studying", c: "already has a job in", d: "isn't interested in" } },
+    { q: "72 Greg _______ finding a job.", options: { a: "doesn't think a lot about", b: "thinks it won't be difficult", c: "says he feels confident about", d: "feels worried about" } },
+    { q: "73 Greg is going to apply for jobs in Leeds and Sheffield _______ in Manchester.", options: { a: "after trying for a job", b: "as soon as he finds a job", c: "while he's applying for jobs", d: "before he looks for work" } },
+    { q: "74 At the moment, Greg's main focus is _______.", options: { a: "his studies", b: "applying for jobs", c: "searching for a flat", d: "preparing to move" } },
+    { q: "75 Greg won't be happy if he doesn't _______.", options: { a: "fail his exams", b: "have his exams next month", c: "get work in Leeds or Sheffield", d: "find a job in Manchester" } },
+    { q: "76 The sign says No parking. We _______ to park here.", options: { a: "shouldn't", b: "aren't allowed", c: "can't", d: "should" } },
+    { q: "77 A: How long have you _______ English?\n    B: For about six years.", options: { a: "studying", b: "been studying", c: "study", d: "to study" } },
+    { q: "78 If _______ told me about your problems, I'd have helped.", options: { a: "you'll", b: "you're", c: "you've", d: "you'd" } },
+    { q: "79 We can text _______ after work and arrange a place to meet.", options: { a: "each other", b: "each", c: "us", d: "another" } },
+    { q: "80 I saw Mrs Jones yesterday. She was surprised and asked me what _______ in London.", options: { a: "are you doing", b: "am I doing", c: "I was doing", d: "if I'm doing" } },
+    { q: "81 I wish you _______ before you speak.", options: { a: "'d think", b: "'ll think", c: "think", d: "'re thinking" } },
+    { q: "82 A: _______\n    B: Oh, dear. I'd love to, but this weekend I'm so busy.", options: { a: "Are you doing anything next Saturday afternoon?", b: "I was wondering if we could meet next Saturday morning.", c: "What are you doing next Sunday evening?", d: "I'm afraid I've already got something to do on Sunday." } },
+    { q: "83 A: I failed my driving test again.\n    B: _______", options: { a: "Absolutely.", b: "That's too bad.", c: "Fair enough.", d: "That's amazing!" } },
+    { q: "84 A: I think you must have made a mistake. I'm pretty sure I gave you a £20 note.\n    B: _______", options: { a: "Thanks. That's for you.", b: "Yes, I'm afraid it is. But it doesn't include tax.", c: "Sure. Tell me your account number.", d: "Oh, did you? Er… sorry about that." } },
+    { q: "85 A: What time will we arrive?\n    B: _______", options: { a: "Presumably, the others will be late.", b: "Generally, on time.", c: "Hopefully, in the next hour.", d: "Obviously, we're late." } },
+    { q: "86 A: _______\n    B: Oh, well. You live and learn.", options: { a: "I trusted Adam and he stole my money.", b: "I've got ten exams in the next two weeks.", c: "I forgot her birthday, so I sent her a text.", d: "I wonder if their marriage will last." } },
+    { q: "87 A: _______\n    B: In your dreams. Not if you were the last man on earth.", options: { a: "Come on, you know you want to go out with me really.", b: "I'm cleaned out! This new jacket cost the earth.", c: "We're throwing caution to the wind and emigrating to Australia.", d: "I'm really tired, so I'm going to stay home tonight." } },
+    { q: "88 His attendance is _______. Some weeks he comes every day, other weeks he misses several classes.", options: { a: "irregular", b: "unsuitable", c: "untrue", d: "inaccurate" } },
+    { q: "89 I don't eat much fruit. I'm not that _______ on it.", options: { a: "crazy", b: "keen", c: "fond", d: "excited" } },
+    { q: "90 A lot of people visited the art gallery to see the painter's _______.", options: { a: "service", b: "masterpiece", c: "architecture", d: "headline" } },
+    { q: "91 Two men _______ jail last night.", options: { a: "broke out of", b: "sorted out", c: "took up", d: "broke up with" } },
+    { q: "92 I felt bad because my brother and I _______.", options: { a: "admitted", b: "accused", c: "quarrelled", d: "criticized" } },
+    { q: "93 The sailors didn't see _______ for two months as they crossed the Atlantic.", options: { a: "world", b: "earth", c: "ground", d: "land" } },
+    { q: "94 Seamus and Andrew became next door neighbours _______", options: { a: "two years after they first met", b: "before they met", c: "after they met at work", d: "because they were friends" } },
+    { q: "95 While they were working, they _______.", options: { a: "tried to meet", b: "sometimes met", c: "didn't meet", d: "didn't get along well" } },
+    { q: "96 When they met, they _______ the cinema.", options: { a: "hadn't yet been to", b: "were in", c: "were leaving", d: "were coming home from" } },
+    { q: "97 Seamus asked, '_______ to Oak Park Primary School in York?'", options: { a: "Have you ever been", b: "Did you go", c: "Were you going", d: "Had you gone" } },
+    { q: "98 Seamus and Andrew had been friends _______.", options: { a: "after their families had moved to Bristol", b: "for the past two years", c: "their whole lives", d: "when they were very young" } },
+    { q: "99 Andrew and Seamus had known each other _______.", options: { a: "when they were one or two years old", b: "for about six years, as kids", c: "when they were about six years old", d: "for the past six years" } },
+    { q: "100 Andrew said that _______ remembered each other.", options: { a: "it would have been amazing if they had", b: "he wasn't shocked that they", c: "he was surprised that they", d: "he hadn't realised that they" } }
+];
+
+        // Function to dynamically render the quiz HTML
+        function renderQuiz() {
+            const container = document.getElementById('questions-container');
+            
+            quizData.forEach((item, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                
+                // Format line breaks for A/B dialogues
+                const formattedQuestion = item.q.replace(/\n/g, '<br>');
+                
+                let optionsHTML = '';
+                for (const [key, value] of Object.entries(item.options)) {
+                    optionsHTML += `
+                        <label>
+                            <input type="radio" name="q${index}" value="${key}">
+                            <strong>${key}</strong> ${value}
+                        </label>
+                    `;
+                }
+
+                questionBlock.innerHTML = `
+                    <div class="question-text">${formattedQuestion}</div>
+                    <div class="options">${optionsHTML}</div>
+                `;
+                container.appendChild(questionBlock);
+            });
+        }
+
+        // Determine CEFR level based on Headway placement brackets
+        function getCEFRLevel(score) {
+            if (score <= 15) return "Beginner (Pre-A1)";
+            if (score <= 30) return "Elementary (A1)";
+            if (score <= 45) return "Pre-Intermediate (A2)";
+            if (score <= 60) return "Intermediate (B1)";
+            if (score <= 75) return "Upper-Intermediate (B2)";
+            if (score <= 90) return "Advanced (C1)";
+            return "Proficient (C2)";
+        }
+
+        // Calculate score
+        function calculateScore() {
+            const name = document.getElementById('student-name').value;
+            if (!name) {
+                alert("Please enter your name before submitting.");
+                return;
+            }
+
+            let score = 0;
+            
+            // Loop through rendered questions
+            quizData.forEach((_, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedOption) {
+                    // Check against the master answer key array
+                    if (selectedOption.value === answerKey[index]) {
+                        score++;
+                    }
+                }
+            });
+
+            // If you only loaded 10 questions for testing but want to simulate a full 100 point score:
+            // Remove this multiplier once you input all 100 questions.
+            let simulatedScore = Math.round((score / quizData.length) * 100);
+
+            // Populate the Results Card
+            document.getElementById('display-name').innerText = name;
+            document.getElementById('score-number').innerText = simulatedScore;
+            document.getElementById('cefr-level').innerText = getCEFRLevel(simulatedScore);
+
+            // Hide form, show results
+            document.getElementById('quiz-form').style.display = 'none';
+            document.getElementById('results-container').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // Generate and download screenshot
+        function downloadScreenshot() {
+            const resultCard = document.getElementById('result-card');
+            const name = document.getElementById('student-name').value.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            const cefr = document.getElementById('cefr-level').innerText.split(' ')[1].replace(/[^a-zA-Z0-9]/g, '');
+
+            html2canvas(resultCard).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Score_${cefr}_${name}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        // Initialize quiz on load
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>
