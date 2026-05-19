@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Fun with Grammar: Advanced Assessment ✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --container-bg: #ffffff;
+            --text-color: #4a4e69;
+            --primary-pastel: #b5e2fa;
+            --secondary-pastel: #edafb8;
+            --accent-purple: #cdb4db;
+            --mint-green: #e8f5e9;
+            --success-color: #81c784;
+            --error-color: #e57373;
+            --border-radius-lg: 20px;
+            --border-radius-sm: 12px;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f7f9fc;
+            background-image: radial-gradient(#dbedf8 15%, transparent 15%), radial-gradient(#f3e1e4 15%, transparent 15%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 40px 30px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 8px 24px rgba(168, 180, 204, 0.25);
+            border: 4px solid #fff;
+        }
+
+        h1 {
+            text-align: center;
+            color: #6c5ce7;
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 0px #eef2f7;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #9a8c98;
+            font-weight: 600;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            color: #ff7675;
+            background: #fff5f5;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            margin-top: 40px;
+            border: 2px dashed #ff7675;
+        }
+
+        .instructions {
+            background-color: #f3f0ff;
+            border: 2px solid #d6ceff;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.95rem;
+            color: #574b90;
+        }
+
+        .question-block {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 25px;
+            padding: 20px;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+        }
+
+        .question-block:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-purple);
+        }
+
+        .question-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            display: block;
+            color: #222f3e;
+        }
+
+        .statement-box {
+            background-color: #fdf8e2;
+            border: 2px dashed #f3d06e;
+            padding: 12px 18px;
+            margin-bottom: 15px;
+            border-radius: var(--border-radius-sm);
+            font-style: italic;
+            color: #57606f;
+            font-weight: 600;
+        }
+
+        .options-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .option-item {
+            margin-bottom: 10px;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-item:hover {
+            background: #f1f5f9;
+        }
+
+        .option-item input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #6c5ce7;
+            cursor: pointer;
+        }
+
+        .option-item label {
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        /* Adjustable Textarea with Cute Styling */
+        .adjustable-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: var(--border-radius-sm);
+            font-family: inherit;
+            font-size: 1rem;
+            box-sizing: border-box;
+            resize: both;
+            background-color: #fff;
+            color: var(--text-color);
+            transition: border-color 0.2s;
+        }
+
+        .adjustable-textarea:focus {
+            outline: none;
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 18px;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 0px #4834d4;
+            transition: all 0.1s;
+        }
+
+        .action-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0px 0px transparent;
+        }
+
+        .action-btn.checked {
+            background-color: #95a5a6;
+            box-shadow: 0 4px 0px #7f8c8d;
+        }
+
+        /* Feedback Panels */
+        .feedback-panel {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: var(--border-radius-sm);
+            display: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            animation: popIn 0.3s ease-out forwards;
+        }
+
+        .feedback-panel.correct {
+            background-color: #e8f5e9;
+            border: 2px solid #a5d6a7;
+            color: #2e7d32;
+            display: block;
+        }
+
+        .feedback-panel.incorrect {
+            background-color: #ffebee;
+            border: 2px solid #ef9a9a;
+            color: #c62828;
+            display: block;
+        }
+
+        .feedback-panel.model-ans {
+            background-color: #e3f2fd;
+            border: 2px solid #90caf9;
+            color: #1565c0;
+            display: block;
+        }
+
+        .model-title {
+            font-weight: 700;
+            color: #0d47a1;
+            margin-bottom: 4px;
+        }
+
+        /* Option highlights */
+        .option-item.correct-flash {
+            background-color: #c8e6c9 !important;
+            border-color: #81c784 !important;
+            color: #2e7d32;
+        }
+
+        .option-item.incorrect-flash {
+            background-color: #ffcdd2 !important;
+            border-color: #e57373 !important;
+            color: #c62828;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 15px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✨ Fun with Grammar ✨</h1>
+    <div class="subtitle">Advanced Reported Speech & Impersonal Syntax Practice</div>
+
+    <h2>Segment I: Impersonal Passive Form</h2>
+    <div class="instructions">
+        <strong>How to play:</strong> Read the scenario, pick your option, and hit the <strong>"Check Answer 🌟"</strong> button instantly to see how you did!
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="B">
+        <span class="question-text">1. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The company is launching a new smartphone next month."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">A. It was expected that the company launched a new smartphone next month.</label></li>
+            <li class="option-item"><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">B. It is expected that the company is launching a new smartphone next month.</label></li>
+            <li class="option-item"><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">C. It has been expected that a new smartphone was launched next month by the company.</label></li>
+            <li class="option-item"><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">D. It is expecting that a new smartphone will be launched next month.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="C">
+        <span class="question-text">2. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"Heavy rainfall has caused severe flooding in the residential areas."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">A. It reports that heavy rainfall caused severe flooding in the residential areas.</label></li>
+            <li class="option-item"><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">B. It was reported that heavy rainfall had been caused severe flooding in the residential areas.</label></li>
+            <li class="option-item"><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">C. It is reported that heavy rainfall has caused severe flooding in the residential areas.</label></li>
+            <li class="option-item"><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">D. It has been reporting that heavy rainfall causes severe flooding in the residential areas.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="A">
+        <span class="question-text">3. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The government will implement new tax regulations next year."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q3" id="q3a" value="A"><label for="q3a">A. It is announced that the government will implement new tax regulations next year.</label></li>
+            <li class="option-item"><input type="radio" name="q3" id="q3b" value="B"><label for="q3b">B. It was announced that the government implemented new tax regulations next year.</label></li>
+            <li class="option-item"><input type="radio" name="q3" id="q3c" value="C"><label for="q3c">C. It has announced that new tax regulations are implemented next year by the government.</label></li>
+            <li class="option-item"><input type="radio" name="q3" id="q3d" value="D"><label for="q3d">D. It is announcing that the government would implement new tax regulations next year.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="C">
+        <span class="question-text">4. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"Archaeologists discovered an ancient tomb in Egypt last week."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q4" id="q4a" value="A"><label for="q4a">A. It claims that an ancient tomb was discovering in Egypt last week by archaeologists.</label></li>
+            <li class="option-item"><input type="radio" name="q4" id="q4b" value="B"><label for="q4b">B. It has been claimed that archaeologists have discovered an ancient tomb in Egypt last week.</label></li>
+            <li class="option-item"><input type="radio" name="q4" id="q4c" value="C"><label for="q4c">C. It is claimed that archaeologists discovered an ancient tomb in Egypt last week.</label></li>
+            <li class="option-item"><input type="radio" name="q4" id="q4d" value="D"><label for="q4d">D. It was claiming that an ancient tomb had discovered in Egypt last week.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="B">
+        <span class="question-text">5. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"Local authorities are investigating the cause of the sudden power outage."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q5" id="q5a" value="A"><label for="q5a">A. It confirms that the cause of the sudden power outage was investigated by local authorities.</label></li>
+            <li class="option-item"><input type="radio" name="q5" id="q5b" value="B"><label for="q5b">B. It is confirmed that local authorities are investigating the cause of the sudden power outage.</label></li>
+            <li class="option-item"><input type="radio" name="q5" id="q5c" value="C"><label for="q5c">C. It has confirmed that local authorities investigated the cause of the sudden power outage.</label></li>
+            <li class="option-item"><input type="radio" name="q5" id="q5d" value="D"><label for="q5d">D. It was confirmed that local authorities have been investigating the cause of the sudden power outage.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="A">
+        <span class="question-text">6. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The suspect had fled the country before the warrant was issued."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q6" id="q6a" value="A"><label for="q6a">A. It is believed that the suspect had fled the country before the warrant was issued.</label></li>
+            <li class="option-item"><input type="radio" name="q6" id="q6b" value="B"><label for="q6b">B. It believes that the suspect has fled the country before the warrant was issued.</label></li>
+            <li class="option-item"><input type="radio" name="q6" id="q6c" value="C"><label for="q6c">C. It was believed that the suspect flees the country before the warrant was issued.</label></li>
+            <li class="option-item"><input type="radio" name="q6" id="q6d" value="D"><label for="q6d">D. It has been believed that the suspect was fleeing the country before the warrant was issued.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="C">
+        <span class="question-text">7. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The new educational curriculum improves students' critical thinking skills."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q7" id="q7a" value="A"><label for="q7a">A. It argues that the new educational curriculum had improved students' critical thinking skills.</label></li>
+            <li class="option-item"><input type="radio" name="q7" id="q7b" value="B"><label for="q7b">B. It was argued that the new educational curriculum is improving students' critical thinking skills.</label></li>
+            <li class="option-item"><input type="radio" name="q7" id="q7c" value="C"><label for="q7c">C. It is argued that the new educational curriculum improves students' critical thinking skills.</label></li>
+            <li class="option-item"><input type="radio" name="q7" id="q7d" value="D"><label for="q7d">D. It has been arguing that students' critical thinking skills were improved by the new educational curriculum.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="B">
+        <span class="question-text">8. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"Astronomers have detected water vapor on a distant exoplanet."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q8" id="q8a" value="A"><label for="q8a">A. It reports that water vapor had been detected on a distant exoplanet by astronomers.</label></li>
+            <li class="option-item"><input type="radio" name="q8" id="q8b" value="B"><label for="q8b">B. It is reported that astronomers have detected water vapor on a distant exoplanet.</label></li>
+            <li class="option-item"><input type="radio" name="q8" id="q8c" value="C"><label for="q8c">C. It was reported that astronomers detect water vapor on a distant exoplanet.</label></li>
+            <li class="option-item"><input type="radio" name="q8" id="q8d" value="D"><label for="q8d">D. It has reported that water vapor is detected on a distant exoplanet by astronomers.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="A">
+        <span class="question-text">9. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The laboratory is testing the safety of the new chemical compound."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q9" id="q9a" value="A"><label for="q9a">A. It is stated that the laboratory is testing the safety of the new chemical compound.</label></li>
+            <li class="option-item"><input type="radio" name="q9" id="q9b" value="B"><label for="q9b">B. It states that the safety of the new chemical compound was tested by the laboratory.</label></li>
+            <li class="option-item"><input type="radio" name="q9" id="q9c" value="C"><label for="q9c">C. It was stated that the laboratory has tested the safety of the new chemical compound.</label></li>
+            <li class="option-item"><input type="radio" name="q9" id="q9d" value="D"><label for="q9d">D. It has been stating that the laboratory tests the safety of the new chemical compound.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="D">
+        <span class="question-text">10. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The team will complete the construction project ahead of schedule."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q10" id="q10a" value="A"><label for="q10a">A. It estimates that the construction project completed ahead of schedule by the team.</label></li>
+            <li class="option-item"><input type="radio" name="q10" id="q10b" value="B"><label for="q10b">B. It was estimated that the team completes the construction project ahead of schedule.</label></li>
+            <li class="option-item"><input type="radio" name="q10" id="q10c" value="C"><label for="q10c">C. It has been estimating that the construction project would be completing ahead of schedule.</label></li>
+            <li class="option-item"><input type="radio" name="q10" id="q10d" value="D"><label for="q10d">D. It is estimated that the team will complete the construction project ahead of schedule.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="B">
+        <span class="question-text">11. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"Many people consider the old oak tree a historical landmark."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q11" id="q11a" value="A"><label for="q11a">A. It acknowledges that the old oak tree was considered a historical landmark by many people.</label></li>
+            <li class="option-item"><input type="radio" name="q11" id="q11b" value="B"><label for="q11b">B. It is acknowledged that many people consider the old oak tree a historical landmark.</label></li>
+            <li class="option-item"><input type="radio" name="q11" id="q11c" value="C"><label for="q11c">C. It was acknowledged that many people have considered the old oak tree a historical landmark.</label></li>
+            <li class="option-item"><input type="radio" name="q11" id="q11d" value="D"><label for="q11d">D. It has acknowledged that the old oak tree is considering a historical landmark.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="A">
+        <span class="question-text">12. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The chef prepares all dishes using organic ingredients."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q12" id="q12a" value="A"><label for="q12a">A. It is known that the chef prepares all dishes using organic ingredients.</label></li>
+            <li class="option-item"><input type="radio" name="q12" id="q12b" value="B"><label for="q12b">B. It knows that all dishes were prepared by the chef using organic ingredients.</label></li>
+            <li class="option-item"><input type="radio" name="q12" id="q12c" value="C"><label for="q12c">C. It was known that the chef has prepared all dishes using organic ingredients.</label></li>
+            <li class="option-item"><input type="radio" name="q12" id="q12d" value="D"><label for="q12d">D. It has been knowing that all dishes are prepared using organic ingredients by the chef.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="B">
+        <span class="question-text">13. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The author wrote the entire novel during his stay in Paris."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q13" id="q13a" value="A"><label for="q13a">A. It alleges that the entire novel has been written by the author during his stay in Paris.</label></li>
+            <li class="option-item"><input type="radio" name="q13" id="q13b" value="B"><label for="q13b">B. It is alleged that the author wrote the entire novel during his stay in Paris.</label></li>
+            <li class="option-item"><input type="radio" name="q13" id="q13c" value="C"><label for="q13c">C. It was alleged that the author had been writing the entire novel during his stay in Paris.</label></li>
+            <li class="option-item"><input type="radio" name="q13" id="q13d" value="D"><label for="q13d">D. It has been alleging that the author writes the entire novel during his stay in Paris.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="C">
+        <span class="question-text">14. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The wildlife foundation is protecting endangered species from poachers."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q14" id="q14a" value="A"><label for="q14a">A. It reports that endangered species were protected from poachers by the wildlife foundation.</label></li>
+            <li class="option-item"><input type="radio" name="q14" id="q14b" value="B"><label for="q14b">B. It was reported that the wildlife foundation protects endangered species from poachers.</label></li>
+            <li class="option-item"><input type="radio" name="q14" id="q14c" value="C"><label for="q14c">C. It is reported that the wildlife foundation is protecting endangered species from poachers.</label></li>
+            <li class="option-item"><input type="radio" name="q14" id="q14d" value="D"><label for="q14d">D. It has reported that endangered species have been protecting from poachers.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+    <div class="question-block" data-qtype="mcq" data-correct="D">
+        <span class="question-text">15. Choose the most appropriate sentence using the impersonal passive form!</span>
+        <div class="statement-box">"The volunteers had distributed all relief packages before the storm hit."</div>
+        <ul class="options-list">
+            <li class="option-item"><input type="radio" name="q15" id="q15a" value="A"><label for="q15a">A. It confirms that all relief packages have been distributed by the volunteers before the storm hit.</label></li>
+            <li class="option-item"><input type="radio" name="q15" id="q15b" value="B"><label for="q15b">B. It was confirmed that the volunteers distribute all relief packages before the storm hit.</label></li>
+            <li class="option-item"><input type="radio" name="q15" id="q15c" value="C"><label for="q15c">C. It has been confirming that all relief packages were distributing before the storm hit.</label></li>
+            <li class="option-item"><input type="radio" name="q15" id="q15d" value="D"><label for="q15d">D. It is confirmed that the volunteers had distributed all relief packages before the storm hit.</label></li>
+        </ul>
+        <button type="button" class="action-btn" onclick="checkMCQ(this)">Check Answer 🌟</button>
+        <div class="feedback-panel"></div>
+    </div>
+
+
+    <h2>Segment II: Syntax & Reported Speech</h2>
+    <div class="instructions">
+        <strong>Directions:</strong> Type your answers inside the boxes (grab the bottom-right corner to resize them if you need more room). Click <strong>"Reveal Feedback ✨"</strong> on any question to view the detailed guide and answer breakdown!
+    </div>
+
+        <div class="question-block" data-qtype="open">
+        <span class="question-text">16. Identify the precise grammatical error in this reported speech sentence and write out the completely corrected version: <br><span style="color:#718096; font-style:italic;">"The defense attorney asked the witness that whether she had verified the signature before signing the document."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your observation and synthesis here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">17. Rewrite the following directive using a formal structure with the reporting verb <strong>"suggested"</strong> and an appropriate subjunctive noun clause: <br><span style="color:#718096; font-style:italic;">"The medical board said to the intern: 'You must clean and sterilize the operating apparatus immediately.'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">18. Fix the syntax and rewrite this sentence correctly: <br><span style="color:#718096; font-style:italic;">"The professor announced yesterday that light traveled at approximately 299,792 kilometers per second."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">19. Convert this direct imperative conversation into a formal reported sentence using the verb <strong>"instructed"</strong> and an object phrase: <br><span style="color:#718096; font-style:italic;">"The chief engineer to the maintenance technicians: 'Do not touch the main grid control switch under any circumstances.'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">20. Analyze the backshift in the sentence below. Identify the structural mistake and type the correct syntax: <br><span style="color:#718096; font-style:italic;">"She stated that she could not attend the academic symposium yesterday due to scheduling conflicts."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">21. Transform this active statement into a highly formal <strong>Impersonal Passive</strong> structure starting with an abstract dummy subject pronoun: <br><span style="color:#718096; font-style:italic;">"Sociologists believe that economic shifts directly alter population demographic traits."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">22. What is wrong with the modal auxiliary syntax in this statement? Correct and rewrite it: <br><span style="color:#718096; font-style:italic;">"The warehouse supervisor demanded that all logistics workers should to wear protective equipment inside."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">23. Convert the following dialogue statement into a reported speech statement using the reporting main verb <strong>"urged"</strong>: <br><span style="color:#718096; font-style:italic;">"The campaign manager told the politician: 'You must reconsider your speech strategy before the upcoming debate.'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">24. Rewrite the sentence below to eliminate the redundant dual conjunction pattern: <br><span style="color:#718096; font-style:italic;">"The HR team questioned the applicant that why he had left his previous position before another job was secured."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">25. Change this text into an indirect reporting sentence, focusing heavily on proper deictic shifts (time modifiers): <br><span style="color:#718096; font-style:italic;">"The lead auditor remarked: 'We completed the evaluation of the financial ledgers three days ago.'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">26. Transform the following line into reported speech using an embedded question clause layout with proper word order: <br><span style="color:#718096; font-style:italic;">"The custom officer asked the traveler: 'Where are you storing the declared commercial items?'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">27. Rewrite this active observation into an impersonal passive reporting construction: <br><span style="color:#718096; font-style:italic;">"Biologists have verified that the new plant extract prevents microbial multiplication."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">28. Correct the tense sequencing mismatch found in this indirect statement: <br><span style="color:#718096; font-style:italic;">"The investigator confirmed last night that the system logs are deleted an hour prior to the crash."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">29. Use a formal reporting structure with the verb <strong>"insisted"</strong> paired with a prepositional gerund phrase to change this dialogue: <br><span style="color:#718096; font-style:italic;">"The financial counselor said to her client: 'You absolutely must pay off the high-interest credit balance first.'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">30. Correct this reported phrase to follow strict formal subjunctive parameters: <br><span style="color:#718096; font-style:italic;">"The school principal recommended that the teacher assigns fewer homework tasks over the weekend break."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">31. Change the following direct exclamation into reported speech using a formal descriptive format: <br><span style="color:#718096; font-style:italic;">"The structural architect exclaimed: 'What an extraordinary and resilient design structure this is!'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">32. Identify the error in the statement below and correct it: <br><span style="color:#718096; font-style:italic;">"The diplomat declared that they would ratify the treaty following week without exceptions."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">33. Convert this active statement into an impersonal passive structure starting with the noun phrase as the grammatical subject instead of 'It': <br><span style="color:#718096; font-style:italic;">"People report that the fugitive is hiding inside the mountain caverns."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">34. Rewrite the dialogue lines cleanly into a single unified reported paragraph format: <br><span style="color:#718096; font-style:italic;">Officer: "Are you driving over the speed limit?" <br> Driver: "No, I haven't been speeding at all."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">35. Fix the embedded inverted question order mistake present here: <br><span style="color:#718096; font-style:italic;">"The floor supervisor asked the shift workers why were they stopping the manufacturing assembly line."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">36. Turn the given statement into a passive report statement using a perfective infinitive format: <br><span style="color:#718096; font-style:italic;">"Historians claim that the ancient civilization built these intricate aqueducts millennia ago."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">37. Correct this indirect speech statement where the reporting timeframe conflicts with temporal references: <br><span style="color:#718096; font-style:italic;">"The weather analyst announced last Monday that a massive tropical typhoon will strike the coast tomorrow."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">38. Change this direct command clause into an elegant reported sentence using a negative infinitive phrase: <br><span style="color:#718096; font-style:italic;">"The fitness instructor warned them: 'Do not consume dehydrated supplements during your training intervals.'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">39. Convert the sentence below into an impersonal passive frame using a present perfect passive introductory reporting matrix: <br><span style="color:#718096; font-style:italic;">"Experts show that the volcanic dust layer blocks solar radiation patterns globally."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">40. Correct the subjunction layout or reporting structure error present in this final statement: <br><span style="color:#718096; font-style:italic;">"The environmental safety council proposed that the toxic storage facility to be relocated further away from municipal borders."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">41. Transform this statement to show a belief about a past action using a complex impersonal structure starting with the active object: <br><span style="color:#718096; font-style:italic;">"People allege that the accountant falsified the transaction ledger sheets last year."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">42. Rewrite this line by converting the double indirect marker into a correct structure: <br><span style="color:#718096; font-style:italic;">"The judge enquired the witness that if he was present during the physical altercation."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">43. Turn the direct question below into an indirect query embedded after a past tense reporting verb: <br><span style="color:#718096; font-style:italic;">"The laboratory intern asked: 'Has anyone called the emergency ambulance service?'"</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">44. Rectify the mismatch in backshifting found in this reported statement: <br><span style="color:#718096; font-style:italic;">"The site coordinator verified that the team completes the safety diagnostics before the system activated."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+    <div class="question-block" data-qtype="open">
+        <span class="question-text">45. Rewrite this sentence using an impersonal matrix phrase to neutralize the statement: <br><span style="color:#718096; font-style:italic;">"Critics claim that the newly published historical biography contains multiple chronological inconsistencies."</span></span>
+        <textarea class="adjustable-textarea" placeholder="Type your response here..."></textarea>
+    </div>
+
+
+</div>
+
+<script>
+    // MCQ Checker Function
+    function checkMCQ(button) {
+        const block = button.closest('.question-block');
+        const correctAns = block.getAttribute('data-correct');
+        const selectedOpt = block.querySelector('input[type="radio"]:checked');
+        const feedbackDiv = block.querySelector('.feedback-panel');
+        
+        // Reset classes
+        const items = block.querySelectorAll('.option-item');
+        items.forEach(item => {
+            item.classList.remove('correct-flash', 'incorrect-flash');
+        });
+
+        if (!selectedOpt) {
+            feedbackDiv.className = "feedback-panel incorrect";
+            feedbackDiv.innerHTML = "✨ Please select an option first before checking!";
+            return;
+        }
+
+        const userAns = selectedOpt.value;
+
+        // Highlight correct option no matter what
+        items.forEach(item => {
+            const rad = item.querySelector('input[type="radio"]');
+            if (rad.value === correctAns) {
+                item.classList.add('correct-flash');
+            }
+        });
+
+        if (userAns === correctAns) {
+            feedbackDiv.className = "feedback-panel correct";
+            feedbackDiv.innerHTML = "🎉 Splendid! That is absolutely correct!";
+        } else {
+            // Highlight user selection as wrong
+            selectedOpt.closest('.option-item').classList.add('incorrect-flash');
+            feedbackDiv.className = "feedback-panel incorrect";
+            feedbackDiv.innerHTML = "✨ Oops! Try reviewing this structure again.";
+        }
+    }
+
+    // Open-Ended / Subjunctive Evaluator toggle function
+    function revealOpen(button, feedbackText) {
+        const block = button.closest('.question-block');
+        const feedbackDiv = block.querySelector('.feedback-panel');
+        
+        if (feedbackDiv.style.display === "block") {
+            feedbackDiv.style.display = "none";
+            feedbackDiv.className = "feedback-panel";
+            button.innerText = "Reveal Feedback ✨";
+        } else {
+            feedbackDiv.className = "feedback-panel model-ans";
+            feedbackDiv.innerHTML = `<div class="model-title">💡 Grammar Guide & Solution:</div>${feedbackText}`;
+            feedbackDiv.style.display = "block";
+            button.innerText = "Hide Guide 🙈";
+        }
+    }
+</script>
+
+</body>
+</html>
+
