@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answer Key - Mock Exam 2</title>
+    <style>
+        body { font-family: 'Nunito', sans-serif; background: #254441; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .slide { display: none; background: white; color: #2c3e50; padding: 40px; border-radius: 20px; width: 800px; min-height: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-bottom: 20px; }
+        .controls { margin-bottom: 30px; }
+        button { padding: 15px 30px; font-size: 1.2em; cursor: pointer; border: none; border-radius: 8px; background: #ff6b6b; color: white; font-weight: bold; margin: 5px; }
+        h1, h2 { color: #4ecdc4; }
+        .answer-list { font-size: 1.2em; line-height: 1.8; }
+    </style>
+</head>
+<body>
+
+    <h1>Mock Exam 2: Answer Key</h1>
+    <div class="controls">
+        <button onclick="showSlide(1)">Part 1: Passives</button>
+        <button onclick="showSlide(2)">Part 2: Errors</button>
+        <button onclick="showSlide(3)">Part 3: Dialogue</button>
+        <button onclick="showSlide(4)">Part 4: Reading</button>
+    </div>
+
+    <div id="slide1" class="slide" style="display:block;">
+        <h1>Part 1: Impersonal Passives</h1>
+        <div class="answer-list">
+            1. E<br>2. C<br>3. D<br>4. B<br>5. D<br>6. A<br>7. A
+        </div>
+    </div>
+
+    <div id="slide2" class="slide">
+        <h1>Part 2: Error Analysis</h1>
+        <div class="answer-list">
+            8. B (should be "would")<br>
+            9. B (remove "that")<br>
+            10. B (should be "not to")<br>
+            11. E (No error)<br>
+            12. B (should be "has seen")<br>
+            13. B (should be "was helping")<br>
+            14. C (should be "should")<br>
+            15. C (should be "the next day")
+        </div>
+    </div>
+
+    <div id="slide3" class="slide">
+        <h1>Part 3: Dialogue Transformations</h1>
+        <div class="answer-list" style="font-size: 0.9em;">
+            16. The reporter asked the migrant if they were feeling okay after the journey.<br>
+            17. The migrant replied that they hadn't slept well in days.<br>
+            18. Then the migrant admitted that it was true that the travel had been very difficult.<br>
+            19. The volunteer told them to rest in the shelter for at least two days.<br>
+            20. Finally, the reporter asked where they would go next.
+        </div>
+    </div>
+
+    <div id="slide4" class="slide">
+        <h1>Part 4: Reading Key</h1>
+        <div class="answer-list">
+            <strong>Task A (T/F):</strong> 21. T, 22. F, 23. T, 24. T, 25. F<br>
+            <strong>Task B (Fill in):</strong><br>
+            26. unprecedented <br> 27. poverty, war <br> 28. pervasive burden <br> 29. accidentally <br> 30. structural overhauls
+        </div>
+    </div>
+
+    <script>
+        function showSlide(n) {
+            document.querySelectorAll('.slide').forEach(s => s.style.display = 'none');
+            document.getElementById('slide' + n).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
