@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Mock Exam - Level 2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+        :root {
+            --bg-color: #f4f9f9;
+            --main-color: #ff6f59; /* Vibrant Coral */
+            --secondary-color: #254441; /* Deep Navy */
+            --accent-color: #43aa8b; /* Bright Teal */
+            --highlight: #f3e37c; /* Warm Yellow */
+            --text-color: #2c3e50;
+            --box-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 100% 150%, var(--bg-color) 24%, var(--accent-color) 24%, var(--accent-color) 28%, var(--bg-color) 28%, var(--bg-color) 36%, var(--secondary-color) 36%, var(--secondary-color) 40%, transparent 40%, transparent),
+                radial-gradient(circle at 0    150%, var(--bg-color) 24%, var(--main-color) 24%, var(--main-color) 28%, var(--bg-color) 28%, var(--bg-color) 36%, var(--secondary-color) 36%, var(--secondary-color) 40%, transparent 40%, transparent);
+            background-size: 100px 100px;
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background-color: var(--box-bg);
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-top: 8px solid var(--main-color);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px dashed var(--accent-color);
+            padding-bottom: 25px;
+            margin-bottom: 35px;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            font-size: 2.6em;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        h2 {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 35px;
+            box-shadow: 4px 4px 0px var(--accent-color);
+        }
+
+        .instructions {
+            background-color: #eafaf1;
+            padding: 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--accent-color);
+            color: var(--secondary-color);
+        }
+
+        .question {
+            margin-bottom: 28px;
+            padding: 20px;
+            background-color: #fdfdfd;
+            border-radius: 10px;
+            border: 1px solid #e1e8ed;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: transform 0.2s;
+        }
+
+        .question:hover {
+            transform: translateY(-2px);
+            border-color: var(--main-color);
+        }
+
+        .question p {
+            margin-top: 0;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--secondary-color);
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 12px;
+            padding: 10px 18px;
+            background-color: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .options li:hover {
+            border-color: var(--accent-color);
+            background-color: #f2fcf9;
+        }
+
+        .error-sentence {
+            font-size: 1.15em;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .error-tag {
+            font-weight: bold;
+            color: var(--main-color);
+            text-decoration: underline;
+            padding: 0 3px;
+        }
+
+        .reading-box {
+            background-color: #fffefa;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid var(--highlight);
+            margin-bottom: 35px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .writing-task {
+            background-color: #fdf0ed;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid var(--main-color);
+        }
+
+        input[type="text"] {
+            border: 2px solid var(--secondary-color);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-family: inherit;
+            font-size: 1em;
+            width: 250px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--main-color);
+        }
+
+        .context-tag {
+            display: inline-block;
+            background-color: var(--highlight);
+            color: var(--secondary-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>English Mock Exam</h1>
+        <p><strong>Topic:</strong> Global Demographics & Migration | <strong>Level:</strong> Level 2</p>
+        <p><em>Focus: Advanced Impersonal Passives, Reported Speech Error Analysis, and Academic Reading</em></p>
+    </header>
+
+    <h2>Part 1: Impersonal Passives</h2>
+    <div class="instructions">
+        Directions: Read the active statement provided. Choose the most appropriate sentence that transforms it using the formal impersonal passive form. Pay close attention to tense shifts!
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Demographics</span>
+        <p>1. Demographers estimate that the global migrant population will double by the year 2050.</p>
+        <ul class="options">
+            <li>A) It was estimated that the global migrant population will double by the year 2050.</li>
+            <li>B) It is estimated that the global migrant population will double by the year 2050.</li>
+            <li>C) It has been estimated that the global migrant population doubled by the year 2050.</li>
+            <li>D) It is being estimated that the migrant population had doubled by 2050.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Border Control</span>
+        <p>2. Authorities reported that the border control had detained fifty asylum seekers during the night.</p>
+        <ul class="options">
+            <li>A) It is reported that the border control has detained fifty asylum seekers.</li>
+            <li>B) It was reported that the border control detained fifty asylum seekers.</li>
+            <li>C) It was reported that the border control had detained fifty asylum seekers during the night.</li>
+            <li>D) It had been reported that the border control detains fifty asylum seekers.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Public Opinion</span>
+        <p>3. Local citizens are currently arguing that the sudden demographic shift is causing an infrastructure strain.</p>
+        <ul class="options">
+            <li>A) It is argued that the demographic shift was causing an infrastructure strain.</li>
+            <li>B) It is being argued that the sudden demographic shift is causing an infrastructure strain.</li>
+            <li>C) It has argued that the demographic shift is causing an infrastructure strain.</li>
+            <li>D) It was being argued that the sudden demographic shift causes an infrastructure strain.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Policy Analysis</span>
+        <p>4. Experts believed that the strict municipal quotas had discouraged irregular immigration last year.</p>
+        <ul class="options">
+            <li>A) It was believed that the strict municipal quotas had discouraged irregular immigration last year.</li>
+            <li>B) It is believed that the strict municipal quotas discouraged irregular immigration last year.</li>
+            <li>C) It had been believed that the strict municipal quotas discourage irregular immigration.</li>
+            <li>D) It believes that the strict municipal quotas had discouraged irregular immigration.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Media Coverage</span>
+        <p>5. The international media has claimed that the new bureaucratic checkpoints are stalling human progress.</p>
+        <ul class="options">
+            <li>A) It was claimed that the new bureaucratic checkpoints are stalling human progress.</li>
+            <li>B) It is claimed that the new bureaucratic checkpoints were stalling human progress.</li>
+            <li>C) It has been claimed that the new bureaucratic checkpoints are stalling human progress.</li>
+            <li>D) It had claimed that the bureaucratic checkpoints are stalling human progress.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Sociology</span>
+        <p>6. Researchers suppose that severe climate change forces vulnerable families to flee their homeland.</p>
+        <ul class="options">
+            <li>A) It was supposed that climate change forced vulnerable families to flee.</li>
+            <li>B) It is being supposed that climate change forces vulnerable families to flee.</li>
+            <li>C) It is supposed that severe climate change forces vulnerable families to flee their homeland.</li>
+            <li>D) It supposes that climate change has forced families to flee.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Government Action</span>
+        <p>7. They expect that the government will implement a comprehensive overhaul of the immigration system soon.</p>
+        <ul class="options">
+            <li>A) It is expected that the government will implement a comprehensive overhaul soon.</li>
+            <li>B) It was expected that the government would implement a comprehensive overhaul.</li>
+            <li>C) It has been expected that the government implemented a comprehensive overhaul.</li>
+            <li>D) It expects that the government will implement a comprehensive overhaul soon.</li>
+        </ul>
+    </div>
+
+    <h2>Part 2: Reported Speech Error Analysis</h2>
+    <div class="instructions">
+        Directions: Choose the underlined word or phrase (A, B, C, D) that contains a grammatical error in reported speech rules (check for wrong pronouns, missing objects, or incorrect backshifting). If the sentence is fully correct, choose E (No Error).
+    </div>
+
+    <div class="question">
+        <p>8. The immigration officer <span class="error-tag">told (A)</span> the migrant <span class="error-tag">that (B)</span> he <span class="error-tag">will (C)</span> review the asylum application <span class="error-tag">the following (D)</span> week. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p>9. The demographer <span class="error-tag">stated (A)</span> that the city's population <span class="error-tag">had grown (B)</span> by ten percent <span class="error-tag">since (C)</span> <span class="error-tag">last year (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p>10. The journalist <span class="error-tag">asked (A)</span> the refugee <span class="error-tag">that (B)</span> <span class="error-tag">why (C)</span> his family <span class="error-tag">had decided (D)</span> to cross the border. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p>11. The local mayor <span class="error-tag">urged (A)</span> the citizens <span class="error-tag">that (B)</span> they <span class="error-tag">should to (C)</span> welcome the incoming <span class="error-tag">migrants (D)</span> peacefully. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p>12. She <span class="error-tag">inquired (A)</span> whether the receiving state <span class="error-tag">has approved (B)</span> the new refugee <span class="error-tag">quotas (C)</span> yet <span class="error-tag">(D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p>13. The human rights advocate <span class="error-tag">said (A)</span> the government <span class="error-tag">that (B)</span> the legal <span class="error-tag">limbo (C)</span> was completely unacceptable <span class="error-tag">(D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p>14. The researcher <span class="error-tag">explained (A)</span> that structural shifts <span class="error-tag">were transforming (B)</span> the area <span class="error-tag">today (C)</span> into a diverse cultural <span class="error-tag">hub (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p>15. The official <span class="error-tag">confirmed (A)</span> that the new border <span class="error-tag">regime (B)</span> <span class="error-tag">had been (C)</span> implemented <span class="error-tag">the previous (D)</span> month. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <h2>Part 3: Dialogue Transformations</h2>
+    <div class="instructions">
+        Directions: Rewrite the conversation below into reported speech using suitable reporting verbs and correct tense/pronoun changes.
+    </div>
+    
+    <div class="reading-box" style="background-color: #f1f8ff; border-color: #3498db;">
+        <strong>Context: A journalist is interviewing a migrant family at a processing center.</strong><br><br>
+        <strong>16. Reporter:</strong> "Why did you decide to cross the border?"<br>
+        <strong>17. Migrant:</strong> "We are fleeing from extreme economic displacement in our hometown."<br>
+        <strong>18. Migrant:</strong> "I have waited in this anomalous backlog for three weeks."<br>
+        <strong>19. Officer:</strong> "You must submit your official application by tomorrow."<br>
+        <strong>20. Reporter:</strong> "Will the new municipal policies help these vulnerable families?"
+    </div>
+
+    <div class="question" style="line-height: 2.5;">
+        <p>16. The reporter asked the migrant ________________________________________________.</p>
+        <p>17. The migrant explained _______________________________________________________.</p>
+        <p>18. Then he added ______________________________________________________________.</p>
+        <p>19. The immigration officer told him ________________________________________________.</p>
+        <p>20. Finally, the reporter asked _____________________________________________________.</p>
+    </div>
+
+    <h2>Part 4: Reading Comprehension & Writing</h2>
+    <div class="instructions">
+        Directions: Read the text about "The Demographics of Global Migration" and answer questions 21 - 31.
+    </div>
+
+    <div class="reading-box">
+        <strong>The Demographics of Global Migration</strong><br><br>
+        <strong>Paragraph 1:</strong> In contemporary geopolitics, patterns of cross-border human movement have become a ubiquitous feature of global discourse, transforming the demographics of receiving states. Historically, the underlying premise of international law was that physical barriers would successfully regulate these sudden structural shifts. Notwithstanding strict policy frameworks, the volume of global immigration continues to reach unprecedented historical thresholds. Geographic displacement forces modern nation-states to manage highly diverse populations. Driven by survival, the contemporary migrant navigates complex legal hurdles and slow bureaucratic checkpoints just to build a viable life.<br><br>
+        
+        <strong>Paragraph 2:</strong> The domestic political response to these shifting demographics is rarely unified. Conversely, while humanitarian factions encourage aid, alternative groups express severe anxiety regarding infrastructure strain. They argue that sudden, unmanaged population growth places a pervasive burden on the public health apparatus and municipal housing programs. However, economists argue that complaints regarding job loss often lack solid empirical support. When integration is handled cleanly, foreign laborers balance local markets, meaning that native anxieties over complete economic displacement become entirely superfluous.<br><br>
+        
+        <strong>Paragraph 3:</strong> Paradoxically, an overly restrictive border regime can accidentally increase a fleeing family's reliance on dangerous human smuggling networks. If legal processing channels are clogged, border facilities suffer an anomalous backlog. This logistical breakdown effectively stalls human lives, trapping vulnerable people in an agonizing legal limbo for months. Resolving these overlapping crises will require sweeping structural overhauls that leave a profound mark on global policy. Reforming these systems remains an essential, albeit highly sensitive, geopolitical challenge.
+    </div>
+
+    <h3>Task A: True or False</h3>
+    <div class="question">
+        <div class="task-list">
+            <div class="task-item"><strong>21.</strong> Historically, governments believed they could regulate structural population shifts perfectly with physical barriers. <strong>[ T / F ]</strong></div>
+            <div class="task-item"><strong>22.</strong> Empirical data strongly supports the fear that migrants cause massive, irreversible job losses for native citizens. <strong>[ T / F ]</strong></div>
+            <div class="task-item"><strong>23.</strong> A strict border regime always successfully eliminates a family's reliance on human smuggling networks. <strong>[ T / F ]</strong></div>
+            <div class="task-item"><strong>24.</strong> An anomalous backlog at bureaucratic checkpoints can trap migrating families in legal limbo. <strong>[ T / F ]</strong></div>
+            <div class="task-item"><strong>25.</strong> Reforming international migration laws is considered an easy, non-sensitive task for modern governments. <strong>[ T / F ]</strong></div>
+        </div>
+    </div>
+
+    <h3>Task B: Fill in the Blanks</h3>
+    <div class="question">
+        <p><em>Use no more than THREE words from the text to complete the sentences.</em></p>
+        <div class="task-list">
+            <div class="task-item"><strong>26.</strong> Cross-border human movement has become a <input type="text" disabled> feature of contemporary global discourse.</div>
+            <div class="task-item"><strong>27.</strong> Rapid population growth can cause severe <input type="text" disabled> on public health and housing programs.</div>
+            <div class="task-item"><strong>28.</strong> When integration is managed well, native anxieties about economic displacement become entirely <input type="text" disabled>.</div>
+            <div class="task-item"><strong>29.</strong> Highly restrictive border policies can <input type="text" disabled> increase the danger for a fleeing family.</div>
+            <div class="task-item"><strong>30.</strong> Solving the crisis of human rights in migration requires deep, sweeping <input type="text" disabled>.</div>
+        </div>
+    </div>
+
+    <h3>Task C: Writing Task</h3>
+    <div class="writing-task">
+        <p><strong>31. Write a formal report of 100–150 words describing the challenges of global migration based on the article.</strong></p>
+        <ul style="margin-bottom: 20px;">
+            <li>First, explain the "push factors" that force migrants to navigate bureaucratic checkpoints (e.g., geographic displacement).</li>
+            <li>Next, describe the domestic debate (infrastructure strain vs. empirical economic benefits).</li>
+            <li>Finally, explain the dangers of the legal limbo caused by an anomalous backlog.</li>
+            <li><strong>Grammar Constraint:</strong> You must use <strong>impersonal passive language</strong> (e.g., "It is reported that...") and at least <strong>two examples of reported speech</strong> to explain the claims of the economists or political groups. Avoid personal pronouns like "I" or "we".</li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
