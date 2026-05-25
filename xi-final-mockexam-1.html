@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Mock Exam - Level 1 (Migration Theme)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap');
+
+        :root {
+            --bg-color: #f0f8ff;
+            --main-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffe66d;
+            --text-color: #2b2d42;
+            --box-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(78, 205, 196, 0.15),
+                rgba(78, 205, 196, 0.15) 2px,
+                transparent 2px,
+                transparent 12px
+            );
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--box-bg);
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 4px solid var(--secondary-color);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px dashed var(--accent-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--main-color);
+            font-size: 2.6em;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 35px;
+            box-shadow: 3px 3px 0px var(--text-color);
+        }
+
+        .instructions {
+            background-color: var(--accent-color);
+            padding: 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 2px solid var(--text-color);
+        }
+
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid var(--main-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .question p {
+            margin-top: 0;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            background-color: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .options li:hover {
+            border-color: var(--secondary-color);
+            background-color: #e6fcfb;
+            transform: translateX(5px);
+        }
+
+        .error-sentence {
+            font-size: 1.15em;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .error-tag {
+            font-weight: bold;
+            color: var(--main-color);
+            text-decoration: underline;
+            padding: 0 2px;
+        }
+
+        .reading-box {
+            background-color: #fff9e6;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px dashed #f39c12;
+            margin-bottom: 35px;
+            text-align: justify;
+            font-size: 1.05em;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-size: 1.05em;
+        }
+
+        .writing-task {
+            background-color: #e8f4f8;
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid #3498db;
+        }
+
+        input[type="text"] {
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+            padding: 6px 12px;
+            font-family: inherit;
+            font-size: 1em;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+
+        .context-tag {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>English Mock Exam</h1>
+        <p><strong>Topic:</strong> Global Demographics & Migration | <strong>Level:</strong> Level 1</p>
+        <p><em>Focus: Impersonal Passives, Reported Speech, and Global Migration</em></p>
+    </header>
+
+    <h2>Part 1: Impersonal Passives</h2>
+    <div class="instructions">
+        Directions: Read the situation provided. Choose the most appropriate sentence that transforms the active statement into a formal impersonal passive form.
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Border Control</span>
+        <p>1. Situation: "The border control is detaining fifty asylum seekers at the moment."</p>
+        <ul class="options">
+            <li>A. It has been suggested that the border control was detaining fifty asylum seekers at the moment.</li>
+            <li>B. It is believed that the border control detains fifty asylum seekers at the moment.</li>
+            <li>C. It was claimed that border control has detained fifty asylum seekers.</li>
+            <li>D. It is alleged that the border control had been detaining fifty asylum seekers.</li>
+            <li>E. It is reported that the border control is detaining fifty asylum seekers at the moment.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Migration Route</span>
+        <p>2. Situation: "The migrant family had crossed the border long before the guards arrived."</p>
+        <ul class="options">
+            <li>A. It is estimated that the migrant family has crossed the border long before the guards arrived.</li>
+            <li>B. It is confirmed that the migrant family crossed the border long before the guards arrived.</li>
+            <li>C. It is reported that the migrant family had crossed the border long before the guards arrived.</li>
+            <li>D. It had been reported that the migrant family crossed the border long before the guards arrived.</li>
+            <li>E. It has been reported that the migrant family has crossed the border long before the guards arrived.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Policy Improvement</span>
+        <p>3. Situation: "We have found a new way to process asylum applications safely."</p>
+        <ul class="options">
+            <li>A. It is known that they had found a new way to process asylum applications safely.</li>
+            <li>B. It has been known that a new way is found to process asylum applications safely.</li>
+            <li>C. It is claimed that they found a new way to process asylum applications safely.</li>
+            <li>D. It was confirmed that they have found a new way to process asylum applications safely.</li>
+            <li>E. It has been alleged that they had found a new way to process asylum applications safely.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Economic Impact</span>
+        <p>4. Situation: "This new housing policy can help migrants and rebuild the local economy."</p>
+        <ul class="options">
+            <li>A. It has been supposed that the policy can help migrants and rebuild the local economy.</li>
+            <li>B. It is claimed that the new policy can help migrants and rebuild the local economy.</li>
+            <li>C. It is being rumoured that the policy could help migrants and rebuild the local economy.</li>
+            <li>D. It was known that the policy could help migrants and rebuild the local economy.</li>
+            <li>E. It had been reported that the policy could help migrants and rebuild the local economy.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Data Analysis</span>
+        <p>5. Situation: "A huge demographic shift is hitting the continent on a larger scale."</p>
+        <ul class="options">
+            <li>A. It is rumoured that a huge demographic shift is hitting the continent on a larger scale.</li>
+            <li>B. It is known that a huge demographic shift was hitting the continent on a larger scale.</li>
+            <li>C. It is alleged that a huge demographic shift is hitting the continent on a larger scale.</li>
+            <li>D. It is estimated that a huge demographic shift is hitting the continent on a larger scale.</li>
+            <li>E. It is considered that a huge demographic shift will hit the continent on a larger scale.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Support Services</span>
+        <p>6. Situation: "This community center offers both shelter and food to new arrivals."</p>
+        <ul class="options">
+            <li>A. It is claimed that the center offers both shelter and food.</li>
+            <li>B. It was rumoured that the center offered both shelter and food.</li>
+            <li>C. It has been reported that the center is offering both shelter and food.</li>
+            <li>D. It had been estimated that the center offered both shelter and food.</li>
+            <li>E. It has been considered that the center has been offering both shelter and food.</li>
+        </ul>
+    </div>
+
+    <div class="question">
+        <span class="context-tag">Public Sentiment</span>
+        <p>7. Situation: "This new country will always be in our hearts."</p>
+        <ul class="options">
+            <li>A. It is expected that this new country will always be in their hearts.</li>
+            <li>B. It was known that this new country would always be in their hearts.</li>
+            <li>C. It is reported that this new country will always have been in their hearts.</li>
+            <li>D. It has been believed that this new country would always have been in their hearts.</li>
+            <li>E. It is considered that this new country will always be in their hearts.</li>
+        </ul>
+    </div>
+
+    <h2>Part 2: Reported Speech Error Analysis</h2>
+    <div class="instructions">
+        Directions: Find the error in the sentence. Choose A, B, C, or D. If the sentence is fully correct, choose E.
+    </div>
+
+    <div class="question">
+        <p class="error-sentence">8. The officer <span class="error-tag">said (A)</span> that he <span class="error-tag">will (B)</span> check the visa applications <span class="error-tag">the following (C)</span> week without <span class="error-tag">delay (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p class="error-sentence">9. My friend <span class="error-tag">asked (A)</span> me <span class="error-tag">that (B)</span> where I <span class="error-tag">had bought (C)</span> such a beautiful <span class="error-tag">suitcase (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p class="error-sentence">10. The teacher <span class="error-tag">told (A)</span> the new students <span class="error-tag">to not (B)</span> open their dictionaries <span class="error-tag">until (C)</span> the bell <span class="error-tag">rang (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p class="error-sentence">11. He <span class="error-tag">explained (A)</span> that he <span class="error-tag">had been traveling (B)</span> to the border <span class="error-tag">since (C)</span> <span class="error-tag">yesterday (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p class="error-sentence">12. The volunteer <span class="error-tag">stated (A)</span> that she <span class="error-tag">was helping (B)</span> the asylum seekers <span class="error-tag">at this moment (C)</span> in the <span class="error-tag">shelter (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p class="error-sentence">13. She <span class="error-tag">inquired (A)</span> whether I <span class="error-tag">have seen (B)</span> her family <span class="error-tag">at (C)</span> the train <span class="error-tag">station (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p class="error-sentence">14. The doctor <span class="error-tag">advised (A)</span> the refugee <span class="error-tag">that (B)</span> he <span class="error-tag">should to (C)</span> exercise more <span class="error-tag">frequently (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <div class="question">
+        <p class="error-sentence">15. Sarah <span class="error-tag">mentioned (A)</span> that they <span class="error-tag">would (B)</span> migrate to Japan <span class="error-tag">tomorrow (C)</span> morning for a new <span class="error-tag">job (D)</span>. <span class="error-tag">No Error (E)</span>.</p>
+    </div>
+
+    <h2>Part 3: Dialogue Transformations</h2>
+    <div class="instructions">
+        Directions: Rewrite the conversation into reported speech.
+    </div>
+    
+    <div class="reading-box">
+        <strong>Context: An interview with a migrant family arriving in a new city.</strong><br><br>
+        16. Officer: "Are you feeling okay after the journey?"<br>
+        17. Migrant: "No, we haven't slept well in days."<br>
+        18. Migrant: "The travel was very difficult."<br>
+        19. Volunteer: "You must rest for at least two days."<br>
+        20. Reporter: "Where will you go next?"
+    </div>
+
+    <div class="question">
+        <p>16. The officer asked _________________________________.</p>
+        <p>17. The migrant replied _________________________________.</p>
+        <p>18. Then the migrant added ____________________________.</p>
+        <p>19. The volunteer told them ____________________________.</p>
+        <p>20. Finally, the reporter asked _________________________.</p>
+    </div>
+
+    <h2>Part 4: Reading Comprehension & Writing</h2>
+    <div class="instructions">
+        Directions: Read the text about "A New Home" and answer questions 21 - 31.
+    </div>
+
+    <div class="reading-box">
+        <strong>A New Home: Global Demographics</strong><br><br>
+        <strong>Paragraph 1:</strong> Today, moving to a new country is a common part of global demography. This cross-border movement is everywhere because people migrate for many different reasons. Historically, governments believed they could regulate these structural shifts simply by using strict borders. However, even with strong rules, global immigration keeps growing. The number of migrants has reached an unprecedented level. People leave their homes because of poverty, war, or geographic displacement. Every year, an asylum seeker navigates difficult laws and slow bureaucratic checkpoints to find safety. <br><br>
+        
+        <strong>Paragraph 2:</strong> The political reaction to these demographic changes is rarely unified. Conversely, some people welcome migrants, while others worry about infrastructure strain. They fear that a fast-growing population places a pervasive burden on local hospitals and municipal housing. However, many economists say these fears lack empirical support. When integration works well, foreign workers help the local economy grow. Therefore, worries about native workers losing their jobs are often superfluous.<br><br>
+        
+        <strong>Paragraph 3:</strong> Paradoxically, strict border rules can make the journey more dangerous for a fleeing family. When legal processing channels are slow, border offices suffer an anomalous backlog. This delay stalls human lives and traps vulnerable people in a legal limbo for months. To fix these human rights issues, governments must make profound overhauls to global migration policies. Changing these laws is a difficult, albeit very important, task for modern democracies.
+    </div>
+
+    <h3>Task A: True or False</h3>
+    <div class="question">
+        <div class="task-list">
+            <div class="task-item"><strong>21.</strong> Historically, governments believed they could easily control population shifts with borders. <strong>[ T / F ]</strong></div>
+            <div class="task-item"><strong>22.</strong> The text says that global immigration is slowly decreasing today. <strong>[ T / F ]</strong></div>
+            <div class="task-item"><strong>23.</strong> Some local citizens worry that new migrants will cause infrastructure strain. <strong>[ T / F ]</strong></div>
+            <div class="task-item"><strong>24.</strong> Economists agree that migrants completely destroy the local job market. <strong>[ T / F ]</strong></div>
+            <div class="task-item"><strong>25.</strong> Slow processing channels can create a backlog and trap families in legal limbo. <strong>[ T / F ]</strong></div>
+        </div>
+    </div>
+
+    <h3>Task B: Fill in the Blanks</h3>
+    <div class="question">
+        <p><em>Use no more than THREE words from the text to complete the sentences.</em></p>
+        <div class="task-list">
+            <div class="task-item"><strong>26.</strong> The number of migrants today has reached an <input type="text" disabled> level.</div>
+            <div class="task-item"><strong>27.</strong> People migrate because of poverty, war, or <input type="text" disabled>.</div>
+            <div class="task-item"><strong>28.</strong> Some people fear that migrants place a <input type="text" disabled> on hospitals.</div>
+            <div class="task-item"><strong>29.</strong> Fears about native workers losing their jobs are often <input type="text" disabled>.</div>
+            <div class="task-item"><strong>30.</strong> Slow border offices can trap vulnerable people in an agonizing <input type="text" disabled>.</div>
+        </div>
+    </div>
+
+    <h3>Task C: Writing Task</h3>
+    <div class="writing-task">
+        <p><strong>31. Write a formal report of 100–150 words describing the topic of global migration based on the article.</strong></p>
+        <ul style="margin-bottom: 20px;">
+            <li>First, explain why people decide to leave their homes (e.g., geographic displacement).</li>
+            <li>Next, describe the debate inside the receiving country (worries about infrastructure strain vs. economic growth).</li>
+            <li>Finally, explain what happens to families when border processing is too slow.</li>
+            <li><strong>Constraint:</strong> You must use <strong>impersonal passive language</strong> (e.g., "It is reported that...") and at least <strong>two examples of reported speech</strong> to explain the ideas in the text. Avoid using personal pronouns like "I" or "we".</li>
+        </ul>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>
