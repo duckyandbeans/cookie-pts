@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Reporting Verbs - B1 Accessible Edition</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --accent-a: #8e44ad;
+            --accent-b: #d35400;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --success: #27ae60;
+            --error: #c0392b;
+            --vocab-bg: #e8f8f5;
+            --vocab-border: #16a085;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; font-size: 2.5em; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-top: 40px;}
+
+        .navigation-box {
+            background: #ebf5fb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--accent);
+            font-weight: 500;
+        }
+
+        .navigation-box a {
+            color: var(--accent);
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        .navigation-box a:hover { text-decoration: underline; }
+
+        .verb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .verb-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--accent);
+            transition: transform 0.2s;
+        }
+
+        .verb-card:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .verb-title { font-size: 1.3em; font-weight: bold; color: var(--primary); margin-bottom: 5px; }
+        .verb-indo { font-style: italic; color: #7f8c8d; font-size: 0.95em; margin-bottom: 10px; }
+        .verb-desc { font-size: 0.9em; }
+
+        .quiz-section {
+            background: #eaf2f8;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+            border: 1px solid #d4e6f1;
+        }
+
+        .question-block {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px dashed #bdc3c7;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .quiz-question { font-size: 1.15em; font-weight: 600; margin-bottom: 15px; color: var(--primary); }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+        
+        .quiz-btn {
+            background: white;
+            border: 2px solid var(--accent);
+            padding: 12px 20px;
+            font-size: 1em;
+            color: var(--secondary);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .quiz-btn:hover { background: var(--accent); color: white; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 5px; display: none; font-weight: 500; }
+        .feedback.correct { display: block; background: #e8f8f5; color: var(--success); border: 1px solid #a3e4d7; }
+        .feedback.incorrect { display: block; background: #fdedec; color: var(--error); border: 1px solid #f5b7b1; }
+
+        .passage-card {
+            background: var(--card-bg);
+            padding: 35px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            font-size: 1.15em;
+            text-align: justify;
+        }
+
+        .interactive-vocab {
+            display: inline-block;
+            position: relative;
+            background-color: var(--vocab-bg);
+            color: var(--primary);
+            padding: 0 4px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            border-bottom: 2px solid var(--vocab-border);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .interactive-vocab:hover {
+            background-color: var(--vocab-border);
+            color: #ffffff;
+        }
+
+        .translation-badge {
+            display: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 120%;
+            background-color: #2c3e50;
+            color: #ffffff;
+            font-size: 0.8em;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .translation-badge::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2c3e50 transparent;
+        }
+
+        .show-translation { display: block; }
+
+        .translation-toggle-btn {
+            background-color: #34495e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        .translation-toggle-btn:hover { background-color: #2c3e50; }
+
+        .translation-content {
+            display: none;
+            margin-top: 20px;
+            background-color: #fcfcfc;
+            border-left: 4px solid #7f8c8d;
+            padding: 20px;
+            font-style: italic;
+            color: #555;
+            font-size: 1.05em;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .selector-btn {
+            flex: 1;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-a { background-color: var(--accent-a); }
+        .btn-b { background-color: var(--accent-b); }
+        .selector-btn:hover { opacity: 0.9; }
+
+        .workspace-card {
+            display: none;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .workspace-card h2 { margin-top: 0; padding-bottom: 10px; border-bottom: 3px solid; }
+        #workspace-a h2 { color: var(--accent-a); border-color: var(--accent-a); }
+        #workspace-b h2 { color: var(--accent-b); border-color: var(--accent-b); }
+
+        .line-item {
+            background: #fdfefe;
+            border: 1px solid #e5e8e8;
+            border-left: 5px solid #bdc3c7;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #workspace-a .line-item { border-left-color: var(--accent-a); }
+        #workspace-b .line-item { border-left-color: var(--accent-b); }
+
+        .direct-speech { font-size: 1.15em; font-weight: 600; color: #2c3e50; font-style: italic; }
+
+        .control-row { display: flex; align-items: center; gap: 15px; margin-top: 5px; }
+        .control-row input[type="checkbox"] { transform: scale(1.4); cursor: pointer; }
+        .control-row label { font-size: 0.95em; font-weight: bold; cursor: pointer; color: #7f8c8d; user-select: none; }
+
+        .hint-btn {
+            background: none;
+            border: none;
+            color: #2980b9;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            padding: 0;
+            text-decoration: underline;
+            width: fit-content;
+        }
+        .hint-btn:hover { color: #1a5276; }
+
+        .verb-badge-box {
+            display: none;
+            background: #f4f6f7;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border-left: 4px solid var(--primary);
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        .verb-badge-box strong { color: #c0392b; }
+
+        .line-completed { background-color: #eaedd0 !important; border-color: #27ae60 !important; opacity: 0.75; }
+        .line-completed .direct-speech { text-decoration: line-through; color: #7f8c8d; }
+
+        .warning-text {
+            background: #fdf2e9;
+            border-left: 4px solid #e67e22;
+            padding: 10px 15px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navigation-box">
+        Jump to section: 
+        <a href="#dictionary">📖 1. Verb Guide</a> | 
+        <a href="#reading">📰 2. B1 Reading Passage</a> | 
+        <a href="#game">🎭 3. Drama Speaking Game</a>
+    </div>
+
+    <!-- SECTION 1: DICTIONARY AND QUIZZES -->
+    <div id="dictionary"></div>
+    
+    <h2>1. Neutral & Factual Verbs</h2>
+    <p>Used to present information simply, without strong feelings or special bias.</p>
+    <div class="verb-grid">
+        <div class="verb-card">
+            <div class="verb-title">State</div>
+            <div class="verb-indo">Menyatakan</div>
+            <div class="verb-desc">To write or say something clearly and directly.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Describe</div>
+            <div class="verb-indo">Mendeskripsikan</div>
+            <div class="verb-desc">To give details about what something looks like or how it happened.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Observe</div>
+            <div class="verb-indo">Mengamati</div>
+            <div class="verb-desc">To look at something carefully and note down what you see.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Examine</div>
+            <div class="verb-indo">Memeriksa / Meneliti</div>
+            <div class="verb-desc">To study something closely to look for errors or hidden information.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Illustrate</div>
+            <div class="verb-indo">Mengilustrasikan / Memberi contoh</div>
+            <div class="verb-desc">To make an idea easy to understand by sharing an example or a picture.</div>
+        </div>
+    </div>
+
+    <div class="quiz-section">
+        <h3>Checkpoint Quiz 1: Neutral Verbs</h3>
+        
+        <div class="question-block">
+            <div class="quiz-question">Question 1.1: The author uses a simple chart to show how a school grew over 10 years. The author wants to make the numbers easy. The author is using the chart to ________ the growth.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q1_1', false, 'State means saying a fact plainly. Using a chart to clarify something matches another verb better.')">A) state</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_1', false, 'Observe means to look at something or notice it, but here the author is explaining something to the reader.')">B) observe</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_1', true, 'Correct! Illustrate means to make an idea clear by using pictures, charts, or examples.')">C) illustrate</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_1', false, 'Examine means to study something closely to look for problems.')">D) examine</button>
+            </div>
+            <div id="feedback-q1_1" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 1.2: A scientist uses a microscope for two weeks to study tiny cells and find out why they look different. The scientist is trying to ________ the cells.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q1_2', false, 'Observe just means to notice something, but using a microscope to study details for two weeks is deeper.')">A) observe</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_2', true, 'Correct! Examine means to look at something very closely to understand its condition or find details.')">B) examine</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_2', false, 'Describe means to say what something looks like, but the action of studying it closely is different.')">C) describe</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_2', false, 'Illustrate means giving examples to help other people understand.')">D) illustrate</button>
+            </div>
+            <div id="feedback-q1_2" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 1.3: A witness tells the police exactly what happened step-by-step during a car crash, explaining the colors and positions of the cars. The witness is ________ the accident.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q1_3', false, 'Stating means giving a short, single fact. Telling a whole step-by-step story is more detailed.')">A) stating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_3', true, 'Correct! Describing means giving details about how an event happened or what something looks like.')">B) describing</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_3', false, 'Examining means checking the physical parts of the car for damage.')">C) examining</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_3', false, 'Illustrating means drawing a picture or creating a graph.')">D) illustrating</button>
+            </div>
+            <div id="feedback-q1_3" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 1.4: An astronomer looks at the night sky, notices a quick flash of light on his screen, and immediately writes down the time. The astronomer ________ the light.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q1_4', true, 'Correct! To observe means to notice something with your eyes or a tool and record it.')">A) observed</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_4', false, 'Examined means he spent a long time studying the light under a test. He only saw it quickly.')">B) examined</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_4', false, 'Described means he wrote a long list of details about it.')">C) described</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_4', false, 'Stated means he made a strong public announcement.')">D) stated</button>
+            </div>
+            <div id="feedback-q1_4" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 1.5: Rule 1 in the classroom guide says: "All students must raise their hands to speak." The guide clearly ________ the rule.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q1_5', false, 'Describe implies a long story with many details. This is just a short, clear rule.')">A) describes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_5', false, 'Illustrates would mean there is a drawing or picture of a student raising their hand.')">B) illustrates</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_5', true, 'Correct! State is used to write down facts, rules, or messages clearly and directly.')">C) states</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_5', false, 'Examines means checking something carefully for problems.')">D) examines</button>
+            </div>
+            <div id="feedback-q1_5" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 1.6: To help readers understand how bad the weather was, a reporter tells the true story of a farmer who lost all his crops. The reporter uses this story to ________ the power of the storm.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q1_6', false, 'State is too simple. A whole story does more than just say a single fact.')">A) state</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_6', false, 'Examine implies testing the air or checking the soil scientifically.')">B) examine</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_6', true, 'Correct! Illustrate means to explain a big topic (like a bad storm) by using a clear, real example.')">C) illustrate</button>
+                <button class="quiz-btn" onclick="checkAnswer('q1_6', false, 'Observe means to watch passively. The reporter is actively explaining it to the reader.')">D) observe</button>
+            </div>
+            <div id="feedback-q1_6" class="feedback"></div>
+        </div>
+    </div>
+
+    <h2>2. Argumentative & Assertive Verbs</h2>
+    <p>Used when the author wants to express a strong opinion or defend an idea.</p>
+    <div class="verb-grid">
+        <div class="verb-card">
+            <div class="verb-title">Argue</div>
+            <div class="verb-indo">Berargumen</div>
+            <div class="verb-desc">To share reasons or facts to prove that your idea is correct.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Assert</div>
+            <div class="verb-indo">Menegaskan</div>
+            <div class="verb-desc">To state an opinion confidently and strongly, even without proof yet.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Emphasize</div>
+            <div class="verb-indo">Menekankan</div>
+            <div class="verb-desc">To make an important word or idea stand out so readers notice it.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Advocate</div>
+            <div class="verb-indo">Menganjurkan / Mendukung</div>
+            <div class="verb-desc">To publicly recommend or support a particular cause or policy action.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Contend</div>
+            <div class="verb-indo">Mempertahankan pendapat</div>
+            <div class="verb-desc">To hold onto your opinion firmly during an active debate or argument.</div>
+        </div>
+    </div>
+
+    <div class="quiz-section">
+        <h3>Checkpoint Quiz 2: Argumentative Verbs</h3>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 2.1: A green activist writes a letter to the city government, strongly asking them to ban plastic bags in supermarkets immediately. The activist is trying to ________ a new rule.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q2_1', false, 'Assert means to say an opinion strongly, but it does not mean asking for a new rule or plan.')">A) assert</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_1', false, 'Emphasize means to point out an important word or idea that is already there.')">B) emphasize</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_1', true, 'Correct! Advocate means to openly support a plan, program, or new law.')">C) advocate</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_1', false, 'Contend means to debate with someone, not to suggest a helpful public plan.')">D) contend</button>
+            </div>
+            <div id="feedback-q2_1" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 2.2: A politician stands up and says, "Our town is the safest town in the country!" He does not show any police data or numbers. He just says it very loudly and confidently. The politician is ________ his belief.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q2_2', false, 'Arguing requires giving logical reasons and proof, which the politician did not bring.')">A) arguing</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_2', true, 'Correct! Asserting means declaring a belief with power and confidence, even if you do not show proof right now.')">B) asserting</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_2', false, 'Advocating means asking for a new public rule or action.')">C) advocating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_2', false, 'Emphasizing means highlighting one small word in a text.')">D) emphasizing</button>
+            </div>
+            <div id="feedback-q2_2" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 2.3: In a long paper, a student uses graphs, historical data, and interviews to prove that extra homework improves test scores. The student ________ that homework is helpful.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q2_3', true, 'Correct! Argue means to build a strong point step-by-step by using logic and real proof.')">A) argues</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_3', false, 'Assert implies just saying it loudly without bringing long text or deep proof.')">B) asserts</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_3', false, 'Emphasize just means to underline an important note.')">C) emphasizes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_3', false, 'Contend means to hold onto an opinion against another team.')">D) contends</button>
+            </div>
+            <div id="feedback-q2_3" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 2.4: During the safety briefing, the teacher speaks very loudly, uses bold red letters on the slide, and says "Warning!" three times. The teacher is trying to ________ the safety rule.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q2_4', false, 'Argue requires a long logical explanation, not red text or loud words.')">A) argue</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_4', false, 'Advocate means recommending a new community project.')">B) advocate</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_4', false, 'Contend means defending an opinion from an opponent.')">C) contend</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_4', true, 'Correct! Emphasize means to draw special attention to an idea so people know it is crucial.')">D) emphasize</button>
+            </div>
+            <div id="feedback-q2_4" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 2.5: Even though the other debate team presents strong points against him, the speaker refuses to change his mind. He stands firm and says his plan is still the best. The speaker ________ that he is right.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q2_5', true, 'Correct! Contend means to maintain your point and stand your ground inside an active argument or debate.')">A) contends</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_5', false, 'Advocate means trying to make a new rule or law.')">B) advocates</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_5', false, 'Emphasize means making a word stand out.')">C) emphasizes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_5', false, 'Argue is okay, but contend perfectly captures defending your idea against opposition.')">D) argues</button>
+            </div>
+            <div id="feedback-q2_5" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 2.6: A group of parents starts a petition and goes to city hall to ask for a new library down the street. The parents are ________ for a new library.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q2_6', false, 'Contending means fighting about a definition in text.')">A) contending</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_6', true, 'Correct! Advocating means showing active support for a specific community plan, building, or project.')">B) advocating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_6', false, 'Asserting means stating a fact with confidence.')">C) asserting</button>
+                <button class="quiz-btn" onclick="checkAnswer('q2_6', false, 'Emphasizing means drawing attention to a small detail.')">D) emphasizing</button>
+            </div>
+            <div id="feedback-q2_6" class="feedback"></div>
+        </div>
+    </div>
+
+    <h2>3. Tentative & Speculative Verbs</h2>
+    <p>Used when the author is guessing, sharing a hypothesis, or is not 100% sure yet.</p>
+    <div class="verb-grid">
+        <div class="verb-card">
+            <div class="verb-title">Suggest</div>
+            <div class="verb-indo">Mengisyaratkan / Menyarankan</div>
+            <div class="verb-desc">To share an idea gently, or hint at an answer without direct proof.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Hypothesize</div>
+            <div class="verb-indo">Menghipotesiskan</div>
+            <div class="verb-desc">To create a testable, scientific guess before starting an experiment.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Speculate</div>
+            <div class="verb-indo">Berspekulasi / Menduga</div>
+            <div class="verb-desc">To guess blindly based on rumors, feelings, or very little information.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Imply</div>
+            <div class="verb-indo">Menyiratkan</div>
+            <div class="verb-desc">To hint at a message between the lines without saying it out loud.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Postulate</div>
+            <div class="verb-indo">Mendalilkan</div>
+            <div class="verb-desc">To set a foundational rule or assume something is true so you can begin your logic.</div>
+        </div>
+    </div>
+
+    <div class="quiz-section">
+        <h3>Practice: Tentative Verbs</h3>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 3.1: A police officer sees a tiny scratch on a door. He does not have full proof yet, but he writes: "It is possible that a small tool was used here." The officer is ________.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q3_1', false, 'Postulating means creating a firm, basic math rule. He is just guessing.')">A) postulating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_1', false, 'Implying means hiding a secret message in your text.')">B) implying</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_1', true, 'Correct! Speculating means guessing about an event when you have very little real proof.')">C) speculating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_1', false, 'Hypothesizing is a formal scientific statement.')">D) hypothesizing</button>
+            </div>
+            <div id="feedback-q3_1" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 3.2: Before mixing the liquids, the chemistry team writes a guess: "Adding heat will make this bubble." Now, they start 5 tests to see if their guess is right. The team is ________.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q3_2', false, 'Suggesting is a bit too casual for a formal science test environment.')">A) suggesting</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_2', true, 'Correct! Hypothesizing means creating an unproven guess specifically designed to be tested in an experiment.')">B) hypothesizing</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_2', false, 'Implying means dropping an indirect hint.')">C) implying</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_2', false, 'Speculating implies guessing wildly without any plan to run a test.')">D) speculating</button>
+            </div>
+            <div id="feedback-q3_2" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 3.3: A critic writes: "The manager bought a luxury yacht this week, while his workers didn't receive their pay on time." The critic never calls the manager bad, but the critic is ________ that the manager is selfish.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q3_3', false, 'Speculating means guessing wildly. Here, the writer arranges real facts to guide the reader\'s opinion subtly.')">A) speculating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_3', false, 'Postulating is an academic term for establishing core rules.')">B) postulating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_3', false, 'Hypothesizing is for laboratory setups.')">C) hypothesizing</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_3', true, 'Correct! To imply is to guide the reader to a conclusion by using hints instead of saying it directly.')">D) implying</button>
+            </div>
+            <div id="feedback-q3_3" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 3.4: In a quiet voice, a student says: "The sky is very dark; perhaps it will rain during our lunch break." The student is ________ that they change their plans.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q3_4', true, 'Correct! Suggesting is offering a gentle or careful idea for other people to think about.')">A) suggesting</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_4', false, 'Implying means hiding a secret message between the lines.')">B) implying</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_4', false, 'Postulating is a formal word for setting baseline rules.')">C) postulating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_4', false, 'Hypothesizing means designing a science trial sheet.')">D) hypothesizing</button>
+            </div>
+            <div id="feedback-q3_4" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 3.5: To build a new math theory, scientists assume that a perfect circle has no rough edges. They do not test this every day; they just accept it as a basic rule so they can start their math. The scientists ________ this basic rule.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q3_5', false, 'Speculating means they are guessing blindly. Here they accept it as a permanent rule.')">A) speculate</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_5', true, 'Correct! Postulate means to accept a basic rule or assumption as true so you can use it to build a larger idea.')">B) postulate</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_5', false, 'Suggest is too weak; this is a permanent foundation for their math.')">C) suggest</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_5', false, 'Imply means giving a subtle hint.')">D) imply</button>
+            </div>
+            <div id="feedback-q3_5" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 3.6: Without checking any official facts, a podcaster guesses that a new phone will explode based on an unverified internet rumor. The podcaster is ________.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q3_6', false, 'Hypothesizing requires setting up careful science guidelines.')">A) hypothesizing</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_6', false, 'Postulating means establishing a core logical law.')">B) postulating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_6', true, 'Correct! Speculating means forming an opinion based on rumors or weak information.')">C) speculating</button>
+                <button class="quiz-btn" onclick="checkAnswer('q3_6', false, 'Suggesting means making a polite, gentle recommendation.')">D) suggesting</button>
+            </div>
+            <div id="feedback-q3_6" class="feedback"></div>
+        </div>
+    </div>
+
+    <h2>4. Opposing & Critical Verbs</h2>
+    <p>Used when the author wants to disagree, prove an idea wrong, or show a conflict.</p>
+    <div class="verb-grid">
+        <div class="verb-card">
+            <div class="verb-title">Refute</div>
+            <div class="verb-indo">Membantah / Mematahkan</div>
+            <div class="verb-desc">To completely prove that an idea is false by using clear, solid facts or evidence.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Dispute</div>
+            <div class="verb-indo">Memperdebatkan / Menyanggah</div>
+            <div class="verb-desc">To question if a fact or a source is true, honest, or correct.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Concede</div>
+            <div class="verb-indo">Mengakui kebenaran / Mengalah</div>
+            <div class="verb-desc">To agree that your opponent has a good or correct point, usually before you continue your own argument.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Dismiss</div>
+            <div class="verb-indo">Mengabaikan / Menepis</div>
+            <div class="verb-desc">To refuse to listen to or consider an idea because you think it is completely silly or lacks value.</div>
+        </div>
+        <div class="verb-card">
+            <div class="verb-title">Reject</div>
+            <div class="verb-indo">Menolak</div>
+            <div class="verb-desc">To say an absolute "no" to a contract, offer, or new idea.</div>
+        </div>
+    </div>
+
+    <div class="quiz-section">
+        <h3>Checkpoint Quiz 4: Critical Verbs</h3>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 4.1: A historian reviews an old book. She says: "The book's list of dates is 100% correct," but then she explains why the rest of the book's ideas are terrible. Regarding the list of dates, the historian ________.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q4_1', false, 'Refute means to prove wrong. Here, she explicitly says the dates are correct.')">A) refutes them</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_1', false, 'Dismiss means throwing out the records without reading them because they seem worthless.')">B) dismisses them</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_1', false, 'Dispute means to argue against the accuracy of the numbers.')">C) disputes them</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_1', true, 'Correct! To concede means to admit that your opponent has a valid point before you pivot back to your view.')">D) concedes them</button>
+            </div>
+            <div id="feedback-q4_1" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 4.2: For a long time, old textbooks said that a big river flood destroyed an ancient town. However, Dr. Lin brings up deep dirt samples that prove there was no rain or water there for 100 years. Dr. Lin effectively ________ the flood theory.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q4_2', false, 'Dismisses implies she just ignored the old book without doing any actual laboratory field proof.')">A) dismisses</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_2', true, 'Correct! To refute is to completely break an argument by showing undeniable, contradictory factual data.')">B) refutes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_2', false, 'Concedes means she agrees that the flood actually happened.')">C) concedes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_2', false, 'Rejects is okay, but refute is highly precise because she used hard physical evidence.')">D) rejects</button>
+            </div>
+            <div id="feedback-q4_2" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 4.3: A lawyer questions a witness's memory by pointing out that the street was pitch black and raining heavily. The lawyer is ________ the witness's story.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q4_3', false, 'Refuting would mean showing a video that proves the witness is completely wrong. Here, she is just casting doubt.')">A) refuting</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_3', false, 'Conceding means agreeing that the witness saw perfectly.')">B) conceding</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_3', true, 'Correct! To dispute is to question or cast doubt on the accuracy or honesty of a claim.')">C) disputing</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_3', false, 'Dismissing means throwing the story away without checking any facts.')">D) dismissing</button>
+            </div>
+            <div id="feedback-q4_3" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 4.4: The company manager throws away an idea sheet after reading only the first title line, calling it "a completely silly plan with zero logic." The manager ________ the idea.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q4_4', true, 'Correct! To dismiss is to refuse to look at an idea because you think it has zero value.')">A) dismisses</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_4', false, 'Refutes requires reading it all and pointing out errors with proof.')">B) refutes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_4', false, 'Disputes implies they sat down and debated the fine details line-by-line.')">C) disputes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_4', false, 'Concedes means they gave in and funded the program.')">D) concedes</button>
+            </div>
+            <div id="feedback-q4_4" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 4.5: After reading the bad terms of a new working paper, the worker group votes 'no' and pushes the paper away. The group ________ the document.</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q4_5', false, 'Refutes is used for dismantling an academic theory, not a work paper.')">A) refutes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_5', false, 'Concedes implies they ultimately buckled under pressure and signed the sheet.')">B) concedes</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_5', true, 'Correct! Reject is the formal action of saying an absolute no to an offer or contract.')">C) rejects</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_5', false, 'Dismisses would mean they threw it away without reading it at all.')">D) dismisses</button>
+            </div>
+            <div id="feedback-q4_5" class="feedback"></div>
+        </div>
+
+        <div class="question-block">
+            <div class="quiz-question">Question 4.6: While a movie critic agrees that a film has "very beautiful animations," she immediately says that the actors and story are terrible. Regarding the animations, the critic...</div>
+            <div class="quiz-options">
+                <button class="quiz-btn" onclick="checkAnswer('q4_6', false, 'Refutes implies proving that the animations were actually terrible.')">A) refutes them</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_6', true, 'Correct! Concede means admitting that one small part of the other side is good or correct, before attacking the rest.')">B) concedes them</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_6', false, 'Disputes means arguing that the animations were broken.')">C) disputes them</button>
+                <button class="quiz-btn" onclick="checkAnswer('q4_6', false, 'Rejects means refusing to accept that the animations were good.')">D) rejects them</button>
+            </div>
+            <div id="feedback-q4_6" class="feedback"></div>
+        </div>
+    </div>
+
+
+    <!-- SECTION 2: THE INTERACTIVE PASSAGE WITH MIGRATION VOCABULARY -->
+    <div id="reading"></div>
+    
+    <h2>2. B1 Accessible Reading Passage</h2>
+    <p>This text explores global movement patterns. Click on any green highlighted word or phrase to see its definition in Indonesian instantly!</p>
+
+    <div class="passage-card">
+        <!-- PARAGRAPH 1 -->
+        <p>
+            Today, international migration is a major topic in <span class="interactive-vocab" onclick="toggleTranslation(this)">contemporary geopolitics<span class="translation-badge">Geopolitik kontemporer / masa kini</span></span>. 
+            This massive <span class="interactive-vocab" onclick="toggleTranslation(this)">cross border<span class="translation-badge">Lintas batas / Antarnegara</span></span> 
+            movement is now <span class="interactive-vocab" onclick="toggleTranslation(this)">ubiquitous<span class="translation-badge">Sangat meluas / Ada di mana-mana</span></span> 
+            because it happens in almost every country. It is a dominant theme in today's <span class="interactive-vocab" onclick="toggleTranslation(this)">global discourse<span class="translation-badge">Wacana global / Pembicaraan dunia</span></span>, 
+            and it changes the local populations of all <span class="interactive-vocab" onclick="toggleTranslation(this)">receiving states<span class="translation-badge">Negara penerima (imigran)</span></span>. 
+            In the past, the main <span class="interactive-vocab" onclick="toggleTranslation(this)">underlying<span class="translation-badge">Yang mendasari</span></span> 
+            <span class="interactive-vocab" onclick="toggleTranslation(this)">premise<span class="translation-badge">Premis / Asumsi dasar</span></span> 
+            of global laws was simple. Governments believed that border walls would successfully <span class="interactive-vocab" onclick="toggleTranslation(this)">regulate<span class="translation-badge">Mengatur / Menertibkan</span></span> 
+            and control these sudden <span class="interactive-vocab" onclick="toggleTranslation(this)">structural shifts<span class="translation-badge">Perubahan struktural</span></span>. 
+            However, even with these strict policy <span class="interactive-vocab" onclick="toggleTranslation(this)">frameworks<span class="translation-badge">Kerangka kerja / Sistem kebijakan</span></span>, 
+            global <span class="interactive-vocab" onclick="toggleTranslation(this)">immigration<span class="translation-badge">Imigrasi</span></span> 
+            keeps growing. The total number of migrants has risen to <span class="interactive-vocab" onclick="toggleTranslation(this)">unprecedented<span class="translation-badge">Belum pernah terjadi sebelumnya</span></span> 
+            levels, crossing a new historical <span class="interactive-vocab" onclick="toggleTranslation(this)">thresholds<span class="translation-badge">Ambang batas</span></span>. 
+            This huge population <span class="interactive-vocab" onclick="toggleTranslation(this)">displacement<span class="translation-badge">Perpindahan penduduk / Pengungsian</span></span> 
+            forces modern <span class="interactive-vocab" onclick="toggleTranslation(this)">nation states<span class="translation-badge">Negara-negara bangsa</span></span> 
+            to manage very diverse neighborhoods. Every year, a migrant <span class="interactive-vocab" onclick="toggleTranslation(this)">navigates<span class="translation-badge">Mengarahkan jalan / Menghadapi</span></span> 
+            many legal blocks, difficult rules, and slow <span class="interactive-vocab" onclick="toggleTranslation(this)">bureaucratic checkpoints<span class="translation-badge">Pos pemeriksaan birokrasi</span></span> 
+            just to build a stable and <span class="interactive-vocab" onclick="toggleTranslation(this)">viable<span class="translation-badge">Layak / Dapat bertahan hidup</span></span> life.
+        </p>
+
+        <!-- PARAGRAPH 2 -->
+        <p>
+            The political response to migration is rarely <span class="interactive-vocab" onclick="toggleTranslation(this)">unified<span class="translation-badge">Bersatu / Seragam / Satu suara</span></span> because citizens have completely different opinions. 
+            <span class="interactive-vocab" onclick="toggleTranslation(this)">Conversely<span class="translation-badge">Sebaliknya</span></span>, 
+            while some groups focus entirely on humanitarian aid, other groups worry about a severe 
+            <span class="interactive-vocab" onclick="toggleTranslation(this)">infrastructure strain<span class="translation-badge">Tekanan / Beban infrastruktur</span></span>. 
+            They believe that fast population growth places a <span class="interactive-vocab" onclick="toggleTranslation(this)">pervasive<span class="translation-badge">Mendalam / Menyebar luas</span></span> 
+            burden on the local healthcare <span class="interactive-vocab" onclick="toggleTranslation(this)">apparatus<span class="translation-badge">Aparatus / Alat / Sistem negara</span></span> 
+            and fills up all available <span class="interactive-vocab" onclick="toggleTranslation(this)">municipal housing<span class="translation-badge">Perumahan kota / Perumahan rakyat</span></span> 
+            complexes. In these debates, local leaders try to protect every community <span class="interactive-vocab" onclick="toggleTranslation(this)">resource<span class="translation-badge">Sumber daya</span></span> 
+            and strictly <span class="interactive-vocab" onclick="toggleTranslation(this)">assess<span class="translation-badge">Menilai / Mengevaluasi</span></span> 
+            the job market. However, many economists argue that fears about losing jobs actually lack clear <span class="interactive-vocab" onclick="toggleTranslation(this)">empirical support<span class="translation-badge">Dukungan empiris / Bukti nyata</span></span>. 
+            When integration is planned well, new workers help the local economy grow, so worries about the complete economic <span class="interactive-vocab" onclick="toggleTranslation(this)">displacement<span class="translation-badge">Penggantian posisi / Penggusuran kerja</span></span> 
+            of native workers become entirely <span class="interactive-vocab" onclick="toggleTranslation(this)">superfluous<span class="translation-badge">Berlebihan / Sia-sia / Tidak perlu</span></span>.
+        </p>
+
+        <!-- PARAGRAPH 3 -->
+        <p>
+            <span class="interactive-vocab" onclick="toggleTranslation(this)">Paradoxically<span class="translation-badge">Secara paradoks / Anehnya</span></span>, 
+            a border <span class="interactive-vocab" onclick="toggleTranslation(this)">regime<span class="translation-badge">Rezim / Sistem pemerintahan</span></span> that is too strict can accidentally make a <span class="interactive-vocab" onclick="toggleTranslation(this)">fleeing family<span class="translation-badge">Keluarga yang melarikan diri / Mengungsi</span></span> 
+            use dangerous human smuggling networks to cross borders. If legal <span class="interactive-vocab" onclick="toggleTranslation(this)">processing channels<span class="translation-badge">Saluran / Jalur pemrosesan hukum</span></span> 
+            move too slowly, border offices suffer an <span class="interactive-vocab" onclick="toggleTranslation(this)">anomalous backlog<span class="translation-badge">Tumpukan antrean yang tidak normal</span></span>. 
+            This system delay completely <span class="interactive-vocab" onclick="toggleTranslation(this)">stalls<span class="translation-badge">Menghentikan / Memacetkan</span></span> 
+            human progress and traps vulnerable people in an agonizing legal <span class="interactive-vocab" onclick="toggleTranslation(this)">limbo<span class="translation-badge">Kondisi luntang-lantung / Ketidakpastian hukum</span></span> 
+            for many months. Fixing these large human rights problems will require big structural <span class="interactive-vocab" onclick="toggleTranslation(this)">overhauls<span class="translation-badge">Pemeriksaan menyeluruh / Perombakan total</span></span> 
+            to create a <span class="interactive-vocab" onclick="toggleTranslation(this)">profound<span class="translation-badge">Mendalam / Sangat besar</span></span> 
+            and positive impact on global migration laws. Changing these laws remains a necessary, <span class="interactive-vocab" onclick="toggleTranslation(this)">albeit<span class="translation-badge">Meskipun / Walaupun</span></span> 
+            highly sensitive, task for modern democratic governments.
+        </p>
+
+        <!-- TOGGLE LINE-BY-LINE TRANSLATION -->
+        <center>
+            <button class="translation-toggle-btn" onclick="toggleTranslationContent()">👇 Toggle Line-by-Line Indonesian Translation</button>
+        </center>
+        
+        <div id="translation-box" class="translation-content">
+            <strong>Paragraph 1:</strong><br>
+            Hari ini, migrasi internasional adalah topik utama dalam geopolitik kontemporer. Gerakan lintas batas yang masif ini sekarang sangat meluas karena terjadi di hampir setiap negara. Ini menjadi tema dominan dalam wacana global saat ini, dan mengubah populasi lokal di semua negara penerima. Di masa lalu, premis dasar utama dari hukum global sangatlah sederhana. Pemerintah percaya bahwa tembok perbatasan akan berhasil mengatur dan mengendalikan perubahan struktural yang tiba-tiba ini. Namun, bahkan dengan kerangka kerja kebijakan yang ketat ini, imigrasi global terus tumbuh. Jumlah total migran telah meningkat ke tingkat yang belum pernah terjadi sebelumnya, melewati ambang batas sejarah yang baru. Perpindahan penduduk yang besar ini memaksa negara-negara bangsa modern untuk mengelola lingkungan yang sangat beragam. Setiap tahun, seorang migran menghadapi banyak hambatan hukum, aturan yang sulit, dan pos pemeriksaan birokrasi yang lambat hanya untuk membangun kehidupan yang layak dan dapat bertahan hidup.<br><br>
+            
+            <strong>Paragraph 2:</strong><br>
+            Respon politik domestik terhadap migrasi jarang bersatu karena warga negara memiliki pendapat yang sangat berbeda. Sebaliknya, sementara beberapa kelompok fokus sepenuhnya pada bantuan kemanusiaan, kelompok lain khawatir tentang beban infrastruktur yang parah. Mereka percaya bahwa pertumbuhan populasi yang cepat menempatkan beban yang mendalam pada aparatus kesehatan lokal dan memenuhi semua program perumahan kota yang tersedia. Dalam perdebatan ini, para pemimpin lokal mencoba melindungi setiap sumber daya komunitas dan secara akurat menilai pasar tenaga kerja. Namun, banyak ekonom berpendapat bahwa ketakutan kehilangan pekerjaan sebenarnya kekurangan bukti nyata. Ketika integrasi direncanakan dengan baik, pekerja baru membantu ekonomi lokal tumbuh, sehingga kekhawatiran tentang penggantian posisi ekonomi pekerja asli menjadi sepenuhnya berlebihan.<br><br>
+            
+            <strong>Paragraph 3:</strong><br>
+            Anehnya (secara paradoks), rezim perbatasan yang terlalu ketat secara tidak sengaja dapat membuat keluarga yang melarikan diri menggunakan jaringan penyelundupan manusia yang berbahaya untuk menyeberangi perbatasan. Jika jalur pemrosesan hukum bergerak terlalu lambat, kantor perbatasan mengalami tumpukan antrean yang tidak normal. Keterlambatan sistem ini sepenuhnya menghentikan kemajuan manusia dan menjebak orang-orang yang rentan dalam ketidakpastian hukum yang menyakitkan selama berbulan-bulan. Memperbaiki masalah hak asasi manusia yang besar ini akan memerlukan perombakan total secara struktural untuk menciptakan dampak yang mendalam dan positif pada hukum migrasi global. Mengubah hukum ini tetap menjadi tugas yang penting, meskipun sangat sensitif, bagi pemerintah demokratis modern.
+        </div>
+    </div>
+
+
+    <!-- SECTION 3: INTERACTIVE PAIR GAME -->
+    <div id="game"></div>
+    
+    <h2>3. Classroom Speaking Game: The Drama Circle</h2>
+    <div class="warning-text">
+        2 ex best friends are now in a messy breakup. They are gossiping about each other to their mutual friend (you!). Read their lines out loud, report them to your partner, and then check the box when you are done. You can also click the hint button to see academic reporting verb options that fit each line!
+    </div>
+
+    <!-- ROLE TRIGGERS -->
+    <div class="role-selector">
+        <button class="selector-btn btn-a" onclick="openWorkspace('workspace-a', 'workspace-b')">🙋‍♂️ I am Student A (Cassandra)</button>
+        <button class="selector-btn btn-b" onclick="openWorkspace('workspace-b', 'workspace-a')">🙋‍♀️ I am Student B (Lisa)</button>
+    </div>
+
+    <!-- STUDENT A WORKSPACE -->
+    <div id="workspace-a" class="workspace-card">
+        <h2>Student A: Cassandra's Task</h2>
+        <p><em>Read your lines line-by-line out loud to your partner. Convert them to reported speech together, check the box, and review your reporting verb options!</em></p>
+        
+        <!-- LINE A1 -->
+        <div class="line-item" id="item-a1">
+            <div class="direct-speech">Line 1: "OMG girl, I am telling you Leonardo is definitely cheating on you with Miranda."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-a1" onclick="toggleLineComplete('item-a1', this)">
+                <label for="chk-a1">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-a1')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-a1" class="verb-badge-box">
+                Academic Options: <strong>asserts, claims, alleges, contends</strong><br>
+                <em>Example: Cassandra <strong>claims</strong> that Leonardo is cheating on Lisa.</em>
+            </div>
+        </div>
+
+        <!-- LINE A2 -->
+        <div class="line-item" id="item-a2">
+            <div class="direct-speech">Line 2: "I saw him walk out of the movie theater with her yesterday."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-a2" onclick="toggleLineComplete('item-a2', this)">
+                <label for="chk-a2">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-a2')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-a2" class="verb-badge-box">
+                Academic Options: <strong>states, notes, observes, reports</strong><br>
+                <em>Example: She <strong>states</strong> that she witnessed him walking out of the theater.</em>
+            </div>
+        </div>
+
+        <!-- LINE A3 -->
+        <div class="line-item" id="item-a3">
+            <div class="direct-speech">Line 3: "This is so crazy because you guys are going to get married soon!"</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-a3" onclick="toggleLineComplete('item-a3', this)">
+                <label for="chk-a3">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-a3')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-a3" class="verb-badge-box">
+                Academic Options: <strong>exclaims, remarks, comments, points out</strong><br>
+                <em>Example: Cassandra <strong>exclaims</strong> that the situation is wild given their wedding plan.</em>
+            </div>
+        </div>
+
+        <!-- LINE A4 -->
+        <div class="line-item" id="item-a4">
+            <div class="direct-speech">Line 4: "I actually scream at the both of them once I was close enough to them."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-a4" onclick="toggleLineComplete('item-a4', this)">
+                <label for="chk-a4">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-a4')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-a4" class="verb-badge-box">
+                Academic Options: <strong>admits, describes, recounts, states</strong><br>
+                <em>Example: She <strong>recounts</strong> shouting at both individuals in public.</em>
+            </div>
+        </div>
+
+        <!-- LINE A5 -->
+        <div class="line-item" id="item-a5">
+            <div class="direct-speech">Line 5: "I told them you guys are so shameless and that Leonardo doesn't deserve you."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-a5" onclick="toggleLineComplete('item-a5', this)">
+                <label for="chk-a5">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-a5')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-a5" class="verb-badge-box">
+                Academic Options: <strong>criticizes, insults, slams, dismisses</strong><br>
+                <em>Example: She openly <strong>criticizes</strong> Leonardo's actions and character.</em>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT B WORKSPACE -->
+    <div id="workspace-b" class="workspace-card">
+        <h2>Student B: Lisa's Task</h2>
+        <p><em>Read your lines line-by-line out loud to your partner. Convert them to reported speech together, check the box, and review your reporting verb options!</em></p>
+
+        <!-- LINE B1 -->
+        <div class="line-item" id="item-b1">
+            <div class="direct-speech">Line 1: "Shut up, Cassandra stop lying. Leonardo was literally by my side yesterday."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-b1" onclick="toggleLineComplete('item-b1', this)">
+                <label for="chk-b1">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-b1')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-b1" class="verb-badge-box">
+                Academic Options: <strong>refutes, disputes, rejects, denies</strong><br>
+                <em>Example: Lisa immediately <strong>refutes</strong> Cassandra's tracking claims.</em>
+            </div>
+        </div>
+
+        <!-- LINE B2 -->
+        <div class="line-item" id="item-b2">
+            <div class="direct-speech">Line 2: "Anastasia has told me all about you and that you're trying to break us up just to have him."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-b2" onclick="toggleLineComplete('item-b2', this)">
+                <label for="chk-b2">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-b2')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-b2" class="verb-badge-box">
+                Academic Options: <strong>reveals, exposes, counters, discloses</strong><br>
+                <em>Example: Lisa <strong>reveals</strong> that Anastasia uncovered Cassandra's secret intentions.</em>
+            </div>
+        </div>
+
+        <!-- LINE B3 -->
+        <div class="line-item" id="item-b3">
+            <div class="direct-speech">Line 3: "I thought you were my best friend and I thought that I could trust you, but you're just a two face backstabbing degenerate."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-b3" onclick="toggleLineComplete('item-b3', this)">
+                <label for="chk-b3">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-b3')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-b3" class="verb-badge-box">
+                Academic Options: <strong>condemns, attacks, brands, labels</strong><br>
+                <em>Example: She completely <strong>condemns</strong> Cassandra as a dishonest peer.</em>
+            </div>
+        </div>
+
+        <!-- LINE B4 -->
+        <div class="line-item" id="item-b4">
+            <div class="direct-speech">Line 4: "I literally took a photo with Leonardo yesterday so you need to stop lying."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-b4" onclick="toggleLineComplete('item-b4', this)">
+                <label for="chk-b4">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-b4')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-b4" class="verb-badge-box">
+                Academic Options: <strong>demonstrates, illustrates, proves, corroborates</strong><br>
+                <em>Example: Lisa points to a photograph to <strong>corroborate</strong> her partner's presence.</em>
+            </div>
+        </div>
+
+        <!-- LINE B5 -->
+        <div class="line-item" id="item-b5">
+            <div class="direct-speech">Line 5: "You need to find a therapist. You're so awful."</div>
+            <div class="control-row">
+                <input type="checkbox" id="chk-b5" onclick="toggleLineComplete('item-b5', this)">
+                <label for="chk-b5">Reported to Partner</label>
+                <span>|</span>
+                <button class="hint-btn" onclick="toggleHint('hint-b5')">💡 Show Academic Verbs</button>
+            </div>
+            <div id="hint-b5" class="verb-badge-box">
+                Academic Options: <strong>suggests, urges, recommends, advises</strong><br>
+                <em>Example: Lisa sharply <strong>suggests</strong> that Cassandra seek counseling.</em>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openWorkspace(showId, hideId) {
+            document.getElementById(showId).style.display = 'block';
+            document.getElementById(hideId).style.display = 'none';
+        }
+
+        function toggleHint(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleLineComplete(itemId, checkbox) {
+            const item = document.getElementById(itemId);
+            if (checkbox.checked) {
+                item.classList.add('line-completed');
+            } else {
+                item.classList.remove('line-completed');
+            }
+        }
+
+        function checkAnswer(questionId, isCorrect, explanation) {
+            const feedbackBox = document.getElementById('feedback-' + questionId);
+            feedbackBox.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+            feedbackBox.innerHTML = (isCorrect ? '<strong>✓ Correct!</strong> ' : '<strong>✗ Incorrect.</strong> ') + explanation;
+        }
+
+        function toggleTranslation(element) {
+            const badge = element.querySelector('.translation-badge');
+            if (badge.classList.contains('show-translation')) {
+                badge.classList.remove('show-translation');
+                return;
+            }
+            const openBadges = document.querySelectorAll('.translation-badge.show-translation');
+            openBadges.forEach(b => b.classList.remove('show-translation'));
+            badge.classList.add('show-translation');
+        }
+
+        function toggleTranslationContent() {
+            const tBox = document.getElementById('translation-box');
+            tBox.style.display = (tBox.style.display === 'block') ? 'none' : 'block';
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.interactive-vocab')) {
+                const openBadges = document.querySelectorAll('.translation-badge.show-translation');
+                openBadges.forEach(badge => badge.classList.remove('show-translation'));
+            }
+        }, true);
+    </script>
+</body>
+</html>
