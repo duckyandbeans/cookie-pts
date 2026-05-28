@@ -169,21 +169,24 @@
     </style>
 </head>
 <body>
-    <div id="login-section">
-        <h2>Welcome! 👋</h2>
-        <p>Pilih namamu untuk mulai belajar:</p>
-        
-        <select id="user-select" class="dropdown">
-            <option value="" disabled selected>-- Pilih Nama --</option>
-            <option value="fny">fny (Fenny)</option>
-            <!-- You can add more students here later -->
-            <option value="guest">Guest</option>
-        </select>
-        
-        <button id="login-btn" onclick="startApp()">Mulai Belajar</button>
-    </div>
     <div class="container">
-        <div class="checkpoints" id="checkpoints">
+        
+        <!-- Login Section (VISIBLE BY DEFAULT) -->
+        <div id="login-section">
+            <h2>Welcome! 👋</h2>
+            <p>Pilih namamu untuk mulai belajar:</p>
+            
+            <select id="user-select" class="dropdown">
+                <option value="" disabled selected>-- Pilih Nama --</option>
+                <option value="fny">fny</option>
+                <option value="guest">Guest</option>
+            </select>
+            
+            <button id="login-btn" onclick="startApp()">Mulai Belajar</button>
+        </div>
+
+        <!-- Monday to Sunday Checkpoints (HIDDEN BY DEFAULT) -->
+        <div class="checkpoints" id="checkpoints" style="display: none;">
             <div class="day" id="day-1">M</div>
             <div class="day" id="day-2">T</div>
             <div class="day" id="day-3">W</div>
@@ -193,11 +196,13 @@
             <div class="day" id="day-7">S</div>
         </div>
 
-        <div class="progress-bar">
+        <!-- Progress Bar (HIDDEN BY DEFAULT) -->
+        <div class="progress-bar" style="display: none;">
             <div class="progress-fill" id="progress-fill"></div>
         </div>
 
-        <div id="quiz-section">
+        <!-- Quiz Section (HIDDEN BY DEFAULT) -->
+        <div id="quiz-section" style="display: none;">
             <div id="question-text">Loading question...</div>
             <div class="options-grid" id="options-container"></div>
             
@@ -209,13 +214,328 @@
             </div>
         </div>
         
+        <!-- Finish Section (HIDDEN BY DEFAULT) -->
         <div id="finish-section" style="display: none;">
             <h2>Kerja Bagus! 🎉</h2>
             <p>Kamu sudah menyelesaikan target hari ini.</p>
             <button id="do-more-finish-btn" onclick="doMore()">Kerjakan Lagi</button>
         </div>
+        
     </div>
 
+    <script>
+    // Student Database for Dropdown
+    const studentData = {
+        "fny": { name: "Fenny", email: "60fenny@gmail.com" },
+        "guest": { name: "Guest", email: "none" }
+    };
+
+    let currentStudent = null; // Will hold Fenny's data once she logs in
+
+    function startApp() {
+        const selectElement = document.getElementById('user-select');
+        const selectedValue = selectElement.value;
+
+        if (!selectedValue) {
+            alert("Tolong pilih nama dulu ya!");
+            return;
+        }
+
+        // Save the selected student's info
+        currentStudent = studentData[selectedValue];
+
+        // Hide login, show app
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('checkpoints').style.display = 'flex';
+        document.querySelector('.progress-bar').style.display = 'block';
+        document.getElementById('quiz-section').style.display = 'block';
+
+        // Start the quiz
+        setupDailyQuestions();
+    }
+
+    // 1. FIREBASE CONFIGURATION
+    const firebaseConfig = {
+        apiKey: "AIzaSyCmBvKTHhR_wivKKrwITyumig2TusrJLoE",
+        authDomain: "accents-with-grace.firebaseapp.com",
+        databaseURL: "https://accents-with-grace-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "accents-with-grace",
+        storageBucket: "accents-with-grace.firebasestorage.app",
+        messagingSenderId: "152119821350",
+        appId: "1:152119821350:web:0602eb24bf3abdc20b52e7",
+        measurementId: "G-TV9JCJ5W7F"
+    };
     
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    
+    // --- IMPORTANT: Anonymous Auth Listener ---
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            console.log("Firebase background session active for:", user.uid);
+        } else {
+            auth.signInAnonymously().catch((error) => {
+                console.error("Error signing in anonymously:", error);
+            });
+        }
+    });
+
+    // 2. QUESTION DATABASE 
+    const allQuestions = [
+        // --- BATCH 1 ---
+        // --- TOPIC: SUBJECT + BE (am, is, are) ---
+        { text: "I ___ a student.", options: ["am", "is", "are"], answer: "am", explanation: "Kita selalu menggunakan 'am' untuk subjek 'I' (saya)." },
+        { text: "She ___ my sister.", options: ["am", "is", "are"], answer: "is", explanation: "Kita menggunakan 'is' karena subjeknya 'She' (dia perempuan, tunggal)." },
+        { text: "They ___ very happy today.", options: ["am", "is", "are"], answer: "are", explanation: "Kita menggunakan 'are' karena subjeknya 'They' (mereka, jamak/lebih dari satu orang)." },
+        { text: "We ___ from Indonesia.", options: ["am", "is", "are"], answer: "are", explanation: "Kita menggunakan 'are' karena subjeknya 'We' (kita/kami, jamak)." },
+        { text: "It ___ a sunny day.", options: ["am", "is", "are"], answer: "is", explanation: "Kita menggunakan 'is' karena subjeknya 'It' (benda, hewan, atau cuaca tunggal)." },
+        { text: "He ___ ten years old.", options: ["am", "is", "are"], answer: "is", explanation: "Kita menggunakan 'is' karena subjeknya 'He' (dia laki-laki, tunggal)." },
+        { text: "You ___ a good friend.", options: ["am", "is", "are"], answer: "are", explanation: "Kata ganti 'You' (kamu/kalian) selalu berpasangan dengan 'are'." },
+        { text: "The cat ___ sleeping.", options: ["am", "is", "are"], answer: "is", explanation: "Subjek 'The cat' sama dengan 'It' (satu hewan), sehingga menggunakan 'is'." },
+
+        // --- TOPIC: A / AN ---
+        { text: "I want to eat ___ apple.", options: ["a", "an", "the"], answer: "an", explanation: "Gunakan 'an' karena kata 'apple' berawalan bunyi vokal (a, i, u, e, o)." },
+        { text: "My father is ___ doctor.", options: ["a", "an", "the"], answer: "a", explanation: "Gunakan 'a' karena kata 'doctor' berawalan bunyi konsonan (huruf mati)." },
+        { text: "She brings ___ umbrella because it's raining.", options: ["a", "an", "the"], answer: "an", explanation: "Gunakan 'an' karena kata 'umbrella' berawalan bunyi vokal (u)." },
+        { text: "We see ___ big elephant at the zoo.", options: ["a", "an", "the"], answer: "a", explanation: "Walaupun 'elephant' berawalan vokal, kata setelah titik-titik adalah 'big' (konsonan). Jadi gunakan 'a'." },
+        { text: "He lives in ___ small house.", options: ["a", "an", "the"], answer: "a", explanation: "Gunakan 'a' karena kata 'small' berawalan bunyi konsonan." },
+        { text: "I need ___ egg to bake this cake.", options: ["a", "an", "the"], answer: "an", explanation: "Gunakan 'an' karena kata 'egg' berawalan bunyi vokal (e)." },
+        { text: "You have ___ cute dog.", options: ["a", "an", "the"], answer: "a", explanation: "Gunakan 'a' karena kata 'cute' berawalan bunyi konsonan (c)." },
+        { text: "It is ___ orange.", options: ["a", "an", "the"], answer: "an", explanation: "Gunakan 'an' karena kata 'orange' berawalan bunyi vokal (o)." },
+
+        // --- TOPIC: HAS / HAVE (Possession) ---
+        { text: "I ___ two brothers.", options: ["has", "have", "am"], answer: "have", explanation: "Untuk subjek I, You, They, We, kita selalu menggunakan 'have'." },
+        { text: "She ___ a red car.", options: ["has", "have", "is"], answer: "has", explanation: "Untuk subjek orang ketiga tunggal (He, She, It), kita menggunakan 'has'." },
+        { text: "They ___ a big garden.", options: ["has", "have", "are"], answer: "have", explanation: "Karena subjeknya 'They' (mereka), kita menggunakan 'have'." },
+        { text: "He ___ short black hair.", options: ["has", "have", "is"], answer: "has", explanation: "Karena subjeknya 'He' (dia laki-laki), kita menggunakan 'has'." },
+        { text: "We ___ a new computer.", options: ["has", "have", "are"], answer: "have", explanation: "Karena subjeknya 'We' (kita/kami), kita menggunakan 'have'." },
+        { text: "The dog ___ a long tail.", options: ["has", "have", "is"], answer: "has", explanation: "Subjek 'The dog' sama dengan 'It' (hewan tunggal), jadi kita gunakan 'has'." },
+        { text: "You ___ beautiful eyes.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'You' selalu berpasangan dengan 'have' untuk menunjukkan kepemilikan." },
+        { text: "My mother ___ a blue bag.", options: ["has", "have", "is"], answer: "has", explanation: "Subjek 'My mother' sama dengan 'She' (satu orang perempuan), jadi kita gunakan 'has'." },
+        { text: "Tom and Jerry ___ many friends.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'Tom and Jerry' lebih dari satu orang (sama dengan 'They'). Jadi, gunakan 'have'." },
+        
+        // --- BATCH 2 ---
+        { text: "The book ___ on the table.", options: ["am", "is", "are"], answer: "is", explanation: "Subjek 'The book' adalah satu benda tunggal (sama dengan 'It'), jadi gunakan 'is'." },
+        { text: "My parents ___ at home.", options: ["am", "is", "are"], answer: "are", explanation: "Subjek 'My parents' (orang tua saya) lebih dari satu orang (jamak/They), jadi gunakan 'are'." },
+        { text: "I ___ not tired.", options: ["am", "is", "are"], answer: "am", explanation: "Meskipun kalimat ini negatif (ada kata 'not'), subjek 'I' selalu menggunakan 'am'." },
+        { text: "___ you a doctor?", options: ["Am", "Is", "Are"], answer: "Are", explanation: "Dalam bentuk pertanyaan untuk subjek 'You', kita meletakkan 'Are' di depan kalimat." },
+        { text: "The apples ___ red.", options: ["am", "is", "are"], answer: "are", explanation: "Subjek 'The apples' memiliki akhiran 's', artinya benda tersebut jamak (lebih dari satu). Jadi gunakan 'are'." },
+        { text: "He and I ___ best friends.", options: ["am", "is", "are"], answer: "are", explanation: "Subjek 'He and I' (dia dan saya) sama dengan 'We' (kita/kami). Jadi, gunakan 'are'." },
+        { text: "It ___ cold outside.", options: ["am", "is", "are"], answer: "is", explanation: "Untuk membicarakan cuaca atau keadaan sekitar, kita gunakan 'It' dengan 'is'." },
+        { text: "The children ___ in the park.", options: ["am", "is", "are"], answer: "are", explanation: "Kata 'children' adalah bentuk jamak dari 'child' (anak-anak). Karena lebih dari satu, gunakan 'are'." },
+        { text: "She eats ___ egg every morning.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'egg' berawalan bunyi vokal (e), jadi gunakan 'an'." },
+        { text: "I have ___ book in my bag.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'book' berawalan bunyi konsonan (b), jadi gunakan 'a'." },
+        { text: "He is ___ English teacher.", options: ["a", "an", "the"], answer: "an", explanation: "Kata setelah titik-titik adalah 'English' yang berbunyi vokal (e), jadi gunakan 'an'." },
+        { text: "Look at ___ airplane in the sky!", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'airplane' berawalan bunyi vokal (a), jadi gunakan 'an'." },
+        { text: "Today is ___ nice day.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'nice' berawalan bunyi konsonan (n), jadi gunakan 'a'." },
+        { text: "She wants to buy ___ new dress.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'new' berawalan bunyi konsonan (n), jadi gunakan 'a'." },
+        { text: "My brother is ___ actor.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'actor' berawalan bunyi vokal (a), jadi gunakan 'an'." },
+        { text: "Do you want ___ banana?", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'banana' berawalan bunyi konsonan (b), jadi gunakan 'a'." },
+        { text: "My sister ___ a new phone.", options: ["has", "have", "is"], answer: "has", explanation: "Subjek 'My sister' adalah satu orang perempuan (sama dengan 'She'), jadi gunakan 'has'." },
+        { text: "I ___ a headache.", options: ["has", "have", "am"], answer: "have", explanation: "Untuk menyatakan kondisi tubuh (seperti sakit kepala) dengan subjek 'I', gunakan 'have'." },
+        { text: "The cats ___ small ears.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'The cats' lebih dari satu hewan (jamak/They), jadi gunakan 'have'." },
+        { text: "We ___ English class on Monday.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'We' (kita/kami) selalu berpasangan dengan 'have'." },
+        { text: "My house ___ a blue door.", options: ["has", "have", "is"], answer: "has", explanation: "Subjek 'My house' adalah benda tunggal (sama dengan 'It'), jadi gunakan 'has'." },
+        { text: "You ___ a very nice smile.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'You' (kamu) selalu menggunakan 'have'." },
+        { text: "The bird ___ colorful feathers.", options: ["has", "have", "is"], answer: "has", explanation: "Subjek 'The bird' adalah hewan tunggal (sama dengan 'It'), jadi gunakan 'has'." },
+        { text: "Sarah and John ___ a pet dog.", options: ["has", "have", "is"], answer: "have", explanation: "Subjek 'Sarah and John' adalah dua orang (sama dengan 'They'), jadi gunakan 'have'." },
+        { text: "I ___ three English books.", options: ["has", "have", "am"], answer: "have", explanation: "Subjek 'I' (saya) selalu berpasangan dengan 'have'." },
+        
+        // --- BATCH 3 ---
+        { text: "The sky ___ blue.", options: ["am", "is", "are"], answer: "is", explanation: "Subjek 'The sky' (langit) adalah satu benda (sama dengan 'It'), jadi gunakan 'is'." },
+        { text: "My shoes ___ dirty.", options: ["am", "is", "are"], answer: "are", explanation: "Kata 'shoes' adalah bentuk jamak (lebih dari satu / sepasang), jadi gunakan 'are'." },
+        { text: "___ she your mother?", options: ["Am", "Is", "Are"], answer: "Is", explanation: "Untuk membuat kalimat tanya dengan subjek 'She', kita meletakkan 'Is' di awal kalimat." },
+        { text: "I ___ from Jakarta.", options: ["am", "is", "are"], answer: "am", explanation: "Subjek 'I' (saya) selalu berpasangan dengan 'am'." },
+        { text: "The dog and the cat ___ playing.", options: ["am", "is", "are"], answer: "are", explanation: "Subjeknya adalah anjing dan kucing (dua hewan / jamak), jadi gunakan 'are'." },
+        { text: "This pizza ___ very delicious.", options: ["am", "is", "are"], answer: "is", explanation: "Subjek 'This pizza' adalah satu benda tunggal, jadi gunakan 'is'." },
+        { text: "We ___ students.", options: ["am", "is", "are"], answer: "are", explanation: "Subjek 'We' (kita/kami) selalu menggunakan 'are'." },
+        { text: "It ___ a big problem.", options: ["am", "is", "are"], answer: "is", explanation: "Subjek 'It' selalu berpasangan dengan 'is'." },
+        { text: "Do you have ___ idea?", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'idea' berawalan bunyi vokal (i), jadi gunakan 'an'." },
+        { text: "This is ___ beautiful flower.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'beautiful' berawalan bunyi konsonan (b), jadi gunakan 'a'." },
+        { text: "I see ___ owl in the tree.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'owl' (burung hantu) berawalan bunyi vokal (o), jadi gunakan 'an'." },
+        { text: "She is reading ___ comic.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'comic' berawalan bunyi konsonan (c), jadi gunakan 'a'." },
+        { text: "Bali is ___ island in Indonesia.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'island' (pulau) berawalan bunyi vokal (i), jadi gunakan 'an'." },
+        { text: "He eats ___ orange.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'orange' berawalan bunyi vokal (o), jadi gunakan 'an'." },
+        { text: "I have ___ red pen.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'red' berawalan bunyi konsonan (r), jadi gunakan 'a'." },
+        { text: "That is ___ old house.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'old' berawalan bunyi vokal (o), jadi gunakan 'an'." },
+        { text: "The car ___ four wheels.", options: ["has", "have", "are"], answer: "has", explanation: "Subjek 'The car' adalah satu benda (sama dengan 'It'), jadi gunakan 'has'." },
+        { text: "I ___ a lot of homework.", options: ["has", "have", "am"], answer: "have", explanation: "Subjek 'I' (saya) selalu menggunakan 'have'." },
+        { text: "My grandparents ___ a big farm.", options: ["has", "have", "is"], answer: "have", explanation: "Subjek 'My grandparents' (kakek dan nenek) adalah jamak (sama dengan 'They'), jadi gunakan 'have'." },
+        { text: "She ___ curly hair.", options: ["has", "have", "is"], answer: "has", explanation: "Subjek 'She' (dia perempuan) selalu berpasangan dengan 'has'." },
+        { text: "You ___ a message on your phone.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'You' (kamu) selalu menggunakan 'have'." },
+        { text: "The room ___ two windows.", options: ["has", "have", "is"], answer: "has", explanation: "Subjek 'The room' (ruangan) adalah benda tunggal (sama dengan 'It'), jadi gunakan 'has'." },
+        { text: "We ___ enough money to buy it.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'We' (kita/kami) selalu berpasangan dengan 'have'." },
+        { text: "David ___ a younger sister.", options: ["has", "have", "is"], answer: "has", explanation: "David adalah satu orang laki-laki (sama dengan 'He'), jadi gunakan 'has'." },
+        { text: "The teachers ___ a meeting today.", options: ["has", "have", "are"], answer: "have", explanation: "Kata 'teachers' memiliki akhiran 's', artinya gurunya lebih dari satu (jamak). Jadi gunakan 'have'." },
+        
+        // --- BATCH 4 ---
+        { text: "The water ___ very cold.", options: ["am", "is", "are"], answer: "is", explanation: "Kata 'water' (air) tidak bisa dihitung (uncountable) sehingga dianggap tunggal (sama dengan 'It'). Jadi, gunakan 'is'." },
+        { text: "My friends ___ here.", options: ["am", "is", "are"], answer: "are", explanation: "Subjek 'My friends' memiliki akhiran 's', artinya jamak (lebih dari satu / They), jadi gunakan 'are'." },
+        { text: "I ___ happy to see you.", options: ["am", "is", "are"], answer: "am", explanation: "Subjek 'I' (saya) selalu berpasangan dengan 'am'." },
+        { text: "___ it raining outside?", options: ["Am", "Is", "Are"], answer: "Is", explanation: "Dalam kalimat tanya untuk subjek 'It' (membicarakan cuaca), kita meletakkan 'Is' di depan." },
+        { text: "The movies ___ very good.", options: ["am", "is", "are"], answer: "are", explanation: "Kata 'movies' adalah bentuk jamak (filmnya lebih dari satu), jadi gunakan 'are'." },
+        { text: "She ___ my favorite singer.", options: ["am", "is", "are"], answer: "is", explanation: "Subjek 'She' (dia perempuan) selalu berpasangan dengan 'is'." },
+        { text: "He and his brother ___ tall.", options: ["am", "is", "are"], answer: "are", explanation: "Subjeknya adalah dia dan saudara laki-lakinya (dua orang / They), jadi gunakan 'are'." },
+        { text: "You ___ late for class.", options: ["am", "is", "are"], answer: "are", explanation: "Subjek 'You' (kamu) selalu berpasangan dengan 'are'." },
+        { text: "The English test ___ easy.", options: ["am", "is", "are"], answer: "is", explanation: "Subjek 'The English test' adalah satu kegiatan tunggal (sama dengan 'It'), jadi gunakan 'is'." },
+        { text: "I want to eat ___ ice cream.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'ice cream' berawalan bunyi vokal (i), jadi gunakan 'an'." },
+        { text: "He is ___ smart boy.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'smart' berawalan bunyi konsonan (s), jadi gunakan 'a'." },
+        { text: "Look at ___ ant on the table.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'ant' (semut) berawalan bunyi vokal (a), jadi gunakan 'an'." },
+        { text: "We need ___ box for the books.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'box' berawalan bunyi konsonan (b), jadi gunakan 'a'." },
+        { text: "She is eating ___ apple pie.", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'apple' berawalan bunyi vokal (a), jadi gunakan 'an'." },
+        { text: "It is ___ rainy day.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'rainy' berawalan bunyi konsonan (r), jadi gunakan 'a'." },
+        { text: "Do you have ___ eraser?", options: ["a", "an", "the"], answer: "an", explanation: "Kata 'eraser' (penghapus) berawalan bunyi vokal (e), jadi gunakan 'an'." },
+        { text: "I want ___ cup of coffee.", options: ["a", "an", "the"], answer: "a", explanation: "Kata 'cup' berawalan bunyi konsonan (c), jadi gunakan 'a'." },
+        { text: "My brother ___ a black jacket.", options: ["has", "have", "are"], answer: "has", explanation: "Subjek 'My brother' adalah satu orang laki-laki (sama dengan 'He'), jadi gunakan 'has'." },
+        { text: "They ___ a lot of toys.", options: ["has", "have", "is"], answer: "have", explanation: "Subjek 'They' (mereka) selalu menggunakan 'have'." },
+        { text: "I ___ no time right now.", options: ["has", "have", "am"], answer: "have", explanation: "Subjek 'I' (saya) selalu berpasangan dengan 'have'." },
+        { text: "The restaurant ___ good food.", options: ["has", "have", "is"], answer: "has", explanation: "Subjek 'The restaurant' adalah satu tempat tunggal (sama dengan 'It'), jadi gunakan 'has'." },
+        { text: "You ___ a beautiful voice.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'You' (kamu) selalu menggunakan 'have'." },
+        { text: "We ___ three dogs at home.", options: ["has", "have", "are"], answer: "have", explanation: "Subjek 'We' (kita/kami) selalu berpasangan dengan 'have'." },
+        { text: "Emma ___ a new dress.", options: ["has", "have", "is"], answer: "has", explanation: "Emma adalah satu orang perempuan (sama dengan 'She'), jadi gunakan 'has'." },
+        { text: "The students ___ a lot of questions.", options: ["has", "have", "are"], answer: "have", explanation: "Kata 'students' dengan akhiran 's' berarti muridnya jamak (lebih dari satu). Jadi gunakan 'have'." }
+    ];
+
+    // 3. APP LOGIC
+    let currentDailyQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let limit = 20; // Default daily limit
+
+    // Calculate which questions to show today
+    function setupDailyQuestions() {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start;
+        const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+        
+        // Avoid errors if there are fewer than 20 questions while testing
+        const safeLimit = Math.min(limit, allQuestions.length); 
+        
+        // Slice the array based on the day
+        const startIndex = (dayOfYear % 5) * safeLimit; 
+        currentDailyQuestions = allQuestions.slice(startIndex, startIndex + safeLimit);
+        
+        // Fallback if slicing goes out of bounds
+        if(currentDailyQuestions.length === 0) {
+            currentDailyQuestions = allQuestions.slice(0, safeLimit);
+        }
+        
+        updateCheckpoints();
+        renderQuestion();
+    }
+
+    function updateCheckpoints() {
+        // Get current day of week (1 = Monday, 7 = Sunday)
+        let dayOfWeek = new Date().getDay();
+        dayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek; 
+        
+        for(let i = 1; i <= 7; i++) {
+            const el = document.getElementById(`day-${i}`);
+            if(i === dayOfWeek) el.classList.add('active');
+            if(i < dayOfWeek) el.classList.add('completed');
+        }
+    }
+
+    function renderQuestion() {
+        if (currentIndex >= currentDailyQuestions.length) {
+            finishDaily();
+            return;
+        }
+
+        const q = currentDailyQuestions[currentIndex];
+        document.getElementById('question-text').innerText = q.text;
+        document.getElementById('explanation-box').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+        
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+
+        q.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => selectAnswer(btn, opt, q.answer, q.explanation);
+            optionsContainer.appendChild(btn);
+        });
+
+        updateProgress();
+    }
+
+    function selectAnswer(btn, selected, correct, explanation) {
+        const allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.disabled = true); // Prevent multiple clicks
+
+        if (selected === correct) {
+            btn.classList.add('correct');
+            score++;
+        } else {
+            btn.classList.add('wrong');
+            // Highlight correct answer
+            allBtns.forEach(b => {
+                if(b.innerText === correct) b.classList.add('correct');
+            });
+        }
+
+        const expBox = document.getElementById('explanation-box');
+        expBox.innerHTML = `<strong>Penjelasan:</strong> ${explanation}`;
+        expBox.style.display = 'block';
+        
+        document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            renderQuestion();
+        }
+
+        function updateProgress() {
+            const percentage = (currentIndex / currentDailyQuestions.length) * 100;
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+        }
+
+        function finishDaily() {
+            document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('finish-section').style.display = 'block';
+            document.getElementById('progress-fill').style.width = `100%`;
+            saveToFirebase();
+        }
+
+        function doMore() {
+            // Reset for extra practice
+            currentIndex = 0;
+            // Grab a random selection of questions for "do more"
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            currentDailyQuestions = shuffled.slice(0, 20);
+            
+            document.getElementById('finish-section').style.display = 'none';
+            document.getElementById('quiz-section').style.display = 'block';
+            renderQuestion();
+        }
+
+        function saveToFirebase() {
+            const user = auth.currentUser;
+            if(user && currentStudent) {
+                db.collection('results').add({
+                    userId: user.uid,
+                    studentId: document.getElementById('user-select').value, // saves 'fny'
+                    studentName: currentStudent.name, // saves 'Fenny'
+                    studentEmail: currentStudent.email, // saves '60fenny@gmail.com'
+                    date: new Date().toISOString().split('T')[0],
+                    score: score,
+                    totalQuestions: currentDailyQuestions.length,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    console.log("Result saved for", currentStudent.name);
+                }).catch(err => {
+                    console.error("Error saving result: ", err);
+                });
+            } else {
+                console.log("User not logged in or student not selected.");
+            }
+        }
+    </script>
 </body>
 </html>
