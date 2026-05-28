@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Grammar Fun!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #fce4ec; /* Pastel pink */
+            --card-bg: #ffffff;
+            --primary: #4fc3f7; /* Pastel blue */
+            --secondary: #81c784; /* Pastel green */
+            --text-color: #4a4a4a;
+            --wrong: #e57373;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        /* Checkpoint Tracker */
+        .checkpoints {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 12px;
+        }
+
+        .day {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .day.active { background-color: var(--primary); transform: scale(1.1); }
+        .day.completed { background-color: var(--secondary); }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background-color: #eee;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Question UI */
+        #question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        button:hover { transform: translateY(-2px); }
+        button:active { transform: translateY(0); }
+        
+        .option-btn { background-color: #f0f0f0; color: var(--text-color); }
+        .option-btn:hover { background-color: #e0e0e0; }
+        .option-btn.correct { background-color: var(--secondary); color: white; animation: pop 0.3s ease; }
+        .option-btn.wrong { background-color: var(--wrong); color: white; }
+
+        /* Explanation Box */
+        .explanation {
+            background-color: #fff9c4;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            border-left: 4px solid #fbc02d;
+        }
+
+        /* Action Buttons */
+        .action-btns { display: flex; gap: 10px; }
+        .action-btns button { flex: 1; display: none; }
+        #do-more-btn { background-color: #ab47bc; }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        /* Login UI */
+        #login-section {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .dropdown {
+            width: 100%;
+            padding: 15px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            color: var(--text-color);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .dropdown:focus {
+            border-color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <div id="login-section">
+        <h2>Welcome! 👋</h2>
+        <p>Pilih namamu untuk mulai belajar:</p>
+        
+        <select id="user-select" class="dropdown">
+            <option value="" disabled selected>-- Pilih Nama --</option>
+            <option value="fny">fny (Fenny)</option>
+            <!-- You can add more students here later -->
+            <option value="guest">Guest</option>
+        </select>
+        
+        <button id="login-btn" onclick="startApp()">Mulai Belajar</button>
+    </div>
+    <div class="container">
+        <div class="checkpoints" id="checkpoints">
+            <div class="day" id="day-1">M</div>
+            <div class="day" id="day-2">T</div>
+            <div class="day" id="day-3">W</div>
+            <div class="day" id="day-4">T</div>
+            <div class="day" id="day-5">F</div>
+            <div class="day" id="day-6">S</div>
+            <div class="day" id="day-7">S</div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div id="quiz-section">
+            <div id="question-text">Loading question...</div>
+            <div class="options-grid" id="options-container"></div>
+            
+            <div class="explanation" id="explanation-box"></div>
+
+            <div class="action-btns">
+                <button id="next-btn" onclick="nextQuestion()">Lanjut!</button>
+                <button id="do-more-btn" onclick="doMore()">Kerjakan Lagi</button>
+            </div>
+        </div>
+        
+        <div id="finish-section" style="display: none;">
+            <h2>Kerja Bagus! 🎉</h2>
+            <p>Kamu sudah menyelesaikan target hari ini.</p>
+            <button id="do-more-finish-btn" onclick="doMore()">Kerjakan Lagi</button>
+        </div>
+    </div>
+
+    
+</body>
+</html>
