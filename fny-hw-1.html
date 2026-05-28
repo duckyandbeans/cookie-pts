@@ -226,37 +226,25 @@
     </div>
 
     <script>
-    // Student Database for Dropdown
+    // ==========================================
+    // 1. STUDENT DATABASE & STATE VARIABLES
+    // ==========================================
     const studentData = {
         "fny": { name: "Fenny", email: "60fenny@gmail.com" },
         "guest": { name: "Guest", email: "none" }
     };
 
-    let currentStudent = null; // Will hold Fenny's data once she logs in
+    let currentStudent = null; 
+    let sessionId = null; 
+    
+    let currentDailyQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let limit = 20;
 
-    function startApp() {
-        const selectElement = document.getElementById('user-select');
-        const selectedValue = selectElement.value;
-
-        if (!selectedValue) {
-            alert("Tolong pilih nama dulu ya!");
-            return;
-        }
-
-        // Save the selected student's info
-        currentStudent = studentData[selectedValue];
-
-        // Hide login, show app
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('checkpoints').style.display = 'flex';
-        document.querySelector('.progress-bar').style.display = 'block';
-        document.getElementById('quiz-section').style.display = 'block';
-
-        // Start the quiz
-        setupDailyQuestions();
-    }
-
-    // 1. FIREBASE CONFIGURATION
+    // ==========================================
+    // 2. FIREBASE CONFIGURATION & AUTH
+    // ==========================================
     const firebaseConfig = {
         apiKey: "AIzaSyCmBvKTHhR_wivKKrwITyumig2TusrJLoE",
         authDomain: "accents-with-grace.firebaseapp.com",
@@ -268,12 +256,11 @@
         measurementId: "G-TV9JCJ5W7F"
     };
     
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const auth = firebase.auth();
     
-    // --- IMPORTANT: Anonymous Auth Listener ---
+    // Anonymous Auth Listener to enable database saving
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log("Firebase background session active for:", user.uid);
@@ -284,7 +271,9 @@
         }
     });
 
-    // 2. QUESTION DATABASE 
+    // ==========================================
+    // 3. QUESTION DATABASE (100 Questions)
+    // ==========================================
     const allQuestions = [
         // --- BATCH 1 ---
         // --- TOPIC: SUBJECT + BE (am, is, are) ---
@@ -400,37 +389,94 @@
         { text: "The students ___ a lot of questions.", options: ["has", "have", "are"], answer: "have", explanation: "Kata 'students' dengan akhiran 's' berarti muridnya jamak (lebih dari satu). Jadi gunakan 'have'." }
     ];
 
-    // 3. APP LOGIC
-    let currentDailyQuestions = [];
-    let currentIndex = 0;
-    let score = 0;
-    let limit = 20; // Default daily limit
+    // ==========================================
+    // 4. APP LOGIC & SESSION MANAGEMENT
+    // ==========================================
+    function startApp(isRandom) {
+        const selectElement = document.getElementById('user-select');
+        const selectedValue = selectElement.value;
 
-    // Calculate which questions to show today
-    function setupDailyQuestions() {
-        const now = new Date();
-        const start = new Date(now.getFullYear(), 0, 0);
-        const diff = now - start;
-        const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
-        
-        // Avoid errors if there are fewer than 20 questions while testing
-        const safeLimit = Math.min(limit, allQuestions.length); 
-        
-        // Slice the array based on the day
-        const startIndex = (dayOfYear % 5) * safeLimit; 
-        currentDailyQuestions = allQuestions.slice(startIndex, startIndex + safeLimit);
-        
-        // Fallback if slicing goes out of bounds
-        if(currentDailyQuestions.length === 0) {
-            currentDailyQuestions = allQuestions.slice(0, safeLimit);
+        if (!selectedValue) {
+            alert("Tolong pilih nama dulu ya!");
+            return;
         }
-        
-        updateCheckpoints();
-        renderQuestion();
+
+        currentStudent = studentData[selectedValue];
+        sessionId = selectedValue; 
+
+        // Change button text while checking Firebase
+        const loginBtn = isRandom ? document.getElementById('shuffle-btn') : document.getElementById('login-btn');
+        const originalText = loginBtn.innerText;
+        loginBtn.innerText = "Memuat data...";
+
+        const today = new Date().toISOString().split('T')[0];
+
+        // Check Firebase for an unfinished session today
+        db.collection('sessions').doc(sessionId).get().then((doc) => {
+            if (doc.exists && doc.data().date === today && !doc.data().isCompleted) {
+                // RESUME PREVIOUS SESSION
+                const data = doc.data();
+                currentDailyQuestions = data.questions;
+                currentIndex = data.currentIndex;
+                score = data.score;
+                
+                showQuizUI();
+                updateCheckpoints();
+                renderQuestion();
+            } else {
+                // START A FRESH SESSION
+                startNewSession(isRandom, today);
+            }
+        }).catch((error) => {
+            console.error("Error fetching session:", error);
+            alert("Gagal memuat sesi. Periksa koneksi internet.");
+            loginBtn.innerText = originalText;
+        });
+    }
+
+    function showQuizUI() {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('checkpoints').style.display = 'flex';
+        document.querySelector('.progress-bar').style.display = 'block';
+        document.getElementById('quiz-section').style.display = 'block';
+    }
+
+    function startNewSession(isRandom, today) {
+        if (isRandom) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            currentDailyQuestions = shuffled.slice(0, 20);
+        } else {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const safeLimit = Math.min(20, allQuestions.length); 
+            const startIndex = (dayOfYear % 5) * safeLimit; 
+            currentDailyQuestions = allQuestions.slice(startIndex, startIndex + safeLimit);
+            if(currentDailyQuestions.length === 0) {
+                currentDailyQuestions = allQuestions.slice(0, safeLimit);
+            }
+        }
+
+        currentIndex = 0;
+        score = 0;
+
+        // Save fresh session state to Firebase
+        db.collection('sessions').doc(sessionId).set({
+            date: today,
+            questions: currentDailyQuestions,
+            currentIndex: 0,
+            score: 0,
+            isCompleted: false,
+            mode: isRandom ? 'shuffle' : 'daily'
+        }).then(() => {
+            showQuizUI();
+            updateCheckpoints();
+            renderQuestion();
+        });
     }
 
     function updateCheckpoints() {
-        // Get current day of week (1 = Monday, 7 = Sunday)
         let dayOfWeek = new Date().getDay();
         dayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek; 
         
@@ -468,14 +514,13 @@
 
     function selectAnswer(btn, selected, correct, explanation) {
         const allBtns = document.querySelectorAll('.option-btn');
-        allBtns.forEach(b => b.disabled = true); // Prevent multiple clicks
+        allBtns.forEach(b => b.disabled = true); // Lock buttons
 
         if (selected === correct) {
             btn.classList.add('correct');
             score++;
         } else {
             btn.classList.add('wrong');
-            // Highlight correct answer
             allBtns.forEach(b => {
                 if(b.innerText === correct) b.classList.add('correct');
             });
@@ -486,58 +531,71 @@
         expBox.style.display = 'block';
         
         document.getElementById('next-btn').style.display = 'block';
-        }
+    }
 
-        function nextQuestion() {
-            currentIndex++;
+    function nextQuestion() {
+        currentIndex++;
+        document.getElementById('next-btn').style.display = 'none';
+
+        // Update current progress in Firebase
+        db.collection('sessions').doc(sessionId).update({
+            currentIndex: currentIndex,
+            score: score
+        }).then(() => {
             renderQuestion();
-        }
-
-        function updateProgress() {
-            const percentage = (currentIndex / currentDailyQuestions.length) * 100;
-            document.getElementById('progress-fill').style.width = `${percentage}%`;
-        }
-
-        function finishDaily() {
-            document.getElementById('quiz-section').style.display = 'none';
-            document.getElementById('finish-section').style.display = 'block';
-            document.getElementById('progress-fill').style.width = `100%`;
-            saveToFirebase();
-        }
-
-        function doMore() {
-            // Reset for extra practice
-            currentIndex = 0;
-            // Grab a random selection of questions for "do more"
-            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-            currentDailyQuestions = shuffled.slice(0, 20);
-            
-            document.getElementById('finish-section').style.display = 'none';
-            document.getElementById('quiz-section').style.display = 'block';
+        }).catch((err) => {
+            console.error("Error saving progress:", err);
             renderQuestion();
+        });
+    }
+
+    function updateProgress() {
+        const percentage = (currentIndex / currentDailyQuestions.length) * 100;
+        document.getElementById('progress-fill').style.width = `${percentage}%`;
+    }
+
+    function finishDaily() {
+        document.getElementById('quiz-section').style.display = 'none';
+        document.getElementById('finish-section').style.display = 'block';
+        document.getElementById('progress-fill').style.width = `100%`;
+        
+        // Lock the session so a refresh won't reload it
+        if (sessionId) {
+            db.collection('sessions').doc(sessionId).update({
+                isCompleted: true
+            });
         }
 
-        function saveToFirebase() {
-            const user = auth.currentUser;
-            if(user && currentStudent) {
-                db.collection('results').add({
-                    userId: user.uid,
-                    studentId: document.getElementById('user-select').value, // saves 'fny'
-                    studentName: currentStudent.name, // saves 'Fenny'
-                    studentEmail: currentStudent.email, // saves '60fenny@gmail.com'
-                    date: new Date().toISOString().split('T')[0],
-                    score: score,
-                    totalQuestions: currentDailyQuestions.length,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    console.log("Result saved for", currentStudent.name);
-                }).catch(err => {
-                    console.error("Error saving result: ", err);
-                });
-            } else {
-                console.log("User not logged in or student not selected.");
-            }
+        saveToFirebase();
+    }
+
+    function doMore() {
+        document.getElementById('finish-section').style.display = 'none';
+        const today = new Date().toISOString().split('T')[0];
+        startNewSession(true, today); 
+    }
+
+    function saveToFirebase() {
+        const user = auth.currentUser;
+        if(user && currentStudent) {
+            db.collection('results').add({
+                userId: user.uid,
+                studentId: sessionId,
+                studentName: currentStudent.name,
+                studentEmail: currentStudent.email,
+                date: new Date().toISOString().split('T')[0],
+                score: score,
+                totalQuestions: currentDailyQuestions.length,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                console.log("Result saved for", currentStudent.name);
+            }).catch(err => {
+                console.error("Error saving result: ", err);
+            });
+        } else {
+            console.log("User not logged in or student not selected.");
         }
+    }
     </script>
 </body>
 </html>
