@@ -171,7 +171,6 @@
 <body>
     <div class="container">
         
-        <!-- Login Section (VISIBLE BY DEFAULT) -->
         <div id="login-section">
             <h2>Welcome! 👋</h2>
             <p>Pilih namamu untuk mulai belajar:</p>
@@ -182,7 +181,10 @@
                 <option value="guest">Guest</option>
             </select>
             
-            <button id="login-btn" onclick="startApp()">Mulai Belajar</button>
+            <div class="login-buttons">
+                <button id="login-btn" onclick="startApp(false)">Misi Harian</button>
+                <button id="shuffle-btn" onclick="startApp(true)">Latihan Acak (Shuffle)</button>
+            </div>
         </div>
 
         <!-- Monday to Sunday Checkpoints (HIDDEN BY DEFAULT) -->
