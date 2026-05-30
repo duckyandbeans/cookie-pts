@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastery Mission: Possessive Adjectives</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #e8f5e9; /* Soft pastel green mint */
+            --card-bg: #ffffff;
+            --primary: #81c784; /* Sage pastel green */
+            --primary-dark: #66bb6a;
+            --secondary: #ffb74d; /* Soft orange pastel */
+            --text-color: #2e7d32;
+            --text-dark: #1b5e20;
+            --wrong: #ff8a80;
+            --accent-purple: #ce93d8;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.05);
+            padding: 30px;
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h2 { color: var(--text-dark); margin-bottom: 10px; }
+        p { color: #558b2f; margin-top: 0; }
+
+        /* Form elements */
+        .dropdown {
+            width: 100%;
+            padding: 15px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary);
+            border-radius: 14px;
+            margin-bottom: 20px;
+            outline: none;
+            color: var(--text-dark);
+            background-color: #f1f8e9;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        button:hover { transform: translateY(-2px); background-color: var(--primary-dark); }
+        button:active { transform: translateY(0); }
+
+        #btn-exercise { background-color: var(--secondary); color: white; }
+        #btn-exercise:hover { background-color: #ffa726; }
+
+        /* Learn Page Card Layout */
+        .card-deck {
+            position: relative;
+            height: 320px;
+            margin: 30px auto;
+            width: 100%;
+            max-width: 400px;
+            perspective: 1000px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            padding: 25px;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* Flick Away Animations */
+        .flashcard.flick-left {
+            transform: translateX(-150%) rotate(-25deg);
+            opacity: 0;
+        }
+
+        .flashcard.flick-right {
+            transform: translateX(150%) rotate(25deg);
+            opacity: 0;
+        }
+
+        .pronoun-badge {
+            background-color: var(--accent-purple);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .poss-word {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 5px 0;
+        }
+
+        .indo-trans {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ef6c00;
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background-color: white;
+            padding: 10px 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            text-align: left;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .card-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .nav-arrow {
+            background-color: var(--primary);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+        }
+
+        /* Exercise Layout */
+        .section-tag {
+            background-color: var(--accent-purple);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .question-box {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-item {
+            background-color: #f1f8e9;
+            color: var(--text-dark);
+            border: 2px solid #dcedc8;
+        }
+        .option-item:hover { background-color: #e1f5fe; border-color: #29b6f6; }
+        .option-item.correct { background-color: var(--primary); color: white; border-color: var(--primary-dark); }
+        .option-item.wrong { background-color: var(--wrong); color: white; border-color: #e57373; }
+
+        .input-blank {
+            width: 100%;
+            padding: 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 15px;
+            background-color: #f1f8e9;
+        }
+        .input-blank:focus { border-color: var(--secondary); }
+
+        .family-tree-map {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 16px;
+            border: 2px dashed var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .exp-box {
+            background-color: #fff9c4;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #fbc02d;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .progress-indicator {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .menu-back {
+            background: none;
+            color: var(--primary-dark);
+            box-shadow: none;
+            padding: 5px;
+            font-size: 0.95rem;
+            text-decoration: underline;
+            width: auto;
+            margin-top: 15px;
+        }
+        .menu-back:hover { background: none; color: var(--text-dark); transform: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- SECTION 1: LOGIN UI -->
+        <div id="view-login">
+            <h2>Welcome Back! 🌟</h2>
+            <p>Pilih akunmu untuk melanjutkan pelajaran:</p>
+            <select id="user-dropdown" class="dropdown">
+                <option value="" disabled selected>-- Pilih Pengguna --</option>
+                <option value="fny">fny (Fenny)</option>
+                <option value="guest">Guest Account</option>
+            </select>
+            <button onclick="handleLogin()">Masuk</button>
+        </div>
+
+        <!-- SECTION 2: MAIN DASHBOARD MENU -->
+        <div id="view-menu" style="display: none;">
+            <h2 id="welcome-text">Halo! 👋</h2>
+            <p>Pilih mode belajar hari ini:</p>
+            <div class="btn-group">
+                <button id="btn-learn" onclick="switchView('view-learn')">📖 Belajar Materi</button>
+                <button id="btn-exercise" onclick="startExerciseMode()">📝 Kerjakan Latihan (100 Soal)</button>
+            </div>
+        </div>
+
+        <!-- SECTION 3: LEARN MODALITY (CAROUSEL WITH FLICK ANIMATION) -->
+        <div id="view-learn" style="display: none;">
+            <h2>Materi: Possessive Adjectives</h2>
+            <p>Kata ganti penentu kepemilikan objek.</p>
+            
+            <div class="card-deck">
+                <div id="flashcard-element" class="flashcard">
+                    <span id="card-badge" class="pronoun-badge">Subject: I</span>
+                    <div id="card-poss" class="poss-word">my</div>
+                    <div id="card-indo" class="indo-trans">...saya</div>
+                    <div id="card-example" class="example-box">
+                        <strong>Contoh:</strong><br>
+                        This is my book. (Ini buku saya)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-nav">
+                <button class="nav-arrow" onclick="flickCard('left')">←</button>
+                <span id="card-counter" style="font-weight: 600;">1 / 7</span>
+                <button class="nav-arrow" onclick="flickCard('right')">→</button>
+            </div>
+
+            <button class="menu-back" onclick="switchView('view-menu')">Kembali ke Menu</button>
+        </div>
+
+        <!-- SECTION 4: EXERCISE ENGINE -->
+        <div id="view-exercise" style="display: none;">
+            <div class="progress-indicator" id="exercise-progress">0 / 100</div>
+            <div id="exercise-tag" class="section-tag">Multiple Choice</div>
+            
+            <!-- Optional Family Map Context window inside matching frames -->
+            <div id="family-tree-ctx" class="family-tree-map" style="display: none;"></div>
+
+            <div id="exercise-q-text" class="question-box">Loading question...</div>
+            
+            <!-- Action containers mapped based on layout profile -->
+            <div id="box-mc" class="options-list"></div>
+            
+            <div id="box-input" style="display: none;">
+                <input type="text" id="blank-field" class="input-blank" placeholder="Ketik jawaban di sini...">
+                <button onclick="submitTypedAnswer()">Periksa Jawaban</button>
+            </div>
+
+            <div id="box-explanation" class="exp-box"></div>
+            
+            <button id="btn-next-q" style="display: none;" onclick="advanceNextQuestion()">Lanjut →</button>
+            <br>
+            <button class="menu-back" onclick="switchView('view-menu')">Keluar Sesi</button>
+        </div>
+
+        <!-- SECTION 5: CELEBRATION SHIELD -->
+        <div id="view-complete" style="display: none;">
+            <h2>Misi Selesai! 🎉🏆</h2>
+            <p>Hebat sekali! Semua materi dan tantangan 100 soal berhasil diselesaikan.</p>
+            <h3 id="final-score-board" style="color: var(--text-dark);">Skor: 0 / 100</h3>
+            <button onclick="switchView('view-menu')">Kembali ke Beranda</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ========================================================
+        // CORE REPOSITORY DATA: LEARN CARDS & 100 EXERCISES
+        // ========================================================
+        const learnCards = [
+            { subject: "I (Saya)", possessive: "my", indo: "...saya", text: "This is my dog. 🐶<br>(Ini anjing saya.)" },
+            { subject: "You (Kamu)", possessive: "your", indo: "...kamu / ...kalian", text: "I like your blue pen. 🖊️<br>(Aku suka pulpen birumu.)" },
+            { subject: "He (Dia Laki-laki)", possessive: "his", indo: "...dia (lk)", text: "His father is a doctor. 👨‍⚕️<br>(Ayahnya adalah seorang dokter.)" },
+            { subject: "She (Dia Perempuan)", possessive: "her", indo: "...dia (pr)", text: "Her bag is yellow. 🎒<br>(Tasnya berwarna kuning.)" },
+            { subject: "It (Hewan/Benda)", possessive: "its", indo: "...nya", text: "The cat wags its tail. 🐱<br>(Kucing itu menggerakkan ekornya.)" },
+            { subject: "We (Kita/Kami)", possessive: "our", indo: "...kita / ...kami", text: "Welcome to our big house! 🏡<br>(Selamat datang di rumah besar kami!)" },
+            { subject: "They (Mereka)", possessive: "their", indo: "...mereka", text: "Their school is very clean. 🏫<br>(Sekolah mereka sangat bersih.)" }
+        ];
+
+        const exercisePool = [];
+
+        // Generate 30 Multiple Choice Questions (1-30)
+        const mcRaw = [
+            { q: "I have a cat. ___ cat is very cute.", a: "my", o: ["my","your","his"], e: "Gunakan 'my' karena subjeknya adalah 'I' (kepemilikan saya)." },
+            { q: "You bring a book. Is this ___ book?", a: "your", o: ["my","your","their"], e: "Gunakan 'your' karena ditujukan kepada 'You' (buku kamu)." },
+            { q: "He has a new bicycle. ___ bicycle is green.", a: "his", o: ["her","his","its"], e: "Gunakan 'his' untuk kata ganti milik dia laki-laki (He)." },
+            { q: "She loves cooking. ___ cake is always delicious.", a: "her", o: ["her","his","our"], e: "Gunakan 'her' untuk kata ganti milik dia perempuan (She)." },
+            { q: "The bird is flying. ___ wings are beautiful.", a: "its", o: ["their","his","its"], e: "Gunakan 'its' untuk kepemilikan hewan tunggal (The bird/It)." },
+            { q: "We live here. This is ___ sweet home.", a: "our", o: ["our","their","your"], e: "Gunakan 'our' karena subjek asalnya 'We' (rumah kami)." },
+            { q: "They study hard. ___ grades are excellent.", a: "their", o: ["our","your","their"], e: "Gunakan 'their' karena subjek pemiliknya 'They' (nilai mereka)." },
+            { q: "I have a brother. ___ name is Tom.", a: "his", o: ["my","his","her"], e: "Tom adalah laki-laki, kepemilikan nama dia menggunakan 'his'." },
+            { q: "She has a doll. ___ doll is white.", a: "her", o: ["her","its","my"], e: "Milik dia perempuan adalah 'her'." },
+            { q: "Do you like ___ new house, Fenny?", a: "your", o: ["your","their","our"], e: "Bertanya langsung pada lawan bicara menggunakan 'your'." },
+            { q: "The dog lives in ___ small box.", a: "its", o: ["his","its","her"], e: "Anjing (hewan) menggunakan kepemilikan 'its'." },
+            { q: "We are teachers. This is ___ classroom.", a: "our", o: ["your","our","their"], e: "Subjek 'We' menggunakan kata ganti milik 'our'." },
+            { q: "They have a big car. ___ car is black.", a: "their", o: ["their","our","his"], e: "Subjek 'They' menggunakan kepemilikan 'their'." },
+            { q: "I wash ___ hands before eating.", a: "my", o: ["my","your","her"], e: "Membasuh tangan saya sendiri menggunakan 'my'." },
+            { q: "He works in a workshop. ___ hands are dirty.", a: "his", o: ["his","her","its"], e: "Tangan milik dia laki-laki (He) adalah 'his'." },
+            { q: "She lives with ___ grandmother.", a: "her", o: ["his","her","my"], e: "Nenek dari dia perempuan menggunakan 'her'." },
+            { q: "The tree drops ___ yellow leaves.", a: "its", o: ["its","their","our"], e: "Pohon (benda tunggal/It) menggunakan 'its'." },
+            { q: "We buy snacks for ___ small party.", a: "our", o: ["your","our","their"], e: "Pesta kami/kita menggunakan 'our'." },
+            { q: "They paint ___ bedroom wall pink.", a: "their", o: ["their","his","her"], e: "Kamar tidur mereka menggunakan 'their'." },
+            { q: "You need to bring ___ own pencil.", a: "your", o: ["my","your","his"], e: "Pensil milik kamu sendiri menggunakan 'your'." },
+            { q: "I lose ___ blue pen at school.", a: "my", o: ["my","his","their"], e: "Pulpen saya yang hilang menggunakan 'my'." },
+            { q: "The baby is crying because ___ milk is cold.", a: "its", o: ["his","her","its"], e: "Bayi/anak kecil umum secara dasar netral menggunakan 'its' atau pasangannya." },
+            { q: "He combs ___ black hair.", a: "his", o: ["his","my","your"], e: "Rambut dia laki-laki menggunakan 'his'." },
+            { q: "She wears ___ beautiful red dress.", a: "her", o: ["her","its","our"], e: "Gaun dia perempuan menggunakan 'her'." },
+            { q: "We clean ___ room every morning.", a: "our", o: ["their","our","my"], e: "Kamar kita menggunakan 'our'." },
+            { q: "The boys run rapidly. ___ shoes are dirty.", a: "their", o: ["his","their","our"], e: "'The boys' bermakna jamak (They), jadi menggunakan 'their'." },
+            { q: "Is this ___ laptop, John?", a: "your", o: ["your","his","my"], e: "Bertanya kepada John secara langsung menggunakan 'your'." },
+            { q: "I love ___ country, Indonesia.", a: "my", o: ["my","our","their"], e: "Menyatakan rasa cinta pada negara saya sendiri menggunakan 'my'." },
+            { q: "The butterfly flaps ___ colorful wings.", a: "its", o: ["its","his","her"], e: "Kupu-kupu menggunakan 'its'." },
+            { q: "They call ___ mother every night.", a: "their", o: ["our","their","your"], e: "Ibu mereka menggunakan 'their'." }
+        ];
+
+        // Generate 50 Fill-in-the-Blanks Questions (31-80)
+        const fitbRaw = [
+            { q: "I am in the bedroom. This is ___ room.", a: "my", e: "Subjek 'I' membutuhkan kata ganti kepemilikan 'my'." },
+            { q: "You have a smartphone. Is that ___ smartphone?", a: "your", e: "Subjek 'You' membutuhkan kata ganti kepemilikan 'your'." },
+            { q: "He has a ball. It is ___ ball.", a: "his", e: "Subjek 'He' membutuhkan kata ganti kepemilikan 'his'." },
+            { q: "She has a cat. It is ___ cat.", a: "her", e: "Subjek 'She' membutuhkan kata ganti kepemilikan 'her'." },
+            { q: "The room has a door. ___ door is white.", a: "its", e: "Benda tunggal 'The room' membutuhkan 'its'." },
+            { q: "We have a garden. This is ___ garden.", a: "our", e: "Subjek 'We' membutuhkan kata ganti kepemilikan 'our'." },
+            { q: "They have a dog. It is ___ dog.", a: "their", e: "Subjek 'They' membutuhkan kata ganti kepemilikan 'their'." },
+            { q: "I wear ___ shoes.", a: "my", e: "Sepatu milik saya sendiri menggunakan 'my'." },
+            { q: "You wash ___ face.", a: "your", e: "Wajah milik kamu sendiri menggunakan 'your'." },
+            { q: "He drives ___ car.", a: "his", e: "Mobil milik dia laki-laki menggunakan 'his'." },
+            { q: "She cooks ___ breakfast.", a: "her", e: "Sarapan buatan dia perempuan menggunakan 'her'." },
+            { q: "The table has lost ___ leg.", a: "its", e: "Meja (benda tunggal) menggunakan 'its'." },
+            { q: "We open ___ books.", a: "our", e: "Buku-buku milik kami/kita menggunakan 'our'." },
+            { q: "They do ___ homework.", a: "their", e: "Pekerjaan rumah milik mereka menggunakan 'their'." },
+            { q: "I write a letter to ___ friend.", a: "my", e: "Teman saya menggunakan 'my'." },
+            { q: "Can I borrow ___ ruler, Tom?", a: "your", e: "Bertanya meminjam penggaris milik Tom menggunakan 'your'." },
+            { q: "He speaks to ___ mother.", a: "his", e: "Ibu dia laki-laki menggunakan 'his'." },
+            { q: "She combs ___ hair.", a: "her", e: "Rambut dia perempuan menggunakan 'her'." },
+            { q: "The cat eats ___ fish.", a: "its", e: "Ikan milik kucing tersebut menggunakan 'its'." },
+            { q: "We love ___ school.", a: "our", e: "Sekolah kami menggunakan 'our'." },
+            { q: "They lose ___ keys.", a: "their", e: "Kunci-kunci milik mereka menggunakan 'their'." },
+            { q: "I clean ___ desk.", a: "my", e: "Meja belajar saya menggunakan 'my'." },
+            { q: "Where is ___ house, Fenny?", a: "your", e: "Menanyakan langsung rumah milik rekan bicara menggunakan 'your'." },
+            { q: "He sits on ___ chair.", a: "his", e: "Kursi milik dia laki-laki menggunakan 'his'." },
+            { q: "She sells ___ old bag.", a: "her", e: "Tas lama milik dia perempuan menggunakan 'her'." },
+            { q: "The clock shows ___ time clearly.", a: "its", e: "Jam dinding menunjukkan waktunya menggunakan 'its'." },
+            { q: "We share ___ toys.", a: "our", e: "Mainan milik kami/kita bersama menggunakan 'our'." },
+            { q: "They drink ___ milk.", a: "their", e: "Susu milik mereka menggunakan 'their'." },
+            { q: "I bring ___ umbrella.", a: "my", e: "Payung saya menggunakan 'my'." },
+            { q: "Do you know ___ answer?", a: "your", e: "Apakah kamu tahu jawabanmu sendiri atau dalam konteks ini 'your'." },
+            { q: "He forgets ___ jacket.", a: "his", e: "Jaket dia laki-laki menggunakan 'his'." },
+            { q: "She forgets ___ purse.", a: "her", e: "Dompet dia perempuan menggunakan 'her'." },
+            { q: "The bird builds ___ nest.", a: "its", e: "Sarang burung (hewan tunggal) menggunakan 'its'." },
+            { q: "We eat ___ dinner at 7 PM.", a: "our", e: "Makan malam kami menggunakan 'our'." },
+            { q: "They play with ___ friends.", a: "their", e: "Teman-teman mereka menggunakan 'their'." },
+            { q: "I like ___ english teacher.", a: "my", e: "Guru bahasa Inggris saya menggunakan 'my'." },
+            { q: "What is ___ telephone number, Sarah?", a: "your", e: "Menanyakan langsung nomor telepon Sarah menggunakan 'your'." },
+            { q: "He feeds ___ rabbit.", a: "his", e: "Kelinci milik dia laki-laki menggunakan 'his'." },
+            { q: "She paints ___ house white.", a: "her", e: "Rumah dia perempuan menggunakan 'her'." },
+            { q: "The car has a scratch on ___ window.", a: "its", e: "Mobil (benda) menggunakan 'its'." },
+            { q: "We close ___ eyes to sleep.", a: "our", e: "Mata kita/kami menggunakan 'our'." },
+            { q: "The students follow ___ teacher.", a: "their", e: "Para murid mengikuti guru mereka ('their')." },
+            { q: "I ride ___ bicycle.", a: "my", e: "Sepeda saya menggunakan 'my'." },
+            { q: "You need to show ___ ticket.", a: "your", e: "Tiket milik kamu menggunakan 'your'." },
+            { q: "He rides ___ motorcycle.", a: "his", e: "Motor dia laki-laki menggunakan 'his'." },
+            { q: "She opens ___ window.", a: "her", e: "Jendela kamar dia perempuan menggunakan 'her'." },
+            { q: "The baby plays with ___ toy.", a: "its", e: "Mainan milik bayi tersebut menggunakan 'its'." },
+            { q: "We ride ___ horses.", a: "our", e: "Kuda-kuda milik kami menggunakan 'our'." },
+            { q: "They ride ___ horses.", a: "their", e: "Kuda-kuda milik mereka menggunakan 'their'." },
+            { q: "I enjoy ___ tea in the morning.", a: "my", e: "Teh pagi saya menggunakan 'my'." }
+        ];
+
+        // Generate 20 Sentence Writing / Parsing / Translation challenges (81-100)
+        // Questions 91-100 will strictly follow the dynamic family tree emoji mappings
+        const writeRaw = [
+            { q: "Terjemahkan ke Bahasa Inggris: 'Ini adalah mobil saya.'", a: "This is my car", e: "Gunakan 'my' untuk mengartikan kepemilikan saya." },
+            { q: "Terjemahkan ke Bahasa Inggris: 'Dimana rumahmu?'", a: "Where is your house", e: "Gunakan 'your' untuk mengartikan kata kepemilikan kamu." },
+            { q: "Terjemahkan ke Bahasa Inggris: 'Ini adalah kucingnya (dia pr).'", a: "This is her cat", e: "Gunakan 'her' untuk dia perempuan." },
+            { q: "Terjemahkan ke Bahasa Inggris: 'Ayahnya (dia lk) adalah seorang guru.'", a: "His father is a teacher", e: "Gunakan 'His' di awal kalimat." },
+            { q: "Terjemahkan ke Bahasa Inggris: 'Anjing itu menggerakkan ekornya.'", a: "The dog wags its tail", e: "Ekornya menggunakan kata ganti objek hewan 'its tail'." },
+            { q: "Terjemahkan ke Bahasa Inggris: 'Ini adalah sekolah kami.'", a: "This is our school", e: "Sekolah milik kami menggunakan 'our school'." },
+            { q: "Terjemahkan ke Bahasa Inggris: 'Nama mereka adalah Tom dan Jerry.'", a: "Their names are Tom and Jerry", e: "Gunakan 'Their' karena mereka lebih dari satu." },
+            { q: "Susun kata berikut: [apple / is / her / red]", a: "Her apple is red", e: "Susunan subjek possessive disusul kata sifat penjelas warna." },
+            { q: "Susun kata berikut: [is / name / my / Fenny]", a: "My name is Fenny", e: "Pola dasar perkenalan kepemilikan nama saya." },
+            { q: "Susun kata berikut: [big / our / is / house]", a: "Our house is big", e: "Rumah kami besar tersusun dari 'Our house' + 'is' + 'big'." },
+            
+            // --- FAMILY TREE CHART QUESTIONS (91 - 100) ---
+            { q: "FAMILY MAP: 👴 (Grandfather John) + 👵 (Grandmother Mary) ➔ 👨 (Father Robert).<br><br>Question: Robert is ___ son.", a: "their", tree: true, e: "Robert adalah anak dari John dan Mary, maka Robert adalah anak laki-laki mereka ('their')." },
+            { q: "FAMILY MAP: 👴 (Grandfather John) ➔ 👨 (Father Robert).<br><br>Question: John is ___ father.", a: "his", tree: true, e: "John adalah ayah dari Robert (dia laki-laki), maka John adalah ayahnya ('his father')." },
+            { q: "FAMILY MAP: 👨 (Father Robert) + 👩 (Mother Susan) ➔ 👧 (Me/Fenny).<br><br>Question: Susan is ___ mother.", a: "my", tree: true, e: "Konteks bagan ini menunjuk ke saya (Me/Fenny), jadi Susan adalah ibu saya ('my mother')." },
+            { q: "FAMILY MAP: 👨 (Father Robert) + 👩 (Mother Susan) ➔ 👧 (Me/Fenny) & 👦 (Brother Tommy).<br><br>Question: Tommy is ___ brother.", a: "my", tree: true, e: "Tommy adalah saudara laki-laki dari saya sendiri, maka gunakan 'my brother'." },
+            { q: "FAMILY MAP: 👧 (Me/Fenny) & 👦 (Brother Tommy).<br><br>Question: Robert and Susan are ___ parents.", a: "our", tree: true, e: "Robert dan Susan adalah orang tua dari kami berdua (Fenny & Tommy), gunakan 'our parents'." },
+            { q: "FAMILY MAP: 👦 (Brother Tommy) ➔ 🎒 (Yellow Bag).<br><br>Question: This is ___ bag.", a: "his", tree: true, e: "Tas ini kepunyaan Tommy (dia laki-laki), gunakan 'his bag'." },
+            { q: "FAMILY MAP: 👩 (Mother Susan) ➔ 🚗 (Red Car).<br><br>Question: That is ___ car.", a: "her", tree: true, e: "Mobil itu milik Susan (dia perempuan), gunakan 'her car'." },
+            { q: "FAMILY MAP: 🐶 (Pet Max) ➔ 🦴 (Small Bone).<br><br>Question: Max wants ___ bone.", a: "its", tree: true, e: "Max adalah hewan peliharaan tunggal, kepunyaannya menggunakan 'its'." },
+            { id: "w19", q: "FAMILY MAP: 👴 (John) & 👵 (Mary) ➔ 🏡 (Old Villa).<br><br>Question: That is ___ house.", a: "their", tree: true, e: "Rumah itu milik kakek dan nenek bersama (mereka), gunakan 'their house'." },
+            { id: "w20", q: "FAMILY MAP: 👧 (Me) & 👦 (Tommy) & 🐶 (Max).<br><br>Question: We love ___ cute dog.", a: "our", tree: true, e: "Kami menyayangi anjing lucu milik kami bersama, gunakan 'our dog'." }
+        ];
+
+        // Format and compile full sets safely into active array pool
+        function initDataPools() {
+            mcRaw.forEach((item, idx) => {
+                exercisePool.push({ id: `mc_${idx+1}`, type: "mc", text: item.q, answer: item.a, options: item.o, explanation: item.e });
+            });
+            fitbRaw.forEach((item, idx) => {
+                exercisePool.push({ id: `fitb_${idx+1}`, type: "fitb", text: item.q, answer: item.a, explanation: item.e });
+            });
+            writeRaw.forEach((item, idx) => {
+                exercisePool.push({ id: `write_${idx+1}`, type: "write", text: item.q, answer: item.a, explanation: item.e, tree: item.tree || false });
+            });
+        }
+
+        // ========================================================
+        // APPLICATION CONTROLLERS & ENGINE CORES
+        // ========================================================
+        let activeCardIdx = 0;
+        let exerciseIdx = 0;
+        let exerciseScore = 0;
+        let activeStudent = "Guest";
+
+        function switchView(viewId) {
+            const views = ['view-login', 'view-menu', 'view-learn', 'view-exercise', 'view-complete'];
+            views.forEach(v => {
+                document.getElementById(v).style.display = (v === viewId) ? 'block' : 'none';
+            });
+        }
+
+        function handleLogin() {
+            const val = document.getElementById('user-dropdown').value;
+            if(!val) {
+                alert("Pilih nama pengguna terlebih dahulu!");
+                return;
+            }
+            activeStudent = (val === 'fny') ? "Fenny" : "Guest";
+            document.getElementById('welcome-text').innerText = `Halo, ${activeStudent}! 👋`;
+            switchView('view-menu');
+        }
+
+        // --- FLASHCARD ROUTINES ---
+        function updateCardUI() {
+            const card = learnCards[activeCardIdx];
+            document.getElementById('card-badge').innerText = `Subject: ${card.subject}`;
+            document.getElementById('card-poss').innerText = card.possessive;
+            document.getElementById('card-indo').innerText = card.indo;
+            document.getElementById('card-example').innerHTML = `<strong>Contoh:</strong><br>${card.text}`;
+            document.getElementById('card-counter').innerText = `${activeCardIdx + 1} / ${learnCards.length}`;
+        }
+
+        function flickCard(direction) {
+            const cardEl = document.getElementById('flashcard-element');
+            const classToAdd = (direction === 'left') ? 'flick-left' : 'flick-right';
+            
+            cardEl.classList.add(classToAdd);
+            
+            setTimeout(() => {
+                if (direction === 'right') {
+                    activeCardIdx = (activeCardIdx + 1) % learnCards.length;
+                } else {
+                    activeCardIdx = (activeCardIdx - 1 + learnCards.length) % learnCards.length;
+                }
+                updateCardUI();
+                cardEl.className = 'flashcard'; // removes both flick modifiers
+            }, 400);
+        }
+
+        // --- EXERCISE SYSTEM ROUTINES ---
+        function startExerciseMode() {
+            exerciseIdx = 0;
+            exerciseScore = 0;
+            switchView('view-exercise');
+            loadExerciseQuestion();
+        }
+
+        function loadExerciseQuestion() {
+            if (exerciseIdx >= exercisePool.length) {
+                finishSessionReport();
+                return;
+            }
+
+            const q = exercisePool[exerciseIdx];
+            
+            // Adjust tracking parameters
+            document.getElementById('exercise-progress').innerText = `${exerciseIdx + 1} / ${exercisePool.length}`;
+            document.getElementById('box-explanation').style.display = 'none';
+            document.getElementById('btn-next-q').style.display = 'none';
+            
+            // Show Family Map container only for family tree questions
+            const treeCtx = document.getElementById('family-tree-ctx');
+            if (q.tree) {
+                treeCtx.innerHTML = `<strong>🌳 Peta Keluarga (Family Tree Context):</strong><br>Anggap bagan emoji ini sebagai petunjuk mencari kata ganti kepemilikan yang tepat!`;
+                treeCtx.style.display = 'block';
+            } else {
+                treeCtx.style.display = 'none';
+            }
+
+            // Route Layout interfaces based on layout types
+            if (q.type === "mc") {
+                document.getElementById('exercise-tag').innerText = "Multiple Choice";
+                document.getElementById('box-mc').style.display = 'grid';
+                document.getElementById('box-input').style.display = 'none';
+                renderMultipleChoiceLayout(q);
+            } else {
+                document.getElementById('exercise-tag').innerText = q.type === "fitb" ? "Fill in the Blanks" : "Sentence Writing";
+                document.getElementById('box-mc').style.display = 'none';
+                document.getElementById('box-input').style.display = 'block';
+                
+                const field = document.getElementById('blank-field');
+                field.value = "";
+                field.disabled = false;
+                field.placeholder = q.type === "fitb" ? "Ketik jawaban kata (contoh: my/your/his)..." : "Ketik terjemahan/susunan kalimat lengkap...";
+            }
+
+            document.getElementById('exercise-q-text').innerHTML = q.text;
+        }
+
+        function renderMultipleChoiceLayout(q) {
+            const container = document.getElementById('box-mc');
+            container.innerHTML = '';
+            
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-item';
+                btn.innerText = opt;
+                btn.onclick = () => checkMultipleChoiceAnswer(btn, opt, q.answer, q.explanation);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkMultipleChoiceAnswer(btn, selected, correct, exp) {
+            const allBtns = document.querySelectorAll('.option-item');
+            allBtns.forEach(b => b.disabled = true);
+
+            if(selected === correct) {
+                btn.classList.add('correct');
+                exerciseScore++;
+            } else {
+                btn.classList.add('wrong');
+                allBtns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+            }
+
+            revealExplanationBox(exp);
+        }
+
+        function submitTypedAnswer() {
+            const q = exercisePool[exerciseIdx];
+            const inputField = document.getElementById('blank-field');
+            const userText = inputField.value.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            const cleanAnswer = q.answer.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            
+            inputField.disabled = true;
+
+            if (userText === cleanAnswer) {
+                inputField.style.borderColor = "var(--primary)";
+                exerciseScore++;
+            } else {
+                inputField.style.borderColor = "var(--wrong)";
+            }
+
+            const responseNote = `Jawaban benar: <strong>${q.answer}</strong><br>${q.explanation}`;
+            revealExplanationBox(responseNote);
+        }
+
+        function revealExplanationBox(text) {
+            const box = document.getElementById('box-explanation');
+            box.innerHTML = `<strong>Penjelasan:</strong><br>${text}`;
+            box.style.display = 'block';
+            document.getElementById('btn-next-q').style.display = 'block';
+        }
+
+        function advanceNextQuestion() {
+            document.getElementById('blank-field').style.borderColor = "var(--primary)";
+            exerciseIdx++;
+            loadExerciseQuestion();
+        }
+
+        function finishSessionReport() {
+            switchView('view-complete');
+            document.getElementById('final-score-board').innerText = `Skor Akhir: ${exerciseScore} / ${exercisePool.length}`;
+            
+            // Sync with backend database via matching session context if active
+            console.log(`Exercise complete for ${activeStudent}. Total score: ${exerciseScore}`);
+        }
+
+        // Initialize components on load
+        window.onload = function() {
+            initDataPools();
+            updateCardUI();
+        };
+    </script>
+</body>
+</html>
