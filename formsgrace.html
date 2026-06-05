@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ms Grace's Inbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Dancing+Script:wght@700&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            min-height: 100vh;
+        }
+        .signature { font-family: 'Dancing Script', cursive; }
+        .message-card {
+            transition: all 0.2s ease;
+        }
+        .message-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center py-12 px-4 sm:px-8">
+
+    <div id="admin-login" class="fixed inset-0 bg-emerald-900/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center border-t-8 border-emerald-500">
+            <div class="text-5xl mb-4">💌</div>
+            <h2 class="text-3xl font-extrabold text-emerald-900 mb-2">Ms Grace's Inbox</h2>
+            <p class="text-gray-500 mb-6">Enter your teacher password to view student messages.</p>
+            
+            <input type="password" id="admin-pwd" placeholder="Enter Password" class="w-full p-4 mb-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-center font-bold tracking-widest" onkeypress="if(event.key === 'Enter') checkAdmin()">
+            
+            <button onclick="checkAdmin()" class="w-full bg-emerald-600 text-white font-bold py-4 rounded-xl hover:bg-emerald-500 transition-colors shadow-lg">
+                Access Inbox
+            </button>
+            <a href="index.html" class="block mt-4 text-emerald-600 text-sm hover:underline">Return to Portal</a>
+        </div>
+    </div>
+
+    <div id="dashboard-ui" class="max-w-5xl w-full hidden">
+        
+        <div class="flex justify-between items-center mb-8">
+            <a href="index.html" class="text-emerald-600 hover:text-emerald-800 font-semibold text-sm transition-colors bg-white/50 px-4 py-2 rounded-full shadow-sm">
+                &larr; Back to Portal
+            </a>
+            <button onclick="fetchMessages()" class="text-white bg-emerald-500 hover:bg-emerald-600 font-semibold text-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                Refresh
+            </button>
+        </div>
+
+        <div class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-emerald-900 tracking-tight">Student Messages</h1>
+            <p class="text-lg text-emerald-700 mt-2 signature">With love, from the Class of 2026</p>
+        </div>
+
+        <div id="loading-state" class="text-center py-12 hidden">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-emerald-600 mb-4"></div>
+            <p class="text-emerald-800 font-semibold animate-pulse">Loading messages from database...</p>
+        </div>
+
+        <div id="empty-state" class="text-center py-16 bg-white rounded-3xl shadow-sm border border-emerald-100 hidden">
+            <span class="text-6xl block mb-4 grayscale opacity-50">📭</span>
+            <h3 class="text-xl font-bold text-gray-400">Inbox is empty</h3>
+            <p class="text-gray-400 mt-2">No students have left a message yet.</p>
+        </div>
+
+        <div id="message-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // *** MS GRACE: PASTE YOUR FIREBASE CONFIG HERE ***
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch(e) {
+            console.error("Firebase Initialization Error: ", e);
+        }
+
+        // Make fetchMessages globally available
+        window.fetchMessages = async function() {
+            const grid = document.getElementById('message-grid');
+            const loading = document.getElementById('loading-state');
+            const empty = document.getElementById('empty-state');
+            
+            grid.innerHTML = '';
+            empty.classList.add('hidden');
+            loading.classList.remove('hidden');
+
+            if (!db) {
+                loading.classList.add('hidden');
+                grid.innerHTML = `<div class="col-span-full bg-red-50 text-red-600 p-6 rounded-2xl border border-red-200 text-center font-bold">⚠️ Firebase is not configured properly in the code. Please update the firebaseConfig object.</div>`;
+                return;
+            }
+
+            try {
+                // Query messages, ordered by newest first
+                const q = query(collection(db, "final-googbye-message"), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                loading.classList.add('hidden');
+
+                if (querySnapshot.empty) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    
+                    // Format timestamp safely
+                    let dateString = "Unknown Time";
+                    if (data.timestamp && data.timestamp.toDate) {
+                        const date = data.timestamp.toDate();
+                        dateString = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    }
+
+                    // Sanitize inputs
+                    const safeName = data.name ? data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "Anonymous";
+                    const safeMsg = data.message ? data.message.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>") : "";
+
+                    // Random subtle background tint
+                    const colors = ['bg-emerald-50', 'bg-teal-50', 'bg-green-50'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+                    const cardHTML = `
+                        <div class="message-card ${randomColor} rounded-3xl p-6 shadow-md border border-emerald-100 flex flex-col relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 text-4xl group-hover:scale-110 transition-transform">💌</div>
+                            
+                            <div class="flex-grow z-10">
+                                <p class="text-gray-700 italic leading-relaxed text-lg mb-6">"${safeMsg}"</p>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-emerald-200 z-10 flex justify-between items-end">
+                                <div>
+                                    <p class="font-bold text-emerald-900">— ${safeName}</p>
+                                    <p class="text-xs text-emerald-600/60 mt-1">${dateString}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.innerHTML += cardHTML;
+                });
+
+            } catch (error) {
+                console.error("Error fetching messages: ", error);
+                loading.classList.add('hidden');
+                
+                // If it's an index error, Firebase will provide a URL to create the index
+                if (error.message.includes("index")) {
+                    grid.innerHTML = `<div class="col-span-full bg-amber-50 text-amber-800 p-6 rounded-2xl border border-amber-200 font-medium">⚠️ Firebase requires an Index to sort by time. Check your browser console for the link to automatically create it.</div>`;
+                } else {
+                    grid.innerHTML = `<div class="col-span-full bg-red-50 text-red-600 p-6 rounded-2xl border border-red-200 text-center font-bold">❌ Error loading messages. Check console.</div>`;
+                }
+            }
+        }
+    </script>
+
+    <script>
+        // Simple Admin Authentication
+        function checkAdmin() {
+            const pwd = document.getElementById('admin-pwd').value.trim();
+            
+            // Password set to "admin123" (Change this if you want!)
+            if (pwd === "grace") {
+                document.getElementById('admin-login').style.display = 'none';
+                document.getElementById('dashboard-ui').classList.remove('hidden');
+                
+                // Fetch messages upon successful login
+                if (typeof window.fetchMessages === "function") {
+                    window.fetchMessages();
+                }
+            } else {
+                alert("❌ Incorrect Password!");
+                document.getElementById('admin-pwd').value = '';
+            }
+        }
+    </script>
+
+</body>
+</html>
