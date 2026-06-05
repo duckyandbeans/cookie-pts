@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESL Student Portal</title>
+    <title>Hello</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        
         body { 
             font-family: 'Inter', sans-serif; 
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            /* Subtle Green Dots Background */
+            background-color: #f8fafc;
+            background-image: radial-gradient(rgba(34, 197, 94, 0.4) 2px, transparent 2px);
+            background-size: 30px 30px;
             min-height: 100vh;
+            overflow-x: hidden;
         }
+        
         .menu-card {
             transition: all 0.3s ease;
         }
@@ -24,119 +30,641 @@
             opacity: 0.7;
             cursor: not-allowed;
         }
+        
+        /* Giant Floating Cookie Styles */
+        .cookie-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 60vh;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .giant-cookie {
+            font-size: clamp(150px, 40vw, 400px);
+            line-height: 1;
+            filter: drop-shadow(0 0 50px rgba(251, 191, 36, 0.6));
+            animation: floatCookie 4s ease-in-out infinite;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+        .giant-cookie:active {
+            transform: scale(0.9);
+        }
+        @keyframes floatCookie {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(3deg); }
+        }
+        .sparkle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.9);
+            opacity: 0;
+            animation: twinkle 2s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .sp1 { top: 15%; left: 30%; animation-delay: 0s; }
+        .sp2 { top: 75%; left: 75%; animation-delay: 0.7s; }
+        .sp3 { top: 35%; left: 80%; animation-delay: 1.2s; }
+        .sp4 { top: 80%; left: 20%; animation-delay: 1.8s; }
+        .sp5 { top: 10%; left: 60%; animation-delay: 0.4s; }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.9; transform: scale(1.5); }
+        }
+
+        /* Cinematic Split Screen */
+        @keyframes smokeRise {
+            0% { transform: translateY(10vh) scale(1); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-30vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Custom Input styles to remove outline */
+        .dark-input:focus {
+            outline: none !important;
+            box-shadow: none !important;
+            border-color: #6b7280 !important; 
+        }
     </style>
 </head>
 <body class="flex flex-col items-center py-12 px-4 sm:px-8">
 
     <div class="max-w-6xl w-full">
         
-        <div class="text-center mb-16">
-            <div class="inline-block bg-indigo-600 text-white p-4 rounded-full shadow-lg mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                </svg>
-            </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">ESL Student Portal</h1>
-            <p class="text-lg text-gray-600 mt-3">Midterms Preparation & Assessment Hub</p>
+        <!-- Header (Updated to just say Hello) -->
+        <div class="text-center mb-16 mt-4">
+            <h1 class="text-5xl sm:text-7xl font-extrabold text-gray-900 tracking-tight drop-shadow-sm">Hello</h1>
         </div>
 
-        <div class="mb-16">
-            <div class="flex items-center gap-3 mb-6 border-b-2 border-rose-200 pb-2">
-                <span class="text-3xl">🎓</span>
-                <h2 class="text-2xl font-extrabold text-rose-900 uppercase tracking-wide">Grade 12 (XII) Section</h2>
+        <!-- ================= TOP #1 MISTAKE ================= -->
+        <div class="bg-white rounded-3xl p-6 md:p-10 shadow-xl border-t-8 border-red-500 text-center mb-16 max-w-3xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black text-red-600 mb-6 uppercase tracking-widest">Top #1 Mistake</h2>
+            
+            <img src="question1.png" alt="Question 1 Error" class="mx-auto block w-full max-w-md rounded-xl shadow-md border border-gray-200 mb-6">
+            
+            <p class="text-lg md:text-2xl text-gray-800 mb-2">You should <strong class="font-black text-red-600">HAD</strong> been driving more carefully.</p>
+            <p class="text-base md:text-lg text-gray-600 mb-8 font-medium italic">Should is ALWAYS followed by infinitive (base form).</p>
+            
+            <div class="bg-green-50 border border-green-200 rounded-xl p-4 inline-block">
+                <p class="text-lg md:text-xl font-bold text-green-700">Correct answer: You should HAVE been driving more carefully.</p>
             </div>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+
+        <!-- ================= GIANT FLOATING COOKIE ================= -->
+        <div class="text-center mt-12 mb-12">
+            <p class="text-gray-500 font-bold uppercase tracking-widest mb-4">Click to check your final score</p>
+            <div class="cookie-wrapper" onclick="openCookieMenu()">
+                <div class="giant-cookie">🍪</div>
+                <div class="sparkle sp1"></div>
+                <div class="sparkle sp2"></div>
+                <div class="sparkle sp3"></div>
+                <div class="sparkle sp4"></div>
+                <div class="sparkle sp5"></div>
+            </div>
+        </div>
+
+        <!-- ================= FAREWELL LETTER ================= -->
+        <div class="bg-white rounded-3xl p-6 md:p-12 shadow-2xl border-t-8 border-indigo-400 mb-8 max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <span class="text-5xl">💌</span>
+            </div>
+            <div class="text-gray-700 leading-relaxed space-y-5 text-sm md:text-base">
+                <p class="font-bold text-xl text-indigo-900 mb-6">Dear students,</p>
+                <p>Thank you all for always paying attention to my class and always trying your best. Even when your score isn't high, I am always secretly proud of how far you have come. I loved being your teacher and I have finally memorized all your names.</p>
+                <p>Thank you for being such funny and amazing people. My job is so far from boring because of you guys hahaha! Here are some special mentions.....</p>
                 
-                <a href="midterms-studyguide.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-blue-500 block h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-3xl">📚</span>
-                        <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Review</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Kisi-Kisi</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">View the ultimate study guide and checklist for your upcoming exams.</p>
-                </a>
+                <ul class="space-y-5 mt-8">
+                    <li><strong>1. Nicholas S. T.</strong> - 'Nobita' You used to look like nobita in the Xth grade but now you have become a cooler and stylish boy. I hope you didn't take offense to my calling of you "Nobita" hahaha.</li>
+                    <li><strong>2. <em>Sava</em></strong> <i class="text-gray-500">*In a sultry, obnoxious French accent*</i> - Thank you for having such a cool name.</li>
+                    <li><strong>3. Florencia</strong> - I'm so sorry I keep on forgetting your name</li>
+                    <li><strong>4. Jericho and V.A.C.</strong> - Many teachers jokingly said you guys are like iblis but at least to me, you guys are just very highly energetic boys who are more talented in sports more than studying. But thank you for always trying your best in my class!</li>
+                    <li><strong>5. Felix</strong> - YOU'RE LUCKY I CAN STILL READ YOUR DECLARATION OF INDEPENDENCE 😭<br>
+                        <img src="felixhandwriting.jpg" alt="Felix's Handwriting" class="mx-auto block mt-3 rounded-xl shadow-md border border-gray-200 w-full max-w-xs">
+                    </li>
+                    <li><strong>6. Vallerina and Jessica</strong> - I'm sorry for using markers on your cheeks hahaha, don't use nail art at school.</li>
+                    <li><strong>7. Marven</strong> - Your belongings are so weirdly shaped - never change. 🤣</li>
+                    <li><strong>8. Arshavince</strong> - I'm so proud of your improvements. Your writing is powerful and motivational, never lose that side of you. But you have gotten a biiiiit lazier since you sat in the back. Come on, don't slack off, hahaha.</li>
+                    <li><strong>9. Carlos</strong> - PLSSS, YOUR FACE IS SO SUPERMODEL-ABLE, TAKE CARE OF ITTT 🫵</li>
+                    <li><strong>10. Derick</strong> - Masukkan baju batik kedalam 🫵 Hahaha, jk, Derick, but please, don't waste your potential. I think you have changed a lot from the Xth grade, in a good way.</li>
+                    <li><strong>11. Roschella and Roschelly</strong> - Sorry I can't tell you apart even though you guys have different bangs.</li>
+                    <li><strong>12. Revalyn</strong> - Your hairstyle is really cute and coolll.</li>
+                    <li><strong>13. Vanessa Lois</strong> - You are such an uplifting, special and positive individual. I believe that your leadership is something very precious and I hope you can achieve all that you want and dare to dream big things for yourself.</li>
+                    <li><strong>15. Willy</strong> - Your English level might not be high, but your sway is OUTTA this world 🔥Keep creating content!! 🔥</li>
+                </ul>
 
-                <a href="xii-mocktest1.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-rose-400 block h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-3xl">📝</span>
-                        <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Test 1</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Mock Test 1</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">Practice your foundational skills and vocabulary.</p>
-                </a>
-
-                <a href="xii-mocktest2.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-rose-500 block h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-3xl">📝</span>
-                        <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Test 2</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Mock Test 2</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">Challenge yourself with reading comprehension exercises.</p>
-                </a>
-
-                <a href="xii-mocktest3.html" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-rose-600 block h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-3xl">📝</span>
-                        <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Test 3</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Mock Test 3</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">Master advanced grammar and complex sentence structures.</p>
-                </a>
-
-            </div>
-        </div>
-
-
-        <div>
-            <div class="flex items-center gap-3 mb-6 border-b-2 border-emerald-200 pb-2">
-                <span class="text-3xl">🌱</span>
-                <h2 class="text-2xl font-extrabold text-emerald-900 uppercase tracking-wide">Grade 11 (XI) Section</h2>
+                <p class="mt-8 pt-6 border-t border-gray-100">And finally...</p>
+                <p>I hope you will treat the new English teacher as kindly as you have treated me and continue to learn a lot. I am sorry for all my mistakes while being your teacherrr. Don't be a stranger if you meet me in the future ☺️❤️</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
-
-                <button onclick="checkPassword()" class="menu-card bg-white rounded-2xl p-6 border-l-8 border-amber-400 text-left w-full focus:outline-none h-full">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-3xl">🍪</span>
-                        <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Locked</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Cookie Points</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed">Search your current cookie point balance. Requires the secret password to enter.</p>
+            <!-- Firebase Message Button -->
+            <div class="mt-12 text-center">
+                <button onclick="openMessageModal()" class="bg-indigo-600 text-white font-bold py-4 px-8 rounded-full shadow-xl hover:bg-indigo-500 hover:-translate-y-1 transition-all transform flex items-center justify-center gap-2 mx-auto border-2 border-indigo-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    Leave a message for Ms Grace
                 </button>
-
-                <div class="disabled-card bg-slate-100 rounded-2xl p-6 border-l-8 border-slate-400 text-left w-full h-full relative overflow-hidden">
-                    <div class="absolute inset-0 bg-slate-200/50 z-10 flex items-center justify-center backdrop-blur-[1px]">
-                        <span class="bg-slate-800 text-white font-black px-4 py-2 rounded shadow-lg tracking-widest uppercase rotate-[-5deg]">Coming Soon</span>
-                    </div>
-                    <div class="relative z-0">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-3xl">🎙️</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-800 mb-1">Debate Score Checker</h3>
-                        <p class="text-gray-500 text-xs leading-relaxed">View your final debate performance and adjudicator notes.</p>
-                    </div>
-                </div>
-
+                <p class="text-xs text-gray-400 mt-3 font-semibold tracking-wide uppercase">(Only Ms Grace can read this)</p>
             </div>
         </div>
 
     </div>
 
-    <script>
-        function checkPassword() {
-            // Ask the user for the password
-            let pwd = prompt("Enter the secret password to view Cookie Points:");
+    <!-- ================= MODALS & OVERLAYS ================= -->
+
+    <!-- Message Modal (Firebase) -->
+    <div id="message-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl w-full max-w-md p-8 shadow-2xl relative border-t-8 border-indigo-500">
+            <button onclick="closeMessageModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-2xl font-extrabold text-indigo-900 mb-2">Message Ms Grace</h3>
+            <p class="text-sm text-gray-500 mb-6">Your message will be sent privately to her database.</p>
             
-            // Check if they entered something and if it matches "brownie" (case-insensitive)
-            if (pwd && pwd.trim().toLowerCase() === "brownie") {
-                // Correct! Send them to the cookie checker page
-                window.location.href = "cookie-checker.html";
-            } else if (pwd !== null) {
-                // Incorrect password
-                alert("❌ Incorrect password. Access Denied.");
+            <input type="text" id="msg-name" placeholder="Your Name (Optional)" class="w-full p-4 mb-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-medium">
+            <textarea id="msg-text" rows="5" placeholder="Write your message here..." class="w-full p-4 border bg-gray-50 border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none resize-none font-medium"></textarea>
+            
+            <button onclick="submitMessage()" id="submit-btn" class="w-full mt-6 bg-indigo-600 text-white font-bold text-lg py-4 rounded-xl hover:bg-indigo-700 transition-colors shadow-lg">
+                Send Message
+            </button>
+        </div>
+    </div>
+
+    <!-- Cookie Choice Menu -->
+    <div id="cookie-menu-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-md p-8 shadow-2xl text-center">
+            <h3 class="text-2xl font-bold text-white mb-8 leading-snug">How do you want to view your final English score with Ms Grace?</h3>
+            
+            <div class="space-y-4">
+                <button onclick="startSequence('A')" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-lg py-4 rounded-xl hover:scale-105 transition-transform shadow-lg border border-amber-400 outline-none">
+                    A. The cool way (Turn your volume up)
+                </button>
+                <button onclick="startSequence('B')" class="w-full bg-slate-800 text-slate-300 font-bold text-lg py-4 rounded-xl hover:bg-slate-700 transition-colors border border-slate-600 outline-none">
+                    B. The boring but quick way
+                </button>
+            </div>
+            
+            <button onclick="closeCookieMenu()" class="mt-8 text-slate-500 hover:text-white text-sm underline font-medium outline-none">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Cinematic Reveal Overlay -->
+    <div id="reveal-overlay" class="fixed inset-0 z-[9999] hidden bg-[#050505] overflow-y-auto">
+        <!-- Doors (Seamless, slightly overlapping to prevent hairline gap) -->
+        <div id="door-left" class="fixed top-0 bottom-0 left-0 w-[50.5vw] bg-[#050505] z-30 transition-transform duration-[3000ms] ease-[cubic-bezier(0.65,0,0.35,1)] flex justify-end items-end overflow-hidden outline-none">
+            <div class="absolute bottom-[-50px] right-0 w-[200vw] h-[40vh] bg-gradient-to-t from-gray-400/20 to-transparent blur-xl animate-[smokeRise_10s_ease-out_forwards] pointer-events-none z-15"></div>
+        </div>
+        <div id="door-right" class="fixed top-0 bottom-0 right-0 w-[50.5vw] bg-[#050505] z-30 transition-transform duration-[3000ms] ease-[cubic-bezier(0.65,0,0.35,1)] outline-none"></div>
+
+        <!-- Cinematic Text -->
+        <div id="cine-text-1" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-2xl md:text-4xl font-light tracking-widest opacity-0 transition-opacity duration-[2000ms] z-40 text-center w-full px-4 pointer-events-none">
+            You have studied hard...
+        </div>
+        <div id="cine-text-2" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-2xl md:text-4xl font-light tracking-widest opacity-0 transition-opacity duration-[2000ms] z-40 text-center w-full px-4 pointer-events-none">
+            Are you ready...?
+        </div>
+
+        <!-- The Final Score Internal Search UI -->
+        <div id="internal-score-ui" class="absolute inset-0 z-20 flex flex-col items-center justify-start py-12 px-4 opacity-0 transition-opacity duration-1000">
+            <div class="w-full max-w-4xl bg-slate-900 border border-slate-700 rounded-3xl p-6 md:p-10 shadow-2xl mt-10">
+                <div class="text-center mb-8">
+                    <span class="text-5xl mb-4 block">🏆</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white tracking-wider">Final Score Search</h2>
+                    <p class="text-slate-400 mt-2">Find your total points and final grade.</p>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4 mb-8">
+                    <select id="scoreClass" class="dark-input w-full md:w-1/3 p-4 bg-slate-800 text-white border border-slate-600 rounded-xl outline-none">
+                        <option value="">-- Class --</option>
+                        <option value="XI D">XI D</option>
+                        <option value="XI E">XI E</option>
+                        <option value="XI H">XI H</option>
+                        <option value="XI I">XI I</option>
+                    </select>
+                    <input type="number" id="scoreId" placeholder="Attendance Number" class="dark-input w-full md:w-1/3 p-4 bg-slate-800 text-white border border-slate-600 rounded-xl outline-none">
+                    <button onclick="searchScore()" class="w-full md:w-1/3 bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-500 transition-colors outline-none">
+                        Search
+                    </button>
+                </div>
+
+                <!-- Results Table -->
+                <div id="scoreResultContainer" class="hidden overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr class="bg-slate-800">
+                                <th class="p-4 border-b border-slate-700 text-slate-300 font-semibold rounded-tl-xl">Class</th>
+                                <th class="p-4 border-b border-slate-700 text-slate-300 font-semibold">Name</th>
+                                <th class="p-4 border-b border-slate-700 text-slate-300 font-semibold">Real Score</th>
+                                <th class="p-4 border-b border-slate-700 text-slate-300 font-semibold">Cookie Pts</th>
+                                <th class="p-4 border-b border-slate-700 text-slate-300 font-semibold rounded-tr-xl">Final Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scoreTableBody">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <button onclick="closeReveal()" class="mt-12 text-slate-500 hover:text-white underline block text-center w-full outline-none">Back to Portal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="epic-music" src="finalcountdown.mp3" preload="auto"></audio>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    
+    <!-- Firebase SDK Setup -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // *** MS GRACE: Put your actual Firebase Config here ***
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+        apiKey: "AIzaSyAB_on0WAobEXccxHvcwtS9ShxQpfATH-A",
+        authDomain: "anti-cheating-remedial-quiz.firebaseapp.com",
+        projectId: "anti-cheating-remedial-quiz",
+        storageBucket: "anti-cheating-remedial-quiz.firebasestorage.app",
+        messagingSenderId: "979294386230",
+        appId: "1:979294386230:web:7f9ff3e377d4da20cd4097",
+        measurementId: "G-84YB5CYGM8"
+        };
+
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch(e) {
+            console.warn("Firebase not configured yet. Messages will not be saved.");
+        }
+
+        window.submitMessage = async function() {
+            const name = document.getElementById('msg-name').value.trim() || "Anonymous";
+            const text = document.getElementById('msg-text').value.trim();
+            const btn = document.getElementById('submit-btn');
+
+            if(!text) {
+                alert("Please write a message first.");
+                return;
+            }
+
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
+            try {
+                if (db) {
+                    await addDoc(collection(db, "final-googbye-message"), {
+                        name: name,
+                        message: text,
+                        timestamp: serverTimestamp()
+                    });
+                } else {
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+                
+                // ==========================================
+                // THIS IS THE SUCCESS CONFIRMATION MESSAGE
+                // ==========================================
+                alert("Your message has been sent directly to Ms Grace! ❤️");
+                
+                closeMessageModal();
+                document.getElementById('msg-name').value = '';
+                document.getElementById('msg-text').value = '';
+            } catch (error) {
+                console.error("Error: ", error);
+                alert("Oops! Something went wrong. Make sure Firebase is configured.");
+            } finally {
+                btn.innerText = "Send Message";
+                btn.disabled = false;
+            }
+        }
+    </script>
+
+    <script>
+        // Modal Toggles
+        function openMessageModal() { document.getElementById('message-modal').classList.remove('hidden'); }
+        function closeMessageModal() { document.getElementById('message-modal').classList.add('hidden'); }
+        function openCookieMenu() { document.getElementById('cookie-menu-modal').classList.remove('hidden'); }
+        function closeCookieMenu() { document.getElementById('cookie-menu-modal').classList.add('hidden'); }
+        
+        function closeReveal() {
+            document.getElementById('reveal-overlay').style.display = 'none';
+            document.getElementById('internal-score-ui').style.opacity = '0';
+            
+            // Reset doors
+            document.getElementById('door-left').style.transform = 'translateX(0)';
+            document.getElementById('door-right').style.transform = 'translateX(0)';
+            document.getElementById('door-left').style.display = 'flex';
+            document.getElementById('door-right').style.display = 'block';
+
+            // Stop music
+            const audio = document.getElementById('epic-music');
+            audio.pause();
+            audio.currentTime = 0;
+            
+            // Clear inputs
+            document.getElementById('scoreResultContainer').classList.add('hidden');
+            document.getElementById('scoreClass').value = '';
+            document.getElementById('scoreId').value = '';
+        }
+
+        // Epic Sequence Logic
+        function startSequence(option) {
+            closeCookieMenu();
+            
+            const overlay = document.getElementById('reveal-overlay');
+            const ui = document.getElementById('internal-score-ui');
+            const doorLeft = document.getElementById('door-left');
+            const doorRight = document.getElementById('door-right');
+            const text1 = document.getElementById('cine-text-1');
+            const text2 = document.getElementById('cine-text-2');
+            const audio = document.getElementById('epic-music');
+
+            overlay.style.display = 'block';
+
+            if (option === 'B') {
+                // Boring Way: Instant reveal, NO MUSIC AT ALL
+                doorLeft.style.display = 'none';
+                doorRight.style.display = 'none';
+                ui.style.opacity = '1';
+                return;
+            }
+            
+            // Option A: The Cool Way
+            
+            // Play music normally
+            audio.volume = 1.0;
+            let playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => console.log("Browser blocked autoplay."));
+            }
+
+            doorLeft.style.display = 'flex';
+            doorRight.style.display = 'block';
+            
+            // 0-4s: Show Text 1
+            setTimeout(() => { text1.style.opacity = '1'; }, 1000);
+            setTimeout(() => { text1.style.opacity = '0'; }, 4000);
+            
+            // 5-8.5s: Show Text 2
+            setTimeout(() => { text2.style.opacity = '1'; }, 5000);
+            setTimeout(() => { text2.style.opacity = '0'; }, 8500);
+
+            // 9.5s: Split the doors!
+            setTimeout(() => {
+                doorLeft.style.transform = 'translateX(-100%)';
+                doorRight.style.transform = 'translateX(100%)';
+                
+                // Show the UI immediately behind the opening doors
+                ui.style.opacity = '1';
+                
+                // Fade out music to quiet background level
+                let fadeAudio = setInterval(() => {
+                    if (audio.volume > 0.2) {
+                        audio.volume -= 0.05;
+                    } else {
+                        clearInterval(fadeAudio);
+                    }
+                }, 200);
+
+            }, 9500);
+        }
+
+        // Inline Data Search Function
+        const studentScores = {
+            "XI D": [
+                { id: "1", name: "Annita", real: "19", cookie: "6", final: "73" },
+                { id: "2", name: "Arshavince Zenji Milano", real: "64", cookie: "9", final: "75" },
+                { id: "3", name: "Ashwini Dewan", real: "55", cookie: "7", final: "74" },
+                { id: "4", name: "Carissa Evelynna Susanto", real: "13", cookie: "7", final: "74" },
+                { id: "5", name: "Carlin Fayola", real: "91", cookie: "6", final: "96" },
+                { id: "6", name: "Celine Elaine Cen", real: "83", cookie: "5", final: "88" },
+                { id: "7", name: "Celine Siera Winnata", real: "16", cookie: "4", final: "72" },
+                { id: "8", name: "Derick Ferdinand", real: "14", cookie: "6", final: "73" },
+                { id: "9", name: "Ella", real: "86", cookie: "9", final: "91" },
+                { id: "10", name: "Erich Novaro", real: "17", cookie: "5", final: "72" },
+                { id: "11", name: "Felix Fernando Ang", real: "88", cookie: "6", final: "93" },
+                { id: "12", name: "Filbert Suciokto", real: "9", cookie: "5", final: "72" },
+                { id: "13", name: "Fiona Yozuki", real: "94", cookie: "7", final: "99" },
+                { id: "14", name: "Fleishia Allyce Ng", real: "35", cookie: "5", final: "72" },
+                { id: "15", name: "Florencia Melanie Nauli", real: "97", cookie: "6", final: "100" },
+                { id: "16", name: "Gabriella Callista Lokman", real: "67", cookie: "7", final: "74" },
+                { id: "17", name: "Giselle Lee", real: "81", cookie: "3", final: "84" },
+                { id: "18", name: "Givon", real: "97", cookie: "9", final: "100" },
+                { id: "19", name: "Goldy Pacific Sun", real: "62", cookie: "12", final: "75" },
+                { id: "20", name: "Grace Kelly Ignacia", real: "39", cookie: "7", final: "74" },
+                { id: "21", name: "Idellia Antoneta", real: "64", cookie: "6", final: "73" },
+                { id: "22", name: "James Willard Chen", real: "55", cookie: "8", final: "75" },
+                { id: "23", name: "Janice Giselle Lim", real: "35", cookie: "4", final: "72" },
+                { id: "24", name: "Javier Chiuman", real: "88", cookie: "6", final: "93" },
+                { id: "25", name: "Jessica Sachi", real: "41", cookie: "6", final: "73" },
+                { id: "26", name: "Jessica Tanji", real: "56", cookie: "8", final: "75" },
+                { id: "27", name: "Jocelyn Princess Yangklyn", real: "67", cookie: "5", final: "72" },
+                { id: "28", name: "Joe Kusanagi", real: "73", cookie: "7", final: "78" },
+                { id: "29", name: "Joice Kwan", real: "96", cookie: "10", final: "100" },
+                { id: "30", name: "Jose Ferguson Tjong", real: "50", cookie: "7", final: "74" },
+                { id: "31", name: "Justin Kwok", real: "89", cookie: "4", final: "93" },
+                { id: "32", name: "Kendrick Wiliston", real: "19", cookie: "6", final: "73" },
+                { id: "33", name: "Kenrick Ciuanta", real: "15", cookie: "5", final: "72" },
+                { id: "34", name: "Kusumo Wijaya", real: "98", cookie: "11", final: "100" },
+                { id: "35", name: "Lorenzo Alvaro", real: "43", cookie: "7", final: "74" },
+                { id: "36", name: "Luis Fernando Gober", real: "92", cookie: "10", final: "97" },
+                { id: "37", name: "Marcus Hubert Tandyan", real: "14", cookie: "4", final: "72" },
+                { id: "38", name: "Michelle Patricia Susanto", real: "35", cookie: "5", final: "72" },
+                { id: "39", name: "Nico Wiman", real: "24", cookie: "5", final: "72" },
+                { id: "40", name: "Reegan Gunawan", real: "75", cookie: "8", final: "80" },
+                { id: "41", name: "Richard Ansle", real: "0", cookie: "7", final: "0" },
+                { id: "42", name: "Roschella Teisha Widalkho", real: "58", cookie: "6", final: "73" },
+                { id: "43", name: "Stella Keyne", real: "44", cookie: "7", final: "74" },
+                { id: "44", name: "Valencia Khosasih", real: "39", cookie: "5", final: "72" },
+                { id: "45", name: "Wendy Salim", real: "33", cookie: "6", final: "73" },
+                { id: "46", name: "Louis Chow", real: "12", cookie: "3", final: "70" },
+                { id: "47", name: "Valerian Lieandro", real: "44", cookie: "6", final: "73" }
+            ],
+            "XI E": [
+                { id: "1", name: "Angela Sudargo", real: "69", cookie: "8", final: "75" },
+                { id: "2", name: "Aurellia Fidelya", real: "83", cookie: "9", final: "88" },
+                { id: "3", name: "Beltiana Lie", real: "48", cookie: "3", final: "70" },
+                { id: "4", name: "Calvin Khangriawan Tony", real: "25", cookie: "5", final: "72" },
+                { id: "5", name: "Cathryna Audree Livi", real: "29", cookie: "7", final: "74" },
+                { id: "6", name: "Chen Jian Ping", real: "46", cookie: "7", final: "74" },
+                { id: "7", name: "Cheryl Quinn Mc Cane", real: "82", cookie: "6", final: "87" },
+                { id: "8", name: "Christopher Lionel Richie", real: "14", cookie: "4", final: "72" },
+                { id: "9", name: "Cindy Tanaka", real: "79", cookie: "5", final: "84" },
+                { id: "10", name: "Clairine Vanessa", real: "55", cookie: "3", final: "70" },
+                { id: "11", name: "Clara Fiorentina", real: "79", cookie: "3", final: "82" },
+                { id: "12", name: "Clarise Vincella Tho", real: "84", cookie: "3", final: "87" },
+                { id: "13", name: "Cynthia Kwan", real: "36", cookie: "3", final: "70" },
+                { id: "14", name: "Darren Alexius Wijaya", real: "96", cookie: "9", final: "100" },
+                { id: "15", name: "Ethan Chainito", real: "95", cookie: "12", final: "100" },
+                { id: "16", name: "Eunice Yueen", real: "36", cookie: "7", final: "74" },
+                { id: "17", name: "Evellyn Viorene Khoo", real: "48", cookie: "4", final: "72" },
+                { id: "18", name: "Evelyn Serenity Tandy", real: "57", cookie: "3", final: "70" },
+                { id: "19", name: "Federico Oswald", real: "30", cookie: "3", final: "70" },
+                { id: "20", name: "Filberth Wu", real: "90", cookie: "9", final: "95" },
+                { id: "21", name: "Hans Goldhy", real: "56", cookie: "6", final: "73" },
+                { id: "22", name: "Joyce Dominique", real: "62", cookie: "5", final: "72" },
+                { id: "23", name: "Joylynn Devanie Conrad", real: "71", cookie: "11", final: "76" },
+                { id: "24", name: "Justin Adelio Sunvier", real: "57", cookie: "7", final: "74" },
+                { id: "25", name: "Lolyson Deevan", real: "37", cookie: "5", final: "72" },
+                { id: "26", name: "Nicholas Sebastian Tandiono", real: "37", cookie: "2", final: "39" },
+                { id: "27", name: "Nicole Violetta Tjeong", real: "81", cookie: "5", final: "86" },
+                { id: "28", name: "Revalyn", real: "12", cookie: "7", final: "74" },
+                { id: "29", name: "Rogelio Carrick Ang", real: "53", cookie: "6", final: "73" },
+                { id: "30", name: "Sava Tania", real: "36", cookie: "4", final: "72" },
+                { id: "31", name: "Shane Marvin Halim", real: "87", cookie: "8", final: "92" },
+                { id: "32", name: "Shareen Theodora", real: "62", cookie: "3", final: "70" },
+                { id: "33", name: "Sherlince Starlene Chandra", real: "24", cookie: "4", final: "72" },
+                { id: "34", name: "Sophie Aurelia Joycelin", real: "55", cookie: "6", final: "73" },
+                { id: "35", name: "Stevany Yulia Pratama", real: "42", cookie: "3", final: "70" },
+                { id: "36", name: "Sunrio Adinugroho", real: "28", cookie: "4", final: "72" },
+                { id: "37", name: "Sutanto Owen Liem", real: "47", cookie: "4", final: "72" },
+                { id: "38", name: "Thesha Bellina Vicjy", real: "69", cookie: "4", final: "72" },
+                { id: "39", name: "Torres Yang", real: "73", cookie: "4", final: "77" },
+                { id: "40", name: "Valencia Richel Ongso", real: "22", cookie: "3", final: "70" },
+                { id: "41", name: "Vallerie Liecardo", real: "12", cookie: "6", final: "73" },
+                { id: "42", name: "Vanessa", real: "43", cookie: "3", final: "70" },
+                { id: "43", name: "Vanessa Lois", real: "82", cookie: "10", final: "87" },
+                { id: "44", name: "Vicenzo Alfredo", real: "55", cookie: "3", final: "70" },
+                { id: "45", name: "Vincent Alvarez Zhuo", real: "62", cookie: "7", final: "74" },
+                { id: "46", name: "Vincent Wijaya", real: "91", cookie: "5", final: "96" },
+                { id: "47", name: "Wilbert Lieandy", real: "85", cookie: "8", final: "90" },
+                { id: "48", name: "Winston Hudson Otteo", real: "77", cookie: "7", final: "82" }
+            ],
+            "XI H": [
+                { id: "1", name: "Aurencia Lievianna", real: "39", cookie: "3", final: "70" },
+                { id: "2", name: "Carlyn Tanclyn", real: "86", cookie: "3", final: "89" },
+                { id: "3", name: "Clara Auryn Icasia", real: "86", cookie: "3", final: "89" },
+                { id: "4", name: "Fayola Aretha Lai", real: "69", cookie: "4", final: "72" },
+                { id: "5", name: "Grace Angeline Wirjawan", real: "26", cookie: "3", final: "70" },
+                { id: "6", name: "Javerlyn Queenicia Chandra", real: "20", cookie: "6", final: "73" },
+                { id: "7", name: "Jean Kelly Samudra Tjuaja", real: "90", cookie: "5", final: "95" },
+                { id: "8", name: "Joice Kellen", real: "46", cookie: "7", final: "74" },
+                { id: "9", name: "Jose Fernando", real: "18", cookie: "5", final: "72" },
+                { id: "10", name: "Justine Tania Chandra", real: "77", cookie: "3", final: "80" },
+                { id: "11", name: "Karen Julia Haspan", real: "76", cookie: "4", final: "80" },
+                { id: "12", name: "Kelsey Valerie Lin", real: "12", cookie: "4", final: "72" },
+                { id: "13", name: "Kynthia Callysta", real: "17", cookie: "4", final: "72" },
+                { id: "14", name: "Leonly Geraldine", real: "73", cookie: "5", final: "78" },
+                { id: "15", name: "Louis Gabriel", real: "38", cookie: "3", final: "70" },
+                { id: "16", name: "Louis Thomson", real: "82", cookie: "3", final: "85" },
+                { id: "17", name: "Madelyn Arcadia Chen", real: "14", cookie: "4", final: "72" },
+                { id: "18", name: "Mervin Sutiono", real: "11", cookie: "3", final: "70" },
+                { id: "19", name: "Michael Jhonson", real: "66", cookie: "7", final: "74" },
+                { id: "20", name: "Michelle", real: "51", cookie: "3", final: "70" },
+                { id: "21", name: "Michelle Margareth Cheong", real: "41", cookie: "4", final: "72" },
+                { id: "22", name: "Nicholas Yang", real: "92", cookie: "9", final: "97" },
+                { id: "23", name: "Nicole Zasen Yau", real: "51", cookie: "6", final: "73" },
+                { id: "24", name: "Philips Cuanata", real: "39", cookie: "4", final: "72" },
+                { id: "25", name: "Revanko Devalim Sunanto", real: "44", cookie: "3", final: "70" },
+                { id: "26", name: "Richard Gani", real: "60", cookie: "3", final: "70" },
+                { id: "27", name: "Robin Surya Toka", real: "21", cookie: "3", final: "70" },
+                { id: "28", name: "Roschelly Teisha Widalkho", real: "16", cookie: "5", final: "72" },
+                { id: "29", name: "Sanny", real: "16", cookie: "5", final: "72" },
+                { id: "30", name: "Sauri Yap Bella", real: "11", cookie: "3", final: "70" },
+                { id: "31", name: "Selly Alicia", real: "64", cookie: "5", final: "72" },
+                { id: "32", name: "Sharon Valerie Widjaja", real: "94", cookie: "3", final: "97" },
+                { id: "33", name: "Silvia Lim", real: "54", cookie: "3", final: "70" },
+                { id: "34", name: "Steven", real: "8", cookie: "4", final: "72" },
+                { id: "35", name: "Stevi Yulia Pratam", real: "26", cookie: "3", final: "70" },
+                { id: "36", name: "Tysdeny Tan", real: "12", cookie: "6", final: "73" },
+                { id: "37", name: "Valerie Tio", real: "19", cookie: "5", final: "72" },
+                { id: "38", name: "Velin Alicia", real: "64", cookie: "4", final: "72" },
+                { id: "39", name: "Vicelia Joanna Lie", real: "54", cookie: "8", final: "75" },
+                { id: "40", name: "Victor Kosasih", real: "83", cookie: "3", final: "86" },
+                { id: "41", name: "Whizley Chen", real: "30", cookie: "6", final: "73" },
+                { id: "42", name: "William Utama", real: "65", cookie: "5", final: "72" },
+                { id: "43", name: "Willy", real: "63", cookie: "4", final: "72" },
+                { id: "44", name: "Veda Arsa Iwanto", real: "28", cookie: "3", final: "70" }
+            ],
+            "XI I": [
+                { id: "1", name: "Carlos Valentino Wenrich", real: "14", cookie: "8", final: "75" },
+                { id: "2", name: "Clareen Cia", real: "15", cookie: "6", final: "73" },
+                { id: "3", name: "Edward Kennedy Lim", real: "68", cookie: "5", final: "72" },
+                { id: "4", name: "Gricherry Khonata", real: "11", cookie: "6", final: "73" },
+                { id: "5", name: "Hazel Robett Can", real: "96", cookie: "7", final: "100" },
+                { id: "6", name: "Jasmine Winaka", real: "55", cookie: "5", final: "72" },
+                { id: "7", name: "Jaycent Fritz Reevesen", real: "13", cookie: "7", final: "74" },
+                { id: "8", name: "Jessica Evangeli Tjiawijaya", real: "81", cookie: "7", final: "86" },
+                { id: "9", name: "Joeven", real: "27", cookie: "10", final: "75" },
+                { id: "10", name: "Joevito Jonathan", real: "39", cookie: "9", final: "75" },
+                { id: "11", name: "Jolin Jolicia Ciang", real: "89", cookie: "11", final: "94" },
+                { id: "12", name: "Kaetlyn Onglicia", real: "57", cookie: "10", final: "75" },
+                { id: "13", name: "Kaylie Rusli", real: "91", cookie: "7", final: "96" },
+                { id: "14", name: "Kerich Juin Utama", real: "47", cookie: "8", final: "75" },
+                { id: "15", name: "Marcelline Metsuko Humutowo", real: "23", cookie: "6", final: "73" },
+                { id: "16", name: "Marvennoto Suvega", real: "87", cookie: "9", final: "92" },
+                { id: "17", name: "Michelle Teresia Sutanto", real: "87", cookie: "12", final: "92" },
+                { id: "18", name: "Nicholas Valentino", real: "85", cookie: "16", final: "90" },
+                { id: "19", name: "Owen Chiuman", real: "29", cookie: "6", final: "73" },
+                { id: "20", name: "Qrin Tanaka", real: "59", cookie: "9", final: "75" },
+                { id: "21", name: "Rachel Chandler", real: "24", cookie: "9", final: "75" },
+                { id: "22", name: "Raymond Filbert Salim", real: "28", cookie: "8", final: "75" },
+                { id: "23", name: "Renzzo Cedric Guovandry", real: "38", cookie: "7", final: "74" },
+                { id: "24", name: "Richardo Anderson Halim", real: "67", cookie: "8", final: "75" },
+                { id: "25", name: "Richardo William", real: "62", cookie: "9", final: "75" },
+                { id: "26", name: "Richie Jericho Prince", real: "21", cookie: "9", final: "75" },
+                { id: "27", name: "Richie Prince Ten", real: "13", cookie: "7", final: "74" },
+                { id: "28", name: "Ruyi Sun Moon", real: "14", cookie: "7", final: "74" },
+                { id: "29", name: "Ryanna Nicole Leung", real: "16", cookie: "7", final: "74" },
+                { id: "30", name: "Sandra Evelyn Limber", real: "46", cookie: "13", final: "75" },
+                { id: "31", name: "Shanty Fidella Fu", real: "88", cookie: "8", final: "93" },
+                { id: "32", name: "Sky Lim", real: "50", cookie: "13", final: "75" },
+                { id: "33", name: "Sony Fernando Limber", real: "6", cookie: "7", final: "74" },
+                { id: "34", name: "Stancio Wunand", real: "31", cookie: "6", final: "73" },
+                { id: "35", name: "Syerena Tania Susanto", real: "52", cookie: "5", final: "72" },
+                { id: "36", name: "Valerina Florensia", real: "6", cookie: "9", final: "75" },
+                { id: "37", name: "Vallentino", real: "35", cookie: "10", final: "75" },
+                { id: "38", name: "Victoria Huang", real: "0", cookie: "0", final: "0" },
+                { id: "39", name: "Vincent", real: "13", cookie: "8", final: "75" },
+                { id: "40", name: "Vincent Alexander Colin", real: "11", cookie: "7", final: "74" },
+                { id: "41", name: "Werly", real: "8", cookie: "6", final: "73" }
+            ]
+        };
+
+        function searchScore() {
+            const cls = document.getElementById('scoreClass').value;
+            const id = document.getElementById('scoreId').value.trim();
+            const container = document.getElementById('scoreResultContainer');
+            const tbody = document.getElementById('scoreTableBody');
+
+            if(!cls || !id) {
+                alert("Please select a class and enter your attendance number.");
+                return;
+            }
+
+            const classData = studentScores[cls];
+            if(!classData) {
+                alert("Class not found!");
+                return;
+            }
+
+            const student = classData.find(s => s.id === id);
+
+            if(student) {
+                tbody.innerHTML = `
+                    <tr class="bg-slate-800/50 hover:bg-slate-700/50 transition-colors">
+                        <td class="p-4 border-t border-slate-700 text-white font-bold rounded-bl-xl">${cls}</td>
+                        <td class="p-4 border-t border-slate-700 text-white">${student.name}</td>
+                        <td class="p-4 border-t border-slate-700 text-amber-400 font-semibold">${student.real}</td>
+                        <td class="p-4 border-t border-slate-700 text-indigo-400 font-semibold">+${student.cookie}</td>
+                        <td class="p-4 border-t border-slate-700 text-emerald-400 font-black text-xl rounded-br-xl">${student.final}</td>
+                    </tr>
+                `;
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+                alert("Student not found! Check your attendance number.");
             }
         }
     </script>
